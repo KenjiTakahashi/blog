@@ -5,7 +5,9 @@
     "dependencies": {
         "flatiron": "0.2.x",
         "union": "0.3.x",
-        "director": "1.1.x"
+        "director": "1.1.x",
+        "mongorito": ">= 0.3.6 < 0.4.0",
+        "jade": "0.26.x"
     },
     "node": "0.8.1"
 }
