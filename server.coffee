@@ -1,17 +1,14 @@
 flatiron = require 'flatiron'
 director = require 'director'
 connect = require 'connect'
-stylus = require 'stylus'
 
 app = flatiron.app
 app.use flatiron.plugins.http, before: [
-    stylus.middleware
-        src: __dirname + '/assets'
-        dest: __dirname + '/public'
-        compile: (str, path) ->
-            return stylus(str).set('filename', path).set('compress', true)
+    require('stylus').middleware
+        src: "#{__dirname}/assets"
+        dest: "#{__dirname}/public"
     require './utils/dispatcher'
-    connect.static __dirname + '/public'
+    connect.static "#{__dirname}/public"
 ]
 app.use require './utils/jade'
 

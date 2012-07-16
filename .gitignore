@@ -2,4 +2,3 @@
 .*swp
 .*appconfig
 node_modules/
-public/stylesheets/*.css
