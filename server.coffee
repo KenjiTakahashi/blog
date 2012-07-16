@@ -15,10 +15,7 @@ app.use require './utils/jade'
 placeholder = ->
     res = @res
     app.render 'index', (err, data) ->
-        if err
-            res.html.not_found err.message
-        else
-            res.html.ok data
+        res.html err, data
 
 routes =
     '/':

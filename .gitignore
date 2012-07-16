@@ -2,3 +2,4 @@
 .*swp
 .*appconfig
 node_modules/
+*.xcf
