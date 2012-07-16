@@ -1,12 +1,15 @@
 flatiron = require 'flatiron'
 director = require 'director'
 connect = require 'connect'
+stylus = require 'stylus'
 
 app = flatiron.app
 app.use flatiron.plugins.http, before: [
-    require('stylus').middleware
+    stylus.middleware
         src: __dirname + '/assets'
         dest: __dirname + '/public'
+        compile: (str, path) ->
+            return stylus(str).set('filename', path).set('compress', true)
     require './utils/dispatcher'
     connect.static __dirname + '/public'
 ]
