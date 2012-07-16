@@ -8,7 +8,7 @@ app.use flatiron.plugins.http, before: [
         src: __dirname + '/assets'
         dest: __dirname + '/public'
     require './utils/dispatcher'
-    connect.static 'public'
+    connect.static __dirname + '/public'
 ]
 app.use require './utils/jade'
 
