@@ -6,12 +6,14 @@ html(lang="en")
     body
         div#left
             div#calendar
+                a(href="/calendar/previous").pn#prev
                 span#my
-                    if(month<10)
+                    if(month < 10)
                         = '0'
                     = month
                     /
                     = year
+                a(href="/calendar/next").pn#next
                 table#datepicker
                     - var index = 0;
                     tr

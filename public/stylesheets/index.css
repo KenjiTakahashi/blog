@@ -14,17 +14,32 @@ body {
   font-size: 15px;
   font-weight: bold;
 }
-#calendar span {
+#calendar .pn {
   position: relative;
+  display: inline-block;
+  width: 31px;
+  height: 4px;
+  top: 2px;
+}
+#calendar .pn:hover {
+  background-color: #2187db;
+}
+#calendar #prev {
+  left: 18px;
+}
+#calendar #next {
+  left: 82px;
 }
 #calendar #my {
-  left: 83px;
+  display: inline-block;
+  position: relative;
+  left: 50px;
   top: 5px;
 }
 #calendar #datepicker {
   position: relative;
   border-collapse: collapse;
-  left: 14px;
+  left: 13px;
   top: 9px;
   font-size: 11px;
   text-align: right;
@@ -32,10 +47,14 @@ body {
 #calendar #datepicker a {
   text-decoration: none;
 }
-#calendar #datepicker a.c {
+#calendar #datepicker .c:hover,
+#calendar #datepicker .np:hover {
+  color: #2187db;
+}
+#calendar #datepicker .c {
   color: #151515;
 }
-#calendar #datepicker a.np {
+#calendar #datepicker .np {
   color: #666;
 }
 #calendar #datepicker td {
