@@ -1,6 +1,7 @@
 flatiron = require 'flatiron'
 director = require 'director'
 connect = require 'connect'
+datepicker = require './utils/datepicker'
 
 app = flatiron.app
 app.use flatiron.plugins.http, before: [
@@ -14,8 +15,13 @@ app.use require './utils/jade'
 
 placeholder = ->
     res = @res
-    app.render 'index', (err, data) ->
-        res.html err, data
+    app.render 'index',
+        month: datepicker.month,
+        year: datepicker.year,
+        previous: datepicker.previous,
+        current: datepicker.current,
+        next: datepicker.next, (err, data) ->
+            res.html err, data
 
 routes =
     '/':

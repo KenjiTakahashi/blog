@@ -6,4 +6,38 @@ html(lang="en")
     body
         div#left
             div#calendar
-                span#my 02/2012
+                span#my
+                    if(month<10)
+                        = '0'
+                    = month
+                    /
+                    = year
+                table#datepicker
+                    - var index = 0;
+                    tr
+                        each pday in previous
+                            - index += 1;
+                            td
+                                a(href="/calendar/#{pday}").np= pday
+                        each cday in current
+                            if index == 7
+                                tr
+                                - index = 1;
+                            else
+                                - index += 1;
+                            td
+                                a(href="/calendar/#{cday}").c
+                                    if(cday < 10)
+                                        = '0'
+                                    = cday
+                        each nday in next
+                            if index == 7
+                                tr
+                                - index = 1;
+                            else
+                                - index += 1;
+                            td
+                                a(href="/calendar/#{nday}").np
+                                    if(nday < 10)
+                                        = '0'
+                                    = nday

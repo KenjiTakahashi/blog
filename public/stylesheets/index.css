@@ -8,7 +8,8 @@ body {
 }
 #calendar {
   background: url("../images/cal.png") no-repeat;
-  height: 124px;
+  color: #151515;
+  height: 138px;
   font-family: "Courier New", Courier, monospace;
   font-size: 15px;
   font-weight: bold;
@@ -19,4 +20,25 @@ body {
 #calendar #my {
   left: 83px;
   top: 5px;
+}
+#calendar #datepicker {
+  position: relative;
+  border-collapse: collapse;
+  left: 14px;
+  top: 9px;
+  font-size: 11px;
+  text-align: right;
+}
+#calendar #datepicker a {
+  text-decoration: none;
+}
+#calendar #datepicker a.c {
+  color: #151515;
+}
+#calendar #datepicker a.np {
+  color: #666;
+}
+#calendar #datepicker td {
+  padding-bottom: 6px;
+  padding-left: 12px;
 }
