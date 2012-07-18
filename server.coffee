@@ -18,8 +18,9 @@ app.use flatiron.plugins.http, before: [
 ]
 app.use require './utils/jade'
 
-placeholder = ->
-    res = @res
+placeholder = (req, res) ->
+    if not res?
+        res = @res
     app.render 'index',
         month: datepicker.month(),
         year: datepicker.year(),
@@ -32,11 +33,6 @@ placeholder = ->
 routes =
     '/':
         get: placeholder
-    '/calendar':
-        '/next':
-            get: ->
-                datepicker.forward()
-                @res.redirect '/'
 
 app.router = new director.http.Router(routes).configure async: true
 

@@ -1,6 +1,8 @@
 $amain = #151515
 $ahover = #2187db
 $aprev = #666666
+$bcolor = #ffffe3
+$rhcolor = #b2b2b2
 
 body
     background url("../images/bg.png")
@@ -8,45 +10,101 @@ body
     width 242px
     margin-left 17px
     margin-top -8px
-#calendar
-    background url("../images/cal.png") no-repeat
-    color #151515
-    height 138px
-    font-family "Courier New", Courier, monospace
-    font-size 15px
-    font-weight bold
-    .pn
+    float left
+    #calendar
+        background url("../images/cal.png") no-repeat
+        color #151515
+        height 138px
+        font-family "Courier New", Courier, monospace
+        font-size 15px
+        font-weight bold
+        .pn
+            position relative
+            display inline-block
+            width 31px
+            height 4px
+            top 2px
+        .pn:hover
+            background-color $ahover
+        #prev
+            left 18px
+        #next
+            left 82px
+        #my
+            display inline-block
+            position relative
+            left 50px
+            top 5px
+        #datepicker
+            position relative
+            border-collapse collapse
+            left 13px
+            top 9px
+            font-size 11px
+            text-align right
+            a
+                text-decoration none
+            .c:hover, .np:hover
+                color $ahover
+            .c
+                color $amain
+            .np
+                color $aprev
+            td
+                padding-bottom 6px
+                padding-left 12px
+    #tags_chooser
+        background url("../images/tag.png") no-repeat
+        height 230px
+        margin-top 16px
+    #posts
+        background url("../images/pos.png") no-repeat
+        height 196px
+        margin-top 16px
+#center
+    margin-top -8px
+    position fixed
+    left 258px
+    right 258px
+    #title
+        text-align center
+        #title_main
+            background-color $bcolor
+            font-weight bold
+            font-size 17px
+            padding-left 31px
+            padding-right 5px
+        #tags
+            background-color: $bcolor
+            font-size 12px
+            padding-left 31px
+            padding-right 5px
+        #lleft
+            display block
+            background-color $bcolor
+            width 31px
+            height 4px
+            float left
+        #lright
+            display block
+            background-color $bcolor
+            width 5px
+            height 4px
+            float right
+    #content
+        background-color $bcolor
         position relative
-        display inline-block
-        width 31px
-        height 4px
-        top 2px
-    .pn:hover
-        background-color $ahover
-    #prev
-        left 18px
-    #next
-        left 82px
-    #my
-        display inline-block
-        position relative
-        left 50px
-        top 5px
-    #datepicker
-        position relative
-        border-collapse collapse
-        left 13px
-        top 9px
-        font-size 11px
-        text-align right
-        a
-            text-decoration none
-        .c:hover, .np:hover
-            color $ahover
-        .c
-            color $amain
-        .np
-            color $aprev
-        td
-            padding-bottom 6px
-            padding-left 12px
+        top 4px
+#right
+    width 225px
+    margin-right 7px
+    margin-top 26px
+    float right
+    #about
+        font-weight bold
+        .aheader
+            color $rhcolor
+            font-size 22px
+        .atext
+            color $bcolor
+            font-size 13px

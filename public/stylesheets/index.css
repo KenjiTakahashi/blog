@@ -5,8 +5,9 @@ body {
   width: 242px;
   margin-left: 17px;
   margin-top: -8px;
+  float: left;
 }
-#calendar {
+#left #calendar {
   background: url("../images/cal.png") no-repeat;
   color: #151515;
   height: 138px;
@@ -14,29 +15,29 @@ body {
   font-size: 15px;
   font-weight: bold;
 }
-#calendar .pn {
+#left #calendar .pn {
   position: relative;
   display: inline-block;
   width: 31px;
   height: 4px;
   top: 2px;
 }
-#calendar .pn:hover {
+#left #calendar .pn:hover {
   background-color: #2187db;
 }
-#calendar #prev {
+#left #calendar #prev {
   left: 18px;
 }
-#calendar #next {
+#left #calendar #next {
   left: 82px;
 }
-#calendar #my {
+#left #calendar #my {
   display: inline-block;
   position: relative;
   left: 50px;
   top: 5px;
 }
-#calendar #datepicker {
+#left #calendar #datepicker {
   position: relative;
   border-collapse: collapse;
   left: 13px;
@@ -44,20 +45,88 @@ body {
   font-size: 11px;
   text-align: right;
 }
-#calendar #datepicker a {
+#left #calendar #datepicker a {
   text-decoration: none;
 }
-#calendar #datepicker .c:hover,
-#calendar #datepicker .np:hover {
+#left #calendar #datepicker .c:hover,
+#left #calendar #datepicker .np:hover {
   color: #2187db;
 }
-#calendar #datepicker .c {
+#left #calendar #datepicker .c {
   color: #151515;
 }
-#calendar #datepicker .np {
+#left #calendar #datepicker .np {
   color: #666;
 }
-#calendar #datepicker td {
+#left #calendar #datepicker td {
   padding-bottom: 6px;
   padding-left: 12px;
+}
+#left #tags_chooser {
+  background: url("../images/tag.png") no-repeat;
+  height: 230px;
+  margin-top: 16px;
+}
+#left #posts {
+  background: url("../images/pos.png") no-repeat;
+  height: 196px;
+  margin-top: 16px;
+}
+#center {
+  margin-top: -8px;
+  position: fixed;
+  left: 258px;
+  right: 258px;
+}
+#center #title {
+  text-align: center;
+}
+#center #title #title_main {
+  background-color: #ffffe3;
+  font-weight: bold;
+  font-size: 17px;
+  padding-left: 31px;
+  padding-right: 5px;
+}
+#center #title #tags {
+  background-color: #ffffe3;
+  font-size: 12px;
+  padding-left: 31px;
+  padding-right: 5px;
+}
+#center #title #lleft {
+  display: block;
+  background-color: #ffffe3;
+  width: 31px;
+  height: 4px;
+  float: left;
+}
+#center #title #lright {
+  display: block;
+  background-color: #ffffe3;
+  width: 5px;
+  height: 4px;
+  float: right;
+}
+#center #content {
+  background-color: #ffffe3;
+  position: relative;
+  top: 4px;
+}
+#right {
+  width: 225px;
+  margin-right: 7px;
+  margin-top: 26px;
+  float: right;
+}
+#right #about {
+  font-weight: bold;
+}
+#right #about .aheader {
+  color: #b2b2b2;
+  font-size: 22px;
+}
+#right #about .atext {
+  color: #ffffe3;
+  font-size: 13px;
 }

@@ -14,7 +14,6 @@ class Datepicker
         @_date.setDate 1
         days = @_date.getDaysInMonth()
         @current_data = [1..days]
-        console.log(@_date)
         @month_data = @_date.getMonth()
         @year_data = @_date.getFullYear()
         day = @_date.getDay()
