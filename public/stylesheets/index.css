@@ -1,7 +1,9 @@
 body {
   background: url("../images/bg.png");
+  height: 100%;
 }
 #left {
+  position: fixed;
   width: 242px;
   margin-left: 17px;
   margin-top: -8px;
@@ -77,6 +79,7 @@ body {
   position: fixed;
   left: 258px;
   right: 258px;
+  height: 100%;
 }
 #center #title {
   text-align: center;
@@ -112,10 +115,12 @@ body {
   background-color: #ffffe3;
   position: relative;
   top: 4px;
+  min-height: 100%;
 }
 #right {
+  position: fixed;
+  right: 7px;
   width: 225px;
-  margin-right: 7px;
   margin-top: 26px;
   float: right;
 }
