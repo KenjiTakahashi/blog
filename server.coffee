@@ -3,6 +3,15 @@ director = require 'director'
 connect = require 'connect'
 datepicker = require './utils/datepicker'
 
+hljs = require 'highlight.js'
+hljs.tabReplace = '    '
+marked = require 'marked'
+marked.setOptions gfm: true, highlight: (code, lang) ->
+    return hljs.highlight(lang, code).value
+
+db = require './db'
+posts = db.posts
+
 app = flatiron.app
 app.use flatiron.plugins.http, before: [
     (req, res) ->
@@ -21,14 +30,17 @@ app.use require './utils/jade'
 placeholder = (req, res) ->
     if not res?
         res = @res
-    app.render 'index',
-        month: datepicker.month(),
-        year: datepicker.year(),
-        previous: datepicker.previous(),
-        current: datepicker.current(),
-        next: datepicker.next(),
-        (err, data) ->
-            res.html err, data
+    posts.latest (err, latest) ->
+        latest.content = marked latest.content
+        app.render 'index',
+            month: datepicker.month(),
+            year: datepicker.year(),
+            previous: datepicker.previous(),
+            current: datepicker.current(),
+            next: datepicker.next(),
+            latest: latest,
+            (err, data) ->
+                res.html err, data
 
 routes =
     '/':

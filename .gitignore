@@ -3,3 +3,4 @@
 .*appconfig
 node_modules/
 *.xcf
+tools/

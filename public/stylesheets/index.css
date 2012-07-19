@@ -5,7 +5,7 @@ body {
 #left {
   position: fixed;
   width: 242px;
-  margin-left: 17px;
+  margin-left: 9px;
   margin-top: -8px;
   float: left;
 }
@@ -114,6 +114,7 @@ body {
 }
 #center #content {
   padding-top: 1px;
+  padding-left: 31px;
   background-color: #ffffe3;
   position: relative;
   top: 4px;

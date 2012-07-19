@@ -47,12 +47,13 @@ html(lang="en")
             div#posts
         div#center
             div#title
-                div#title_main test
+                div#title_main= latest.title
                 div#tags test, tags2, efsii
                 div#line
                     span#lleft
                     span#lright
-            div#content tests efskgridgrdgj
+            div#content
+                !{latest.content}
         div#right
             div#about
                 span.aheader Kenji Takahashi
