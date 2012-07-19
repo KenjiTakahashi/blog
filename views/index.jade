@@ -1,7 +1,9 @@
 !!! 5
 html(lang="en")
     head
-        title Placeholder (WIP)
+        meta(charset="utf-8")
+        title Kenji Takahashi (WIP)
+        link(rel="stylesheet", type="text/css", href="stylesheets/code.css")
         link(rel="stylesheet", type="text/css", href="stylesheets/index.css")
     body
         div#left
@@ -48,19 +50,20 @@ html(lang="en")
         div#center
             div#title
                 div#title_main= latest.title
-                div#tags test, tags2, efsii
+                div#tags
+                    !{latest.tags}
                 div#line
                     span#lleft
                     span#lright
             div#content
                 !{latest.content}
         div#right
-            div#about
-                span.aheader Kenji Takahashi
-                br
-                span.atext
-                    | A student of Computer Science at The University of Wrocław, Poland. Mainly interested in high-level, dynamic programming and (G)UI designs. Likes good music and classic sci-fi books.
-                br
-                span.aheader Projects
-                br
-                span.atext
+            span.aheader Kenji Takahashi
+            br
+            span.atext
+                | A student of Computer Science at The University of Wrocław, Poland. Mainly interested in high-level, dynamic programming and (G)UI designs. Likes good music and classic sci-fi books.
+            br
+            span.aheader Projects
+            br
+            span.atext
+            span#copyright Kenji Takahashi © 2012

@@ -115,6 +115,8 @@ body {
 #center #content {
   padding-top: 1px;
   padding-left: 31px;
+  padding-right: 5px;
+  font-size: 14px;
   background-color: #ffffe3;
   position: relative;
   top: 4px;
@@ -126,15 +128,23 @@ body {
   width: 225px;
   margin-top: 28px;
   float: right;
-}
-#right #about {
   font-weight: bold;
 }
-#right #about .aheader {
+#right .aheader {
   color: #b2b2b2;
   font-size: 22px;
 }
-#right #about .atext {
+#right .atext {
   color: #ffffe3;
   font-size: 13px;
+}
+#right #copyright {
+  color: #b2b2b2;
+  font-size: 13px;
+  position: fixed;
+  bottom: 16px;
+}
+pre code {
+  font-size: 11px;
+  background: #ffffe3;
 }

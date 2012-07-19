@@ -32,6 +32,7 @@ placeholder = (req, res) ->
         res = @res
     posts.latest (err, latest) ->
         latest.content = marked latest.content
+        latest.tags = ("<a href='/tags/#{t}'>#{t}</a>" for t in latest.tags).join(', ')
         app.render 'index',
             month: datepicker.month(),
             year: datepicker.year(),
