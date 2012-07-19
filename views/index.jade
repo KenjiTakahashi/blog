@@ -48,6 +48,8 @@ html(lang="en")
             div#tags_chooser
             div#posts
         div#center
+            div#content
+                !{latest.content}
             div#title
                 div#title_main= latest.title
                 div#tags
@@ -55,8 +57,6 @@ html(lang="en")
                 div#line
                     span#lleft
                     span#lright
-            div#content
-                !{latest.content}
         div#right
             span.aheader Kenji Takahashi
             br

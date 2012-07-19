@@ -76,12 +76,15 @@ body {
 }
 #center {
   margin-top: -8px;
-  position: fixed;
+  position: absolute;
   left: 258px;
   right: 258px;
   height: 100%;
 }
 #center #title {
+  position: fixed;
+  left: 258px;
+  right: 258px;
   text-align: center;
 }
 #center #title #title_main {
@@ -116,10 +119,12 @@ body {
   padding-top: 1px;
   padding-left: 31px;
   padding-right: 5px;
+  padding-bottom: 16px;
   font-size: 14px;
+  text-align: justify;
   background-color: #ffffe3;
-  position: relative;
-  top: 4px;
+  position: absolute;
+  top: 42px;
   min-height: 100%;
 }
 #right {
