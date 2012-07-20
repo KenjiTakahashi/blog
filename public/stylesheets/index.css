@@ -70,7 +70,6 @@ a:hover {
   height: 230px;
   margin-top: 16px;
   font-size: 14px;
-  line-height: 17px;
 }
 #left #tags_chooser .pn {
   width: 189px;
@@ -80,23 +79,22 @@ a:hover {
   top: -1px;
 }
 #left #tags_chooser #tnext {
-  bottom: 10px;
+  bottom: 7px;
 }
 #left #tags_chooser #tags_links {
-  position: relative;
-  top: -4px;
+  list-style: none;
+  padding: 0px 41px 0px 24px;
+  margin: -3px 0px 0px;
 }
 #left #tags_chooser #tags_links .tag {
-  position: relative;
-  left: 24px;
   text-decoration: none;
 }
 #left #tags_chooser #tags_links .tagcount {
-  position: relative;
   float: right;
-  top: 1px;
-  right: 41px;
   text-align: right;
+}
+#left #tags_chooser #tags_links li {
+  height: 17px;
 }
 #left #posts {
   background: url("../images/pos.png") no-repeat;
