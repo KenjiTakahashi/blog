@@ -77,7 +77,8 @@ a:hover {
   margin-top: -8px;
   position: absolute;
   height: 100%;
-  width: 100%;
+  left: 0px;
+  right: 0px;
 }
 #center #title {
   position: fixed;
@@ -123,8 +124,8 @@ a:hover {
   background-color: #ffffe3;
   position: absolute;
   top: 42px;
-  left: 250px;
-  right: 266px;
+  left: 258px;
+  right: 258px;
   min-height: 100%;
 }
 #right {
