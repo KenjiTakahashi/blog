@@ -150,6 +150,9 @@ a:hover {
 #right .atext a:hover {
   color: #2187db;
 }
+#right .atext .pdname {
+  text-decoration: line-through;
+}
 #right #copyright {
   color: #b2b2b2;
   font-size: 13px;

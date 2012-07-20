@@ -68,9 +68,9 @@ html(lang="en")
             span.atext
                 each project in projects
                     if project.active == true
-                        a(href="#{project.site}").pname= project.name
+                        a(href="#{project.site}")= project.name
                     else
-                        a(href="#{project.site}").pname.pdname= project.name
+                        a(href="#{project.site}").pdname= project.name
                     = ' ' + project.desc
                     br
             span#copyright Kenji Takahashi © 2012
