@@ -22,12 +22,12 @@ a:hover {
   margin-left: 9px;
   margin-top: -8px;
   float: left;
+  font-family: "Courier New", Courier, monospace;
 }
 #left #calendar {
   background: url("../images/cal.png") no-repeat;
   color: #151515;
   height: 138px;
-  font-family: "Courier New", Courier, monospace;
   font-size: 15px;
   font-weight: bold;
 }
@@ -70,6 +70,7 @@ a:hover {
   height: 230px;
   margin-top: 16px;
   font-size: 14px;
+  line-height: 17px;
 }
 #left #tags_chooser .pn {
   width: 189px;
