@@ -66,4 +66,11 @@ html(lang="en")
             span.aheader Projects
             br
             span.atext
+                each project in projects
+                    if project.active == true
+                        a(href="#{project.site}").pname= project.name
+                    else
+                        a(href="#{project.site}").pname.pdname= project.name
+                    = ' ' + project.desc
+                    br
             span#copyright Kenji Takahashi © 2012

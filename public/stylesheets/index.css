@@ -2,6 +2,12 @@ body {
   background: url("../images/bg.png");
   height: 100%;
 }
+a {
+  color: #151515;
+}
+a:hover {
+  color: #2187db;
+}
 #left {
   position: fixed;
   width: 242px;
@@ -50,13 +56,6 @@ body {
 #left #calendar #datepicker a {
   text-decoration: none;
 }
-#left #calendar #datepicker .c:hover,
-#left #calendar #datepicker .np:hover {
-  color: #2187db;
-}
-#left #calendar #datepicker .c {
-  color: #151515;
-}
 #left #calendar #datepicker .np {
   color: #666;
 }
@@ -77,9 +76,8 @@ body {
 #center {
   margin-top: -8px;
   position: absolute;
-  left: 258px;
-  right: 258px;
   height: 100%;
+  width: 100%;
 }
 #center #title {
   position: fixed;
@@ -125,6 +123,8 @@ body {
   background-color: #ffffe3;
   position: absolute;
   top: 42px;
+  left: 250px;
+  right: 266px;
   min-height: 100%;
 }
 #right {
@@ -143,11 +143,21 @@ body {
   color: #ffffe3;
   font-size: 13px;
 }
+#right .atext a {
+  color: #7f7f7f;
+  text-decoration: none;
+}
+#right .atext a:hover {
+  color: #2187db;
+}
 #right #copyright {
   color: #b2b2b2;
   font-size: 13px;
   position: fixed;
   bottom: 16px;
+}
+pre {
+  overflow-x: auto;
 }
 pre code {
   font-size: 11px;

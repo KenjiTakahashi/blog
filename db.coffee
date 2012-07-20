@@ -8,6 +8,11 @@ PostSchema = new mongo.Schema
     tags: type: Array, default: []
     date: type: Date, default: new Date
 
+ProjectSchema = new mongo.Schema
+    name: type: String, required: yes
+    desc: type: String, default: ''
+    active: type: Boolean, default: true
+
 HelperSchema = new mongo.Schema
     latest: [PostSchema]
 
@@ -23,5 +28,13 @@ class Post
             else
                 callback err, data.latest[0]
 
+class Project
+    constructor: ->
+        @_model = mongo.model 'Project', ProjectSchema
+
+    all: (callback) ->
+        @_model.find {}, callback
+
 module.exports =
     posts: new Post
+    projects: new Project

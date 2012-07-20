@@ -11,6 +11,7 @@ marked.setOptions gfm: true, highlight: (code, lang) ->
 
 db = require './db'
 posts = db.posts
+projects = db.projects
 
 app = flatiron.app
 app.use flatiron.plugins.http, before: [
@@ -33,15 +34,17 @@ placeholder = (req, res) ->
     posts.latest (err, latest) ->
         latest.content = marked latest.content
         latest.tags = ("<a href='/tags/#{t}'>#{t}</a>" for t in latest.tags).join(', ')
-        app.render 'index',
-            month: datepicker.month(),
-            year: datepicker.year(),
-            previous: datepicker.previous(),
-            current: datepicker.current(),
-            next: datepicker.next(),
-            latest: latest,
-            (err, data) ->
-                res.html err, data
+        projects.all (err, projects) ->
+            app.render 'index',
+                month: datepicker.month(),
+                year: datepicker.year(),
+                previous: datepicker.previous(),
+                current: datepicker.current(),
+                next: datepicker.next(),
+                latest: latest,
+                projects: projects,
+                (err, data) ->
+                    res.html err, data
 
 routes =
     '/':

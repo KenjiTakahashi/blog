@@ -3,10 +3,15 @@ $ahover = #2187db
 $aprev = #666666
 $bcolor = #ffffe3
 $rhcolor = #b2b2b2
+$arcolor = #7f7f7f
 
 body
     background url("../images/bg.png")
     height 100%
+a
+    color $amain
+a:hover
+    color $ahover
 #left
     position fixed
     width 242px
@@ -46,10 +51,6 @@ body
             text-align right
             a
                 text-decoration none
-            .c:hover, .np:hover
-                color $ahover
-            .c
-                color $amain
             .np
                 color $aprev
             td
@@ -66,9 +67,8 @@ body
 #center
     margin-top -8px
     position absolute
-    left 258px
-    right 258px
     height 100%
+    width 100%
     #title
         position fixed
         left 258px
@@ -108,6 +108,8 @@ body
         background-color $bcolor
         position absolute
         top 42px
+        left 250px
+        right 266px
         min-height 100%
 #right
     position fixed
@@ -122,11 +124,18 @@ body
     .atext
         color $bcolor
         font-size 13px
+        a
+            color $arcolor
+            text-decoration none
+        a:hover
+            color $ahover
     #copyright
         color $rhcolor
         font-size 13px
         position fixed
         bottom 16px
-pre code
-    font-size 11px
-    background $bcolor
+pre
+    overflow-x auto
+    code
+        font-size 11px
+        background $bcolor
