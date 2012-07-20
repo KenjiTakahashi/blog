@@ -12,6 +12,12 @@ a
     color $amain
 a:hover
     color $ahover
+.pn
+    position relative
+    display inline-block
+    height 4px
+.pn:hover
+    background-color $ahover
 #left
     position fixed
     width 242px
@@ -26,13 +32,8 @@ a:hover
         font-size 15px
         font-weight bold
         .pn
-            position relative
-            display inline-block
             width 31px
-            height 4px
             top 2px
-        .pn:hover
-            background-color $ahover
         #prev
             left 18px
         #next
@@ -60,6 +61,27 @@ a:hover
         background url("../images/tag.png") no-repeat
         height 230px
         margin-top 16px
+        font-size 14px
+        .pn
+            width 189px
+            left 18px
+        #tprev
+            top -1px
+        #tnext
+            bottom 10px
+        #tags_links
+            position relative
+            top -4px
+            .tag
+                position relative
+                left 24px
+                text-decoration none
+            .tagcount
+                position relative
+                float right
+                top 1px
+                right 41px
+                text-align right
     #posts
         background url("../images/pos.png") no-repeat
         height 196px

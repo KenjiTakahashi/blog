@@ -11,6 +11,7 @@ PostSchema = new mongo.Schema
 ProjectSchema = new mongo.Schema
     name: type: String, required: yes
     desc: type: String, default: ''
+    site: type: String, requored: yes
     active: type: Boolean, default: true
 
 HelperSchema = new mongo.Schema
@@ -22,11 +23,27 @@ class Post
         @_helper = mongo.model 'Helper', HelperSchema
 
     latest: (callback) ->
-        @_helper.findOne {}, (err, data) ->
-            if not data
+        @_helper.findOne (err, data) ->
+            if err or not data
                 callback err, null
             else
                 callback err, data.latest[0]
+
+    tags: (callback) ->
+        @_model.find({}).sort('date', -1).exec (err, data) ->
+            if err or not data
+                callback err, null
+            else
+                tmp = []
+                out = []
+                for post in data
+                    for tag in post.tags
+                        if tag in tmp
+                            out[tmp.indexOf tag][1] += 1
+                        else
+                            out.push [tag, 1]
+                            tmp.push tag
+                callback err, out
 
 class Project
     constructor: ->
