@@ -25,6 +25,8 @@ a:hover
     margin-top -8px
     float left
     font-family "Courier New", Courier, monospace
+    a
+        text-decoration none
     #calendar
         background url("../images/cal.png") no-repeat
         color #151515
@@ -50,8 +52,6 @@ a:hover
             top 9px
             font-size 11px
             text-align right
-            a
-                text-decoration none
             .np
                 color $aprev
             td
@@ -68,22 +68,30 @@ a:hover
         #tprev
             top -1px
         #tnext
-            bottom 7px
-        #tags_links
-            list-style none
-            padding 0px 41px 0px 24px
-            margin -3px 0px 0px
-            .tag
-                text-decoration none
-            .tagcount
-                float right
-                text-align right
-            li
-                height 17px
+            bottom 6px
+        .tagcount
+            float right
+            text-align right
     #posts
         background url("../images/pos.png") no-repeat
         height 196px
         margin-top 16px
+        font-size 14px
+        .pn
+            width 189px
+            left 18px
+        #pprev
+            top -1px
+        #pnext
+            bottom 10px
+        .links
+            height 174px
+    .links
+        list-style none
+        padding 0px 41px 0px 24px
+        margin -3px 0px 0px
+        li
+            height 17px
 #center
     margin-top -8px
     position absolute

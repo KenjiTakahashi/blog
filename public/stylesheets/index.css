@@ -24,6 +24,9 @@ a:hover {
   float: left;
   font-family: "Courier New", Courier, monospace;
 }
+#left a {
+  text-decoration: none;
+}
 #left #calendar {
   background: url("../images/cal.png") no-repeat;
   color: #151515;
@@ -55,9 +58,6 @@ a:hover {
   font-size: 11px;
   text-align: right;
 }
-#left #calendar #datepicker a {
-  text-decoration: none;
-}
 #left #calendar #datepicker .np {
   color: #666;
 }
@@ -79,27 +79,38 @@ a:hover {
   top: -1px;
 }
 #left #tags_chooser #tnext {
-  bottom: 7px;
+  bottom: 6px;
 }
-#left #tags_chooser #tags_links {
-  list-style: none;
-  padding: 0px 41px 0px 24px;
-  margin: -3px 0px 0px;
-}
-#left #tags_chooser #tags_links .tag {
-  text-decoration: none;
-}
-#left #tags_chooser #tags_links .tagcount {
+#left #tags_chooser .tagcount {
   float: right;
   text-align: right;
-}
-#left #tags_chooser #tags_links li {
-  height: 17px;
 }
 #left #posts {
   background: url("../images/pos.png") no-repeat;
   height: 196px;
   margin-top: 16px;
+  font-size: 14px;
+}
+#left #posts .pn {
+  width: 189px;
+  left: 18px;
+}
+#left #posts #pprev {
+  top: -1px;
+}
+#left #posts #pnext {
+  bottom: 10px;
+}
+#left #posts .links {
+  height: 174px;
+}
+#left .links {
+  list-style: none;
+  padding: 0px 41px 0px 24px;
+  margin: -3px 0px 0px;
+}
+#left .links li {
+  height: 17px;
 }
 #center {
   margin-top: -8px;

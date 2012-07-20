@@ -1,6 +1,6 @@
 {
     "name": "kenji",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "private": true,
     "node": "0.8.1",
     "dependencies": {

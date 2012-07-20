@@ -35,18 +35,20 @@ placeholder = (req, res) ->
         latest.content = marked latest.content
         latest.tags = ("<a href='/tags/#{t}'>#{t}</a>" for t in latest.tags).join(', ')
         posts.tags (err, tags) ->
-            projects.all (err, projects) ->
-                app.render 'index',
-                    month: datepicker.month(),
-                    year: datepicker.year(),
-                    previous: datepicker.previous(),
-                    current: datepicker.current(),
-                    next: datepicker.next(),
-                    latest: latest,
-                    projects: projects,
-                    tags: tags,
-                    (err, data) ->
-                        res.html err, data
+            posts.titles (err, titles) ->
+                projects.all (err, projects) ->
+                    app.render 'index',
+                        month: datepicker.month(),
+                        year: datepicker.year(),
+                        previous: datepicker.previous(),
+                        current: datepicker.current(),
+                        next: datepicker.next(),
+                        latest: latest,
+                        titles: titles,
+                        projects: projects,
+                        tags: tags,
+                        (err, data) ->
+                            res.html err, data
 
 routes =
     '/':

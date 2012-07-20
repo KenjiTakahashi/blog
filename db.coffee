@@ -30,7 +30,7 @@ class Post
                 callback err, data.latest[0]
 
     tags: (callback) ->
-        @_model.find({}).sort('date', -1).exec (err, data) ->
+        @_model.find({}, {tags: 1}).sort('date', -1).limit(12).exec (err, data) ->
             if err or not data
                 callback err, null
             else
@@ -44,6 +44,13 @@ class Post
                             out.push [tag, 1]
                             tmp.push tag
                 callback err, out
+
+    titles: (callback) ->
+        @_model.find({}, {title: 1}).sort('date', -1).limit(10).exec (err,data) ->
+            if err or not data
+                callback err, null
+            else
+                callback err, (d.title for d in data)
 
 class Project
     constructor: ->
