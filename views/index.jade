@@ -58,22 +58,26 @@ html(lang="en")
             div#tags_chooser
                 a(href="/tags/previous").pn#tprev
                 ul.links
+                    - var index = 0;
                     each tag in tags
+                        - index += 1;
                         li
-                            if tag == undefined
-                                span.tagcount NaN
-                            else
-                                a(href="/tags/#{tag[0]}")= tag[0]
-                                span.tagcount
-                                    if(tag[1] < 10)
-                                        = '000'
+                            a(href="/tags/#{tag[0]}")= tag[0]
+                            span.tagcount
+                                if(tag[1] < 10)
+                                    = '000'
+                                else
+                                    if(tag[1] < 100)
+                                        = '00'
                                     else
-                                        if(tag[1] < 100)
-                                            = '00'
-                                        else
-                                            if(tag[1] < 10)
-                                                = '0'
-                                    = tag[1]
+                                        if(tag[1] < 10)
+                                            = '0'
+                                = tag[1]
+                    - while(index < 12) {
+                        - index += 1;
+                        li
+                            span.tagcount= NaN
+                    - }
                 a(href="/tags/next").pn#tnext
             div#posts
                 a(href="/posts/previous").pn#pprev
