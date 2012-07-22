@@ -22,6 +22,13 @@ class Post
         @_model = mongo.model 'Post', PostSchema
         @_helper = mongo.model 'Helper', HelperSchema
 
+    one: (id, callback) ->
+        @_model.findOne _id: id, (err, data) ->
+            if err or not data
+                callback err, null
+            else
+                callback err, data
+
     latest: (callback) ->
         @_helper.findOne (err, data) ->
             if err or not data
@@ -80,7 +87,7 @@ class Post
                     has_next = true
                     if count <= 10
                         has_next = false
-                    callback err, (d.title for d in data), has_prev, has_next
+                    callback err, data, has_prev, has_next
 
 class Project
     constructor: ->
