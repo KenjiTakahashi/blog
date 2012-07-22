@@ -38,9 +38,8 @@ placeholder = (req, res, post) ->
     page = query.p
     if page?
         page = parseInt page
-    tag_link = query.tag
     url = req.url.split '?'
-    urls = [url[0], "", "", "", url[1] and "?#{url[1]}" or ""]
+    urls = [url[0], "", "", "", "", "", url[1] and "?#{url[1]}" or ""]
     for n, v of query
         if n != 't'
             urls[1] += "&#{n}=#{v}"
@@ -48,6 +47,10 @@ placeholder = (req, res, post) ->
             urls[2] += "&#{n}=#{v}"
         if n != 'tag'
             urls[3] += "&#{n}=#{v}"
+        if n != 'd'
+            urls[4] += "&#{n}=#{v}"
+        if n != 'date'
+            urls[5] += "&#{n}=#{v}"
     post.content = marked post.content
     post.tags = ("<a href='#{urls[0]}?tag=#{t}#{urls[3]}'>#{t}</a>" for t in post.tags).join(', ')
     posts.tags tag, (err, tags, has_prev_tag, has_next_tag) ->
@@ -58,7 +61,8 @@ placeholder = (req, res, post) ->
         else if tags == null
             res._html.internal null
         else
-            posts.titles page, tag_link, (err, titles, has_prev_page, has_next_page) ->
+            posts.titles query.date, query.tag, page,
+            (err, titles, has_prev_page, has_next_page) ->
                 if err
                     res.html err, null
                 else if titles == null
@@ -69,7 +73,7 @@ placeholder = (req, res, post) ->
                     projects.all (err, projects) ->
                         app.render 'index',
                             urls: urls,
-                            datepicker: datepicker.get()
+                            dp: datepicker.get(query.d)
                             latest: post,
                             titles: titles,
                             prev_title: prev_title,

@@ -36,8 +36,7 @@ class Post
             else
                 callback err, data.latest[0]
 
-    tags: (o..., callback) ->
-        o = o[0]
+    tags: (o, callback) ->
         if not o?
             o = 0
         query = @_model.find({}, {tags: 1}).sort 'date', -1
@@ -64,10 +63,16 @@ class Post
                     has_next = false
                 callback err, out.slice(0, 12), has_prev, has_next
 
-    titles: (o, t, callback) ->
+    titles: (d, t, o, callback) ->
         if not o?
             o = 0
-        if t?
+        if d?
+            start = new Date d
+            start.addDays -1
+            end = new Date d
+            end.addDays 1
+            query = @_model.find {date: {$gt: start, $lt: end}}, {title: 1}
+        else if t?
             query = @_model.find {tags: t}, {title: 1}
         else
             query = @_model.find {}, {title: 1}

@@ -18,40 +18,41 @@ html(lang="en")
                     span#lright
         div#left
             div#calendar
-                a(href="/calendar/previous").pn#prev
+                a(href="#{urls[0]}?d=#{dp.plink}#{urls[4]}").pn#prev
                 span#my
-                    if(datepicker.month < 10)
+                    if(dp.month < 10)
                         = '0'
-                    = datepicker.month
+                    = dp.month
                     /
-                    = datepicker.year
-                a(href="/calendar/next").pn#next
+                    = dp.year
+                a(href="#{urls[0]}?d=#{dp.nlink}#{urls[4]}").pn#next
                 table#datepicker
                     - var index = 0;
                     tr
-                        each day in datepicker.previous
+                        each day in dp.previous
                             - index += 1;
                             td
-                                a(href="/calendar/#{day}").np= day
-                        each day in datepicker.current
+                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").np
+                                    = day
+                        each day in dp.current
                             if index == 7
                                 tr
                                 - index = 1;
                             else
                                 - index += 1;
                             td
-                                a(href="/calendar/#{day}").c
+                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").c
                                     if(day < 10)
                                         = '0'
                                     = day
-                        each day in datepicker.next
+                        each day in dp.next
                             if index == 7
                                 tr
                                 - index = 1;
                             else
                                 - index += 1;
                             td
-                                a(href="/calendar/#{day}").np
+                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").np
                                     if(day < 10)
                                         = '0'
                                     = day
@@ -91,7 +92,7 @@ html(lang="en")
                 ul.links
                     each title in titles
                         li
-                            a(href="/posts/#{title._id}#{urls[4]}").post
+                            a(href="/posts/#{title._id}#{urls[6]}").post
                                 = title.title.slice(0, 19)
                                 if(title.title.length > 19)
                                     = '...'
