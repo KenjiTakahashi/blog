@@ -31,25 +31,23 @@ app.use require './utils/jade'
 placeholder = (req, res, post) ->
     query = req.query
     tag = query.t
-    url = req.url.split('?', 1)[0]
-    urls = [url, "?", "?", ""]
     if tag?
         tag = parseInt tag
     page = query.p
     if page?
         page = parseInt page
+    tag_link = query.tag
+    url = req.url.split '?'
+    urls = [url[0], "", "", "", url[1] and "?#{url[1]}" or ""]
     for n, v of query
         if n != 't'
-            urls[1] += "#{n}=#{v}"
-            urls[1] += '&'
+            urls[1] += "&#{n}=#{v}"
         if n != 'p'
-            urls[2] += "#{n}=#{v}"
-            urls[2] += '&'
-        if urls[3] == ""
-            urls[3] = '?'
-        urls[3] += "#{n}=#{v}&"
+            urls[2] += "&#{n}=#{v}"
+        if n != 'tag'
+            urls[3] += "&#{n}=#{v}"
     post.content = marked post.content
-    post.tags = ("<a href='/tags/#{t}'>#{t}</a>" for t in post.tags).join(', ')
+    post.tags = ("<a href='#{urls[0]}?tag=#{t}#{urls[3]}'>#{t}</a>" for t in post.tags).join(', ')
     posts.tags tag, (err, tags, has_prev_tag, has_next_tag) ->
         prev_tag = [has_prev_tag, tag? and tag - 1]
         next_tag = [has_next_tag, tag? and tag + 1 or 1]
@@ -58,7 +56,7 @@ placeholder = (req, res, post) ->
         else if tags == null
             res._html.internal null
         else
-            posts.titles page, (err, titles, has_prev_page, has_next_page) ->
+            posts.titles page, tag_link, (err, titles, has_prev_page, has_next_page) ->
                 if err
                     res.html err, null
                 else if titles == null

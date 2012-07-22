@@ -47,34 +47,31 @@ class Post
             else
                 tmp = []
                 out = []
-                count = 0
                 for post in data
                     for tag in post.tags
-                        count = tmp.length
-                        if count - o >= 12
-                            break
                         if tag in tmp
                             out[(tmp.indexOf tag) - o][1] += 1
-                        else if count < o
+                        else if tmp.length < o
                             tmp.push tag
                         else
                             out.push [tag, 1]
                             tmp.push tag
-                    if count - o > 12
-                        break
                 has_prev = true
                 if o == 0
                     has_prev = false
                 has_next = true
-                if count - o < 12
+                if tmp.length - o < 12
                     has_next = false
-                callback err, out, has_prev, has_next
+                callback err, out.slice(0, 12), has_prev, has_next
 
-    titles: (o..., callback) ->
-        o = o[0]
+    titles: (o, t, callback) ->
         if not o?
             o = 0
-        query = @_model.find({}, {title: 1}).sort('date', -1).skip(o).limit 10
+        if t?
+            query = @_model.find {tags: t}, {title: 1}
+        else
+            query = @_model.find {}, {title: 1}
+        query = query.sort('date', -1).skip(o).limit 10
         query.exec (err, data) ->
             query.count (err, count) ->
                 count -= o
