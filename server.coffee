@@ -25,6 +25,7 @@ app.use flatiron.plugins.http, before: [
     require('stylus').middleware
         src: "#{__dirname}/assets"
         dest: "#{__dirname}/public"
+        compress: true
     require './utils/dispatcher'
     connect.static "#{__dirname}/public"
 ]

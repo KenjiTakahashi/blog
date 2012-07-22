@@ -1,215 +1,45 @@
-body {
-  background: url("../images/bg.png");
-  height: 100%;
-}
-a {
-  color: #151515;
-}
-a:hover {
-  color: #2187db;
-}
-.pin {
-  position: relative;
-  display: inline-block;
-  height: 4px;
-}
-.pn {
-  position: relative;
-  display: inline-block;
-  height: 4px;
-}
-.pn:hover {
-  background-color: #2187db;
-}
-#left {
-  position: fixed;
-  width: 242px;
-  margin-left: 9px;
-  margin-top: -8px;
-  float: left;
-  font-family: "Courier New", Courier, monospace;
-}
-#left a {
-  text-decoration: none;
-}
-#left #calendar {
-  background: url("../images/cal.png") no-repeat;
-  color: #151515;
-  height: 138px;
-  font-size: 15px;
-}
-#left #calendar #selected {
-  font-weight: bold;
-}
-#left #calendar .pn {
-  width: 31px;
-  top: 2px;
-}
-#left #calendar #prev {
-  left: 18px;
-}
-#left #calendar #next {
-  left: 82px;
-}
-#left #calendar #my {
-  display: inline-block;
-  position: relative;
-  left: 50px;
-  top: 5px;
-}
-#left #calendar #datepicker {
-  position: relative;
-  border-collapse: collapse;
-  left: 13px;
-  top: 9px;
-  font-size: 11px;
-  text-align: right;
-}
-#left #calendar #datepicker .np {
-  color: #666;
-}
-#left #calendar #datepicker td {
-  padding-bottom: 6px;
-  padding-left: 12px;
-}
-#left #tags_chooser {
-  background: url("../images/tag.png") no-repeat;
-  height: 230px;
-  margin-top: 16px;
-  font-size: 14px;
-}
-#left #tags_chooser .pn {
-  width: 189px;
-  left: 18px;
-}
-#left #tags_chooser #tprev {
-  top: -1px;
-}
-#left #tags_chooser #tnext {
-  bottom: 6px;
-}
-#left #tags_chooser .tagcount {
-  float: right;
-  text-align: right;
-}
-#left #posts {
-  background: url("../images/pos.png") no-repeat;
-  height: 196px;
-  margin-top: 16px;
-  font-size: 14px;
-}
-#left #posts .pn {
-  width: 189px;
-  left: 18px;
-}
-#left #posts #pprev {
-  top: -1px;
-}
-#left #posts #pnext {
-  bottom: 10px;
-}
-#left #posts .links {
-  height: 174px;
-}
-#left .links {
-  list-style: none;
-  padding: 0px 41px 0px 24px;
-  margin: -3px 0px 0px;
-}
-#left .links li {
-  height: 17px;
-}
-#center {
-  margin-top: -8px;
-  position: absolute;
-  height: 100%;
-  left: 0px;
-  right: 0px;
-}
-#center #title {
-  position: fixed;
-  left: 258px;
-  right: 258px;
-  text-align: center;
-}
-#center #title #title_main {
-  background-color: #ffffe3;
-  font-weight: bold;
-  font-size: 17px;
-  padding-left: 31px;
-  padding-right: 5px;
-}
-#center #title #tags {
-  background-color: #ffffe3;
-  font-size: 12px;
-  padding-left: 31px;
-  padding-right: 5px;
-  padding-bottom: 2px;
-}
-#center #title #lleft {
-  display: block;
-  background-color: #ffffe3;
-  width: 31px;
-  height: 4px;
-  float: left;
-}
-#center #title #lright {
-  display: block;
-  background-color: #ffffe3;
-  width: 5px;
-  height: 4px;
-  float: right;
-}
-#center #content {
-  padding-top: 1px;
-  padding-left: 31px;
-  padding-right: 5px;
-  padding-bottom: 16px;
-  font-size: 14px;
-  text-align: justify;
-  background-color: #ffffe3;
-  position: absolute;
-  top: 42px;
-  left: 258px;
-  right: 258px;
-  min-height: 100%;
-}
-#right {
-  position: fixed;
-  right: 7px;
-  width: 225px;
-  margin-top: 28px;
-  float: right;
-  font-weight: bold;
-}
-#right .aheader {
-  color: #b2b2b2;
-  font-size: 22px;
-}
-#right .atext {
-  color: #ffffe3;
-  font-size: 13px;
-}
-#right .atext a {
-  color: #7f7f7f;
-  text-decoration: none;
-}
-#right .atext a:hover {
-  color: #2187db;
-}
-#right .atext .pdname {
-  text-decoration: line-through;
-}
-#right #copyright {
-  color: #b2b2b2;
-  font-size: 13px;
-  position: fixed;
-  bottom: 16px;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-  font-size: 11px;
-  background: #ffffe3;
-}
+body{background:url("../images/bg.png");height:100%}
+a{color:#151515}
+a:hover{color:#2187db}
+.pin{position:relative;display:inline-block;height:4px}
+.pn{position:relative;display:inline-block;height:4px}
+.pn:hover{background-color:#2187db}
+#left{position:fixed;width:242px;margin-left:9px;margin-top:-8px;float:left;font-family:"Courier New",Courier,monospace;}
+#left a{text-decoration:none}
+#left #calendar{background:url("../images/cal.png") no-repeat;color:#151515;height:138px;font-size:15px;}
+#left #calendar #selected{font-weight:bold}
+#left #calendar .pn{width:31px;top:2px}
+#left #calendar #prev{left:18px}
+#left #calendar #next{left:82px}
+#left #calendar #my{display:inline-block;position:relative;left:50px;top:5px}
+#left #calendar #datepicker{position:relative;border-collapse:collapse;left:13px;top:9px;font-size:11px;text-align:right;}
+#left #calendar #datepicker .np{color:#666}
+#left #calendar #datepicker td{padding-bottom:6px;padding-left:12px}
+#left #tags_chooser{background:url("../images/tag.png") no-repeat;height:230px;margin-top:16px;font-size:14px;}
+#left #tags_chooser .pn{width:189px;left:18px}
+#left #tags_chooser #tprev{top:-1px}
+#left #tags_chooser #tnext{bottom:6px}
+#left #tags_chooser .tagcount{float:right;text-align:right}
+#left #posts{background:url("../images/pos.png") no-repeat;height:196px;margin-top:16px;font-size:14px;}
+#left #posts .pn{width:189px;left:18px}
+#left #posts #pprev{top:-1px}
+#left #posts #pnext{bottom:10px}
+#left #posts .links{height:174px}
+#left .links{list-style:none;padding:0 41px 0 24px;margin:-3px 0 0;}
+#left .links li{height:17px}
+#center{margin-top:-8px;position:absolute;height:100%;left:0;right:0;}
+#center #title{position:fixed;left:258px;right:258px;text-align:center;}
+#center #title #title_main{background-color:#ffffe3;font-weight:bold;font-size:17px;padding-left:31px;padding-right:5px}
+#center #title #tags{background-color:#ffffe3;font-size:12px;padding-left:31px;padding-right:5px;padding-bottom:2px}
+#center #title #lleft{display:block;background-color:#ffffe3;width:31px;height:4px;float:left}
+#center #title #lright{display:block;background-color:#ffffe3;width:5px;height:4px;float:right}
+#center #content{padding-top:1px;padding-left:31px;padding-right:5px;padding-bottom:16px;font-size:14px;text-align:justify;background-color:#ffffe3;position:absolute;top:42px;left:258px;right:258px;min-height:100%}
+#right{position:fixed;right:7px;width:225px;margin-top:28px;float:right;font-weight:bold;}
+#right .aheader{color:#b2b2b2;font-size:22px}
+#right .atext{color:#ffffe3;font-size:13px;}
+#right .atext a{color:#7f7f7f;text-decoration:none}
+#right .atext a:hover{color:#2187db}
+#right .atext .pdname{text-decoration:line-through}
+#right #copyright{color:#b2b2b2;font-size:13px;position:fixed;bottom:16px}
+pre{overflow-x:auto;}
+pre code{font-size:11px;background:#ffffe3}
