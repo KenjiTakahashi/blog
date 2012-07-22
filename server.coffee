@@ -56,6 +56,7 @@ placeholder = (req, res, post) ->
                     next_title = [has_next_page, page? and page + 1 or 1]
                     projects.all (err, projects) ->
                         app.render 'index',
+                            url: req.url.split('?', 1)[0],
                             month: datepicker.month(),
                             year: datepicker.year(),
                             previous: datepicker.previous(),
