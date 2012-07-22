@@ -71,9 +71,15 @@ placeholder = (req, res, post) ->
                     prev_title = [has_prev_page, page? and page - 1]
                     next_title = [has_next_page, page? and page + 1 or 1]
                     projects.all (err, projects) ->
+                        dp = datepicker.get query.d
+                        if query.date?
+                            dp.selected = query.date
+                        else
+                            d = new Date()
+                            dp.selected = "#{d.getFullYear()}-#{d.getMonth() + 1}-#{d.getDate()}"
                         app.render 'index',
                             urls: urls,
-                            dp: datepicker.get(query.d)
+                            dp: dp,
                             latest: post,
                             titles: titles,
                             prev_title: prev_title,

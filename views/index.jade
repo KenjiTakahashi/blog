@@ -32,8 +32,10 @@ html(lang="en")
                         each day in dp.previous
                             - index += 1;
                             td
-                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").np
-                                    = day
+                                if(dp.year + "-" + (dp.month - 1) + "-" + day == dp.selected)
+                                    a(href="#{urls[0]}?date=#{dp.plink}-#{day}#{urls[5]}").np#selected= day
+                                else
+                                    a(href="#{urls[0]}?date=#{dp.plink}-#{day}#{urls[5]}").np= day
                         each day in dp.current
                             if index == 7
                                 tr
@@ -41,10 +43,16 @@ html(lang="en")
                             else
                                 - index += 1;
                             td
-                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").c
-                                    if(day < 10)
-                                        = '0'
-                                    = day
+                                if(dp.year + "-" + dp.month + "-" + day == dp.selected)
+                                    a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").c#selected
+                                        if(day < 10)
+                                            = '0'
+                                        = day
+                                else
+                                    a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").c
+                                        if(day < 10)
+                                            = '0'
+                                        = day
                         each day in dp.next
                             if index == 7
                                 tr
@@ -52,10 +60,16 @@ html(lang="en")
                             else
                                 - index += 1;
                             td
-                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").np
-                                    if(day < 10)
-                                        = '0'
-                                    = day
+                                if(dp.year + "-" + (dp.month + 1) + "-" + day == dp.selected)
+                                    a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np#selected
+                                        if(day < 10)
+                                            = '0'
+                                        = day
+                                else
+                                    a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np
+                                        if(day < 10)
+                                            = '0'
+                                        = day
             div#tags_chooser
                 if(prev_tag[0])
                     a(href="#{urls[0]}?t=#{prev_tag[1]}#{urls[1]}").pn#tprev
