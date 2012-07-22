@@ -1,7 +1,6 @@
 flatiron = require 'flatiron'
 director = require 'director'
 connect = require 'connect'
-datepicker = require './utils/datepicker'
 
 hljs = require 'highlight.js'
 hljs.tabReplace = '    '
@@ -12,6 +11,9 @@ marked.setOptions gfm: true, highlight: (code, lang) ->
 db = require './db'
 posts = db.posts
 projects = db.projects
+
+Datepicker = require './utils/datepicker'
+datepicker = new Datepicker db
 
 app = flatiron.app
 app.use flatiron.plugins.http, before: [
@@ -67,11 +69,7 @@ placeholder = (req, res, post) ->
                     projects.all (err, projects) ->
                         app.render 'index',
                             urls: urls,
-                            month: datepicker.month(),
-                            year: datepicker.year(),
-                            previous: datepicker.previous(),
-                            current: datepicker.current(),
-                            next: datepicker.next(),
+                            datepicker: datepicker.get()
                             latest: post,
                             titles: titles,
                             prev_title: prev_title,

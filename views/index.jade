@@ -20,41 +20,41 @@ html(lang="en")
             div#calendar
                 a(href="/calendar/previous").pn#prev
                 span#my
-                    if(month < 10)
+                    if(datepicker.month < 10)
                         = '0'
-                    = month
+                    = datepicker.month
                     /
-                    = year
+                    = datepicker.year
                 a(href="/calendar/next").pn#next
                 table#datepicker
                     - var index = 0;
                     tr
-                        each pday in previous
+                        each day in datepicker.previous
                             - index += 1;
                             td
-                                a(href="/calendar/#{pday}").np= pday
-                        each cday in current
+                                a(href="/calendar/#{day}").np= day
+                        each day in datepicker.current
                             if index == 7
                                 tr
                                 - index = 1;
                             else
                                 - index += 1;
                             td
-                                a(href="/calendar/#{cday}").c
-                                    if(cday < 10)
+                                a(href="/calendar/#{day}").c
+                                    if(day < 10)
                                         = '0'
-                                    = cday
-                        each nday in next
+                                    = day
+                        each day in datepicker.next
                             if index == 7
                                 tr
                                 - index = 1;
                             else
                                 - index += 1;
                             td
-                                a(href="/calendar/#{nday}").np
-                                    if(nday < 10)
+                                a(href="/calendar/#{day}").np
+                                    if(day < 10)
                                         = '0'
-                                    = nday
+                                    = day
             div#tags_chooser
                 if(prev_tag[0])
                     a(href="#{urls[0]}?t=#{prev_tag[1]}#{urls[1]}").pn#tprev
