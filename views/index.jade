@@ -57,7 +57,7 @@ html(lang="en")
                                     = nday
             div#tags_chooser
                 if(prev_tag[0])
-                    a(href="#{urls[0]}t=#{prev_tag[1]}").pn#tprev
+                    a(href="#{urls[0]}#{urls[1]}t=#{prev_tag[1]}").pn#tprev
                 else
                     span.pin
                 ul.links
@@ -65,7 +65,7 @@ html(lang="en")
                     each tag in tags
                         - index += 1;
                         li
-                            a(href="/tags/#{tag[0]}")= tag[0]
+                            a(href="#{urls[0]}#{urls[3]}tag=#{tag[0]}")= tag[0]
                             span.tagcount
                                 if(tag[1] < 10)
                                     = '000'
@@ -82,21 +82,21 @@ html(lang="en")
                             span.tagcount= NaN
                     - }
                 if(next_tag[0])
-                    a(href="#{urls[0]}t=#{next_tag[1]}").pn#tnext
+                    a(href="#{urls[0]}#{urls[1]}t=#{next_tag[1]}").pn#tnext
             div#posts
                 if(prev_title[0])
-                    a(href="#{urls[1]}p=#{prev_title[1]}").pn#pprev
+                    a(href="#{urls[0]}#{urls[2]}p=#{prev_title[1]}").pn#pprev
                 else
                     span.pin
                 ul.links
                     each title in titles
                         li
-                            a(href="/posts/#{title._id}#{urls[2]}").post
+                            a(href="/posts/#{title._id}#{urls[3]}").post
                                 = title.title.slice(0, 19)
                                 if(title.title.length > 19)
                                     = '...'
                 if(next_title[0])
-                    a(href="#{urls[1]}p=#{next_title[1]}").pn#pnext
+                    a(href="#{urls[0]}#{urls[2]}p=#{next_title[1]}").pn#pnext
         div#right
             span.aheader Kenji Takahashi
             br

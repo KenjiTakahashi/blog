@@ -32,7 +32,7 @@ placeholder = (req, res, post) ->
     query = req.query
     tag = query.t
     url = req.url.split('?', 1)[0]
-    urls = ["#{url}?", "#{url}?", ""]
+    urls = [url, "?", "?", ""]
     if tag?
         tag = parseInt tag
     page = query.p
@@ -40,16 +40,14 @@ placeholder = (req, res, post) ->
         page = parseInt page
     for n, v of query
         if n != 't'
-            urls[0] += "#{n}=#{v}"
-            urls[0] += '&'
-        if n != 'p'
             urls[1] += "#{n}=#{v}"
             urls[1] += '&'
-        if urls[2] == ""
-            urls[2] += '?'
-        else
+        if n != 'p'
+            urls[2] += "#{n}=#{v}"
             urls[2] += '&'
-        urls[2] += "#{n}=#{v}"
+        if urls[3] == ""
+            urls[3] = '?'
+        urls[3] += "#{n}=#{v}&"
     post.content = marked post.content
     post.tags = ("<a href='/tags/#{t}'>#{t}</a>" for t in post.tags).join(', ')
     posts.tags tag, (err, tags, has_prev_tag, has_next_tag) ->
@@ -71,7 +69,6 @@ placeholder = (req, res, post) ->
                     projects.all (err, projects) ->
                         app.render 'index',
                             urls: urls,
-                            url: req.url.split('?', 1)[0],
                             month: datepicker.month(),
                             year: datepicker.year(),
                             previous: datepicker.previous(),
