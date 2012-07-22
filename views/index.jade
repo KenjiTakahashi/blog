@@ -80,14 +80,20 @@ html(lang="en")
                     - }
                 a(href="/tags/next").pn#tnext
             div#posts
-                a(href="/posts/previous").pn#pprev
+                if(prev_title[0])
+                    a(href="/?p=#{prev_title[1]}").pn#pprev
+                else
+                    span.pin
                 ul.links
                     each title in titles
                         li
                             a(href="/posts/#{title}").post= title.slice(0, 19)
                                 if(title.length > 19)
                                     = '...'
-                a(href="/posts/next").pn#pnext
+                if(next_title[0])
+                    a(href="/?p=#{next_title[1]}").pn#pnext
+                else
+                    span.pin
         div#right
             span.aheader Kenji Takahashi
             br

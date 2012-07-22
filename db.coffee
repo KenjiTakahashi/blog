@@ -29,8 +29,10 @@ class Post
             else
                 callback err, data.latest[0]
 
-    tags: (callback) ->
-        @_model.find({}, {tags: 1}).sort('date', -1).limit(12).exec (err, data) ->
+    tags: (o..., callback) ->
+        o = o[0]
+        query = @_model.find({}, {tags: 1}).sort('date', -1)
+        query.exec (err, data) ->
             if err or not data
                 callback err, null
             else
@@ -43,14 +45,32 @@ class Post
                         else
                             out.push [tag, 1]
                             tmp.push tag
-                callback err, out
+                has_prev = true
+                if not o? or o == 0
+                    has_prev = false
+                has_next = true
+                #if count <= 12
+                    #has_next = false
+                callback err, out, has_prev, has_next
 
-    titles: (callback) ->
-        @_model.find({}, {title: 1}).sort('date', -1).limit(10).exec (err,data) ->
-            if err or not data
-                callback err, null
-            else
-                callback err, (d.title for d in data)
+    titles: (o..., callback) ->
+        o = o[0]
+        if not o?
+            o = 0
+        query = @_model.find({}, {title: 1}).sort('date', -1).skip(o).limit 10
+        query.exec (err, data) ->
+            query.count (err, count) ->
+                count -= o
+                if err or not data
+                    callback err, null
+                else
+                    has_prev = true
+                    if o == 0
+                        has_prev = false
+                    has_next = true
+                    if count <= 10
+                        has_next = false
+                    callback err, (d.title for d in data), has_prev, has_next
 
 class Project
     constructor: ->
