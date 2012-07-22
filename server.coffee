@@ -45,11 +45,11 @@ placeholder = (req, res, post) ->
             urls[1] += "&#{n}=#{v}"
         if n != 'p'
             urls[2] += "&#{n}=#{v}"
-        if n != 'tag'
+        if n != 'tag' and n != 'date'
             urls[3] += "&#{n}=#{v}"
         if n != 'd'
             urls[4] += "&#{n}=#{v}"
-        if n != 'date'
+        if n != 'date' and n != 'tag'
             urls[5] += "&#{n}=#{v}"
     post.content = marked post.content
     post.tags = ("<a href='#{urls[0]}?tag=#{t}#{urls[3]}'>#{t}</a>" for t in post.tags).join(', ')
