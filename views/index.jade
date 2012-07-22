@@ -56,7 +56,10 @@ html(lang="en")
                                         = '0'
                                     = nday
             div#tags_chooser
-                a(href="/tags/previous").pn#tprev
+                if(prev_tag[0])
+                    a(href="/?t=#{prev_tag[1]}").pn#tprev
+                else
+                    span.pin
                 ul.links
                     - var index = 0;
                     each tag in tags
@@ -78,7 +81,8 @@ html(lang="en")
                         li
                             span.tagcount= NaN
                     - }
-                a(href="/tags/next").pn#tnext
+                if(next_tag[0])
+                    a(href="/?t=#{next_tag[1]}").pn#tnext
             div#posts
                 if(prev_title[0])
                     a(href="/?p=#{prev_title[1]}").pn#pprev
@@ -92,8 +96,6 @@ html(lang="en")
                                     = '...'
                 if(next_title[0])
                     a(href="/?p=#{next_title[1]}").pn#pnext
-                else
-                    span.pin
         div#right
             span.aheader Kenji Takahashi
             br

@@ -31,26 +31,36 @@ class Post
 
     tags: (o..., callback) ->
         o = o[0]
-        query = @_model.find({}, {tags: 1}).sort('date', -1)
+        if not o?
+            o = 0
+        query = @_model.find({}, {tags: 1}).sort 'date', -1
         query.exec (err, data) ->
             if err or not data
                 callback err, null
             else
                 tmp = []
                 out = []
+                count = 0
                 for post in data
                     for tag in post.tags
+                        count = tmp.length
+                        if count - o >= 12
+                            break
                         if tag in tmp
-                            out[tmp.indexOf tag][1] += 1
+                            out[(tmp.indexOf tag) - o][1] += 1
+                        else if count < o
+                            tmp.push tag
                         else
                             out.push [tag, 1]
                             tmp.push tag
+                    if count - o > 12
+                        break
                 has_prev = true
-                if not o? or o == 0
+                if o == 0
                     has_prev = false
                 has_next = true
-                #if count <= 12
-                    #has_next = false
+                if count - o < 12
+                    has_next = false
                 callback err, out, has_prev, has_next
 
     titles: (o..., callback) ->
