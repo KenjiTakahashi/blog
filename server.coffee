@@ -31,11 +31,25 @@ app.use require './utils/jade'
 placeholder = (req, res, post) ->
     query = req.query
     tag = query.t
+    url = req.url.split('?', 1)[0]
+    urls = ["#{url}?", "#{url}?", ""]
     if tag?
         tag = parseInt tag
     page = query.p
     if page?
         page = parseInt page
+    for n, v of query
+        if n != 't'
+            urls[0] += "#{n}=#{v}"
+            urls[0] += '&'
+        if n != 'p'
+            urls[1] += "#{n}=#{v}"
+            urls[1] += '&'
+        if urls[2] == ""
+            urls[2] += '?'
+        else
+            urls[2] += '&'
+        urls[2] += "#{n}=#{v}"
     post.content = marked post.content
     post.tags = ("<a href='/tags/#{t}'>#{t}</a>" for t in post.tags).join(', ')
     posts.tags tag, (err, tags, has_prev_tag, has_next_tag) ->
@@ -56,6 +70,7 @@ placeholder = (req, res, post) ->
                     next_title = [has_next_page, page? and page + 1 or 1]
                     projects.all (err, projects) ->
                         app.render 'index',
+                            urls: urls,
                             url: req.url.split('?', 1)[0],
                             month: datepicker.month(),
                             year: datepicker.year(),
