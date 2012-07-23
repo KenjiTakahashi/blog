@@ -44,12 +44,12 @@ html(lang="en")
                                 - index += 1;
                             td
                                 if(dp.year + "-" + dp.month + "-" + day == dp.selected)
-                                    a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").c#selected
+                                    a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")#selected
                                         if(day < 10)
                                             = '0'
                                         = day
                                 else
-                                    a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}").c
+                                    a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")
                                         if(day < 10)
                                             = '0'
                                         = day

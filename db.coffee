@@ -31,7 +31,6 @@ class Post
 
     latest: (callback) ->
         @_helper.findOne({}, {latest: 1}).populate('latest').exec (err, data) ->
-            console.log data
             if err or not data
                 callback err, null
             else

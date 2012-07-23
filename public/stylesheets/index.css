@@ -2,7 +2,7 @@ body{background:url("../images/bg.png");height:100%}
 a{color:#151515}
 a:hover{color:#2187db}
 .pin{position:relative;display:inline-block;height:4px}
-.pn{position:relative;display:inline-block;height:4px}
+.pn{position:relative;display:inline-block;height:4px;text-decoration:none}
 .pn:hover{background-color:#2187db}
 #left{position:fixed;width:242px;margin-left:9px;margin-top:-8px;float:left;font-family:"Courier New",Courier,monospace;}
 #left a{text-decoration:none}
@@ -14,6 +14,7 @@ a:hover{color:#2187db}
 #left #calendar #my{display:inline-block;position:relative;left:50px;top:5px}
 #left #calendar #datepicker{position:relative;border-collapse:collapse;left:13px;top:9px;font-size:11px;text-align:right;}
 #left #calendar #datepicker .np{color:#666}
+#left #calendar #datepicker .np:hover{color:#2187db}
 #left #calendar #datepicker td{padding-bottom:6px;padding-left:12px}
 #left #tags_chooser{background:url("../images/tag.png") no-repeat;height:230px;margin-top:16px;font-size:14px;}
 #left #tags_chooser .pn{width:189px;left:18px}
@@ -29,6 +30,7 @@ a:hover{color:#2187db}
 #left .links li{height:17px}
 #center{margin-top:-8px;position:absolute;height:100%;left:0;right:0;}
 #center #title{position:fixed;left:258px;right:258px;text-align:center;}
+#center #title a{text-decoration:none}
 #center #title #title_main{background-color:#ffffe3;font-weight:bold;font-size:17px;padding-left:31px;padding-right:5px}
 #center #title #tags{background-color:#ffffe3;font-size:12px;padding-left:31px;padding-right:5px;padding-bottom:2px}
 #center #title #lleft{display:block;background-color:#ffffe3;width:31px;height:4px;float:left}
@@ -42,4 +44,5 @@ a:hover{color:#2187db}
 #right .atext .pdname{text-decoration:line-through}
 #right #copyright{color:#b2b2b2;font-size:13px;position:fixed;bottom:16px}
 pre{overflow-x:auto;}
-pre code{font-size:11px;background:#ffffe3}
+pre code{background:#ffffe3;padding:0}
+code{font-size:11px}
