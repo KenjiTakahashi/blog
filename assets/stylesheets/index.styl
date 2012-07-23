@@ -178,9 +178,24 @@ a:hover
         position fixed
         bottom 16px
 pre
+    margin-left -26px
     overflow-x auto
     code
         background $bcolor
         padding 0
 code
     font-size 11px
+ol
+    margin 0
+    padding 0
+    list-style none
+    counter-reset item
+    li:before
+        font-weight bold
+        counter-increment item
+    .ten:before
+        content "00" counter(item) " "
+    .hun:before
+        content "0" counter(item) " "
+    .tou:before
+        content counter(item) " "

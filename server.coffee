@@ -6,7 +6,13 @@ hljs = require 'highlight.js'
 hljs.tabReplace = '    '
 marked = require 'marked'
 marked.setOptions gfm: true, highlight: (code, lang) ->
-    return hljs.highlight(lang, code).value
+    ol = ['<ol>']
+    get_class = (i) ->
+        return i < 9 and 'ten' or (i < 99 and 'hun' or 'tou')
+    for line, i in hljs.highlight(lang, code).value.split '\n'
+        ol.push "<li class='#{get_class i}'>#{line}</li>"
+    ol.push '</ol>'
+    return ol.join ''
 
 db = require './db'
 posts = db.posts

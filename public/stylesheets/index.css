@@ -45,6 +45,11 @@ a:hover{color:#2187db}
 #right .atext a:hover{color:#2187db}
 #right .atext .pdname{text-decoration:line-through}
 #right #copyright{color:#b2b2b2;font-size:13px;position:fixed;bottom:16px}
-pre{overflow-x:auto;}
+pre{margin-left:-26px;overflow-x:auto;}
 pre code{background:#ffffe3;padding:0}
 code{font-size:11px}
+ol{margin:0;padding:0;list-style:none;counter-reset:item;}
+ol li:before{font-weight:bold;counter-increment:item}
+ol .ten:before{content:"00" counter(item) " "}
+ol .hun:before{content:"0" counter(item) " "}
+ol .tou:before{content:counter(item) " "}
