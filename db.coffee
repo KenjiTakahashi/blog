@@ -15,7 +15,7 @@ ProjectSchema = new mongo.Schema
     active: type: Boolean, default: true
 
 HelperSchema = new mongo.Schema
-    latest: [PostSchema]
+    latest: type: mongo.Schema.ObjectId, ref: 'Post'
 
 class Post
     constructor: ->
@@ -30,11 +30,12 @@ class Post
                 callback err, data
 
     latest: (callback) ->
-        @_helper.findOne (err, data) ->
+        @_helper.findOne({}, {latest: 1}).populate('latest').exec (err, data) ->
+            console.log data
             if err or not data
                 callback err, null
             else
-                callback err, data.latest[0]
+                callback err, data.latest
 
     tags: (o, callback) ->
         if not o?
