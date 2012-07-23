@@ -31,9 +31,9 @@ a:hover{color:#2187db}
 #center{margin-top:-8px;position:absolute;height:100%;left:0;right:0;}
 #center #title,#center #btitle,#center #ptitle{position:fixed;left:289px;right:258px;text-align:center;}
 #center #title a,#center #btitle a,#center #ptitle a{text-decoration:none}
-#center #title #title_main,#center #btitle #title_main,#center #ptitle #title_main{background-color:#ffffe3;font-weight:bold;font-size:17px;padding-right:5px}
-#center #title #tags,#center #btitle #tags,#center #ptitle #tags{background-color:#ffffe3;font-size:12px;padding-right:5px;padding-bottom:2px}
-#center #title #lright,#center #btitle #lright,#center #ptitle #lright{display:block;background-color:#ffffe3;width:5px;height:4px;float:right}
+#center #title .title_main,#center #btitle .title_main,#center #ptitle .title_main{background-color:#ffffe3;font-weight:bold;font-size:17px;padding-right:5px}
+#center #title .tags,#center #btitle .tags,#center #ptitle .tags{background-color:#ffffe3;font-size:12px;padding-right:5px;padding-bottom:2px}
+#center #title .lright,#center #btitle .lright,#center #ptitle .lright{display:block;background-color:#ffffe3;width:5px;height:4px;float:right}
 #center #btitle{background:url("../images/bg.png")}
 #center #ptitle{position:relative}
 #center #content{overflow:hidden;padding-left:31px;padding-right:5px;font-size:14px;text-align:justify;background-color:#ffffe3;position:absolute;left:258px;right:258px;min-height:100%}
