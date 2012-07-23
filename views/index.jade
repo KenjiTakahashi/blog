@@ -8,8 +8,22 @@ html(lang="en")
     body
         div#center
             div#content
+                div#ptitle
+                    div#title_main= latest.title
+                    div#tags
+                        !{latest.tags}
+                    div#line
+                        span#lleft
+                        span#lright
                 !{latest.content}
             div#title
+                div#title_main= latest.title
+                div#tags
+                    !{latest.tags}
+                div#line
+                    span#lleft
+                    span#lright
+            div#btitle
                 div#title_main= latest.title
                 div#tags
                     !{latest.tags}

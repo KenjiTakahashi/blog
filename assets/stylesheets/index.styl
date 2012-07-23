@@ -106,7 +106,7 @@ a:hover
     height 100%
     left 0px
     right 0px
-    #title
+    #title, #btitle, #ptitle
         position fixed
         left 258px
         right 258px
@@ -137,16 +137,18 @@ a:hover
             width 5px
             height 4px
             float right
+    #btitle
+        background url("../images/bg.png")
+    #ptitle
+        position relative
     #content
-        padding-top 1px
+        overflow hidden
         padding-left 31px
         padding-right 5px
-        padding-bottom 16px
         font-size 14px
         text-align justify
         background-color $bcolor
         position absolute
-        top 42px
         left 258px
         right 258px
         min-height 100%
