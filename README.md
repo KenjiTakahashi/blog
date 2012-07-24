@@ -11,3 +11,7 @@ todo
 * comments
 * stylesheet/template refactor
 * notice block
+* remove res.redirect hack-in (waiting for next [union][union] release)
+* scroll lists with wheel
+
+[union]: https://github.com/flatiron/union
