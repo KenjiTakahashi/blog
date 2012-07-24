@@ -36,6 +36,17 @@ class Post
             else
                 callback err, data.latest
 
+    dates: (start, end, callback) ->
+        start.setHours 0, 0, 0, 0
+        end.addDays 1
+        end.setHours 0, 0, 0, 0
+        query = @_model.find {date: {$gte: start, $lt: end}}, {date: 1}
+        query.sort('date', 1).exec (err, data) ->
+            if err or not data
+                callback err, null
+            else
+                callback err, data
+
     tags: (o, callback) ->
         if not o?
             o = 0

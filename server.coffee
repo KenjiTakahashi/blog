@@ -19,7 +19,7 @@ posts = db.posts
 projects = db.projects
 
 Datepicker = require './utils/datepicker'
-datepicker = new Datepicker db
+datepicker = new Datepicker posts
 
 app = flatiron.app
 app.use flatiron.plugins.http, before: [
@@ -78,25 +78,25 @@ placeholder = (req, res, post) ->
                     prev_title = [has_prev_page, page? and page - 1]
                     next_title = [has_next_page, page? and page + 1 or 1]
                     projects.all (err, projects) ->
-                        dp = datepicker.get query.d
-                        if query.date?
-                            dp.selected = query.date
-                        else
-                            d = new Date()
-                            dp.selected = "#{d.getFullYear()}-#{d.getMonth() + 1}-#{d.getDate()}"
-                        app.render 'index',
-                            urls: urls,
-                            dp: dp,
-                            latest: post,
-                            titles: titles,
-                            prev_title: prev_title,
-                            next_title: next_title,
-                            projects: projects,
-                            tags: tags,
-                            prev_tag: prev_tag,
-                            next_tag: next_tag,
-                            (err, data) ->
-                                res.html err, data
+                        datepicker.get query.d, (err, dp) ->
+                            if query.date?
+                                dp.selected = query.date
+                            else
+                                d = post.date
+                                dp.selected = "#{d.getFullYear()}-#{d.getMonth() + 1}-#{d.getDate()}"
+                            app.render 'index',
+                                urls: urls,
+                                dp: dp,
+                                latest: post,
+                                titles: titles,
+                                prev_title: prev_title,
+                                next_title: next_title,
+                                projects: projects,
+                                tags: tags,
+                                prev_tag: prev_tag,
+                                next_tag: next_tag,
+                                (err, data) ->
+                                    res.html err, data
 
 routes =
     '/':
