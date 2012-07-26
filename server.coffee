@@ -23,11 +23,6 @@ datepicker = new Datepicker posts
 
 app = flatiron.app
 app.use flatiron.plugins.http, before: [
-    (req, res) ->
-        res.redirect = (path) ->
-            res.writeHead 302, 'Location': path
-            res.end()
-        res.emit 'next'
     require('stylus').middleware
         src: "#{__dirname}/assets"
         dest: "#{__dirname}/public"

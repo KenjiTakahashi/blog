@@ -5,13 +5,12 @@ changelog
 ---------
 0.1.0:
 - first public release
+0.1.1:
+- removed res.redirect hack-in
 
 todo
 ----
 * comments
 * stylesheet/template refactor
 * notice block
-* remove res.redirect hack-in (waiting for next [union][union] release)
 * scroll lists with wheel
-
-[union]: https://github.com/flatiron/union
