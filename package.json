@@ -15,5 +15,8 @@
         "marked": "0.2.x",
         "highlight.js": "7.0.x",
         "coffee-script": "1.3.x"
+    },
+    "engine": {
+        "node": ">=0.6"
     }
 }
