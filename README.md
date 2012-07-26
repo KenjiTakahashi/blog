@@ -5,6 +5,7 @@ changelog
 ---------
 0.1.0:
 - first public release
+
 0.1.1:
 - removed res.redirect hack-in
 
