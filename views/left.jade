@@ -1,0 +1,117 @@
+div#calendar
+    a(href="#{urls[0]}?d=#{dp.plink}#{urls[4]}").pn#prev
+    span#my
+        if(dp.month < 10)
+            = '0'
+        = dp.month
+        /
+        = dp.year
+    a(href="#{urls[0]}?d=#{dp.nlink}#{urls[4]}").pn#next
+    table#datepicker
+        - var index = 0;
+        tr
+            each day in dp.previous
+                - index += 1;
+                td
+                    if(dp.year + "-" + (dp.month - 1) + "-" + day == dp.selected)
+                        a(href="#{urls[0]}?date=#{dp.plink}-#{day}#{urls[5]}").np#selected= day
+                    else
+                        a(href="#{urls[0]}?date=#{dp.plink}-#{day}#{urls[5]}").np= day
+            - var part = dp.current.splice(0, 7 - dp.previous.length);
+            each day in part
+                td
+                    if(dp.year + "-" + dp.month + "-" + day == dp.selected)
+                        a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")#selected
+                            if(day < 10)
+                                = '0'
+                            = day
+                    else
+                        a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")
+                            if(day < 10)
+                                = '0'
+                            = day
+            while dp.current.length > 0
+                - part = dp.current.splice(0, 7);
+                tr
+                    each day in part
+                        td
+                            if(dp.year + "-" + dp.month + "-" + day == dp.selected)
+                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")#selected
+                                    if(day < 10)
+                                        = '0'
+                                    = day
+                            else
+                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")
+                                    if(day < 10)
+                                        = '0'
+                                    = day
+                    if(dp.current.length == 0)
+                        - part = dp.next.splice(0, 7 - part.length);
+                        each day in part
+                            td
+                                if(dp.year + "-" + (dp.month + 1) + "-" + day == dp.selected)
+                                    a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np#selected
+                                        if(day < 10)
+                                            = '0'
+                                        = day
+                                else
+                                    a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np
+                                        if(day < 10)
+                                            = '0'
+                                        = day
+            while dp.next.length > 0
+                - part = dp.next.splice(0, 7);
+                tr
+                    each day in part
+                        td
+                            if(dp.year + "-" + (dp.month + 1) + "-" + day == dp.selected)
+                                a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np#selected
+                                    if(day < 10)
+                                        = '0'
+                                    = day
+                            else
+                                a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np
+                                    if(day < 10)
+                                        = '0'
+                                    = day
+div#tags_chooser
+    if(prev_tag[0])
+        a(href="#{urls[0]}?t=#{prev_tag[1]}#{urls[1]}").pn#tprev
+    else
+        span.pin
+    ul.links
+        - var index = 0;
+        each tag in tags
+            - index += 1;
+            li
+                a(href="#{urls[0]}?tag=#{tag[0]}#{urls[3]}")= tag[0]
+                span.tagcount
+                    if(tag[1] < 10)
+                        = '000'
+                    else
+                        if(tag[1] < 100)
+                            = '00'
+                        else
+                            if(tag[1] < 10)
+                                = '0'
+                    = tag[1]
+        while index < 12
+            - index += 1;
+            li
+                span.tagcount= NaN
+    if(next_tag[0])
+        a(href="#{urls[0]}?t=#{next_tag[1]}#{urls[1]}").pn#tnext
+div#posts
+    if(prev_title[0])
+        a(href="#{urls[0]}?p=#{prev_title[1]}#{urls[2]}").pn#pprev
+    else
+        span.pin
+    ul.links
+        each title in titles
+            li
+                a(href="/posts/#{title._id}#{urls[6]}").post
+                    = title.title.slice(0, 19)
+                    if(title.title.length > 19)
+                        = '...'
+    if(next_title[0])
+        a(href="#{urls[0]}?p=#{next_title[1]}#{urls[2]}").pn#pnext

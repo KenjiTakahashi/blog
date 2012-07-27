@@ -1,0 +1,16 @@
+span.aheader Kenji Takahashi
+br
+span.atext
+    | A student of Computer Science at The University of Wrocław, Poland. Mainly interested in high-level, dynamic programming and (G)UI designs. Likes good music and classic sci-fi books.
+br
+span.aheader Projects
+br
+span.atext
+    each project in projects
+        if project.active == true
+            a(href="#{project.site}")= project.name
+        else
+            a(href="#{project.site}").pdname= project.name
+        = ' ' + project.desc
+        br
+span#copyright Kenji Takahashi © 2012
