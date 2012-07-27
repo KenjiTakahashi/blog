@@ -1,3 +1,29 @@
+mixin append_zero(day)
+    if(day < 10)
+        = '0'
+    = day
+
+mixin current_cell(part)
+    each day in part
+        url = urls[0] + '?date=' + dp.year + '-' + dp.month + '-' + day + urls[5]
+        td
+            if(dp.year + "-" + dp.month + "-" + day == dp.selected)
+                a(href="#{url}")#selected
+                    mixin append_zero(day)
+            else
+                a(href="#{url}")
+                    mixin append_zero(day)
+
+mixin other_cells(part, month, link)
+    each day in part
+        td
+            if(dp.year + "-" + month + "-" + day == dp.selected)
+                a(href="#{urls[0]}?date=#{link}-#{day}#{urls[5]}").np#selected
+                    mixin append_zero(day)
+            else
+                a(href="#{urls[0]}?date=#{link}-#{day}#{urls[5]}").np
+                    mixin append_zero(day)
+
 div#calendar
     a(href="#{urls[0]}?d=#{dp.plink}#{urls[4]}").pn#prev
     span#my
@@ -8,72 +34,21 @@ div#calendar
         = dp.year
     a(href="#{urls[0]}?d=#{dp.nlink}#{urls[4]}").pn#next
     table#datepicker
-        - var index = 0;
         tr
-            each day in dp.previous
-                - index += 1;
-                td
-                    if(dp.year + "-" + (dp.month - 1) + "-" + day == dp.selected)
-                        a(href="#{urls[0]}?date=#{dp.plink}-#{day}#{urls[5]}").np#selected= day
-                    else
-                        a(href="#{urls[0]}?date=#{dp.plink}-#{day}#{urls[5]}").np= day
+            mixin other_cells(dp.previous, dp.month - 1, dp.plink)
             - var part = dp.current.splice(0, 7 - dp.previous.length);
-            each day in part
-                td
-                    if(dp.year + "-" + dp.month + "-" + day == dp.selected)
-                        a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")#selected
-                            if(day < 10)
-                                = '0'
-                            = day
-                    else
-                        a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")
-                            if(day < 10)
-                                = '0'
-                            = day
+            mixin current_cell(part)
             while dp.current.length > 0
                 - part = dp.current.splice(0, 7);
                 tr
-                    each day in part
-                        td
-                            if(dp.year + "-" + dp.month + "-" + day == dp.selected)
-                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")#selected
-                                    if(day < 10)
-                                        = '0'
-                                    = day
-                            else
-                                a(href="#{urls[0]}?date=#{dp.year}-#{dp.month}-#{day}#{urls[5]}")
-                                    if(day < 10)
-                                        = '0'
-                                    = day
+                    mixin current_cell(part)
                     if(dp.current.length == 0)
                         - part = dp.next.splice(0, 7 - part.length);
-                        each day in part
-                            td
-                                if(dp.year + "-" + (dp.month + 1) + "-" + day == dp.selected)
-                                    a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np#selected
-                                        if(day < 10)
-                                            = '0'
-                                        = day
-                                else
-                                    a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np
-                                        if(day < 10)
-                                            = '0'
-                                        = day
+                        mixin other_cells(part, dp.month + 1, dp.nlink)
             while dp.next.length > 0
                 - part = dp.next.splice(0, 7);
                 tr
-                    each day in part
-                        td
-                            if(dp.year + "-" + (dp.month + 1) + "-" + day == dp.selected)
-                                a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np#selected
-                                    if(day < 10)
-                                        = '0'
-                                    = day
-                            else
-                                a(href="#{urls[0]}?date=#{dp.nlink}-#{day}#{urls[5]}").np
-                                    if(day < 10)
-                                        = '0'
-                                    = day
+                    mixin other_cells(part, dp.month + 1, dp.nlink)
 div#tags_chooser
     if(prev_tag[0])
         a(href="#{urls[0]}?t=#{prev_tag[1]}#{urls[1]}").pn#tprev
