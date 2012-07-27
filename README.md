@@ -9,6 +9,10 @@ changelog
 0.1.1:
 - removed res.redirect hack-in
 
+0.2.0:
+- updated jade to 0.27.x
+- removed WIP from title
+
 todo
 ----
 * comments
