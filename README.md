@@ -16,6 +16,10 @@ changelog
 - refactored template(s)
 - added notice block
 
+0.2.1:
+- fixed small bug in left template (unnoticable)
+- fixed large bug in db wrapper (crash-causer)
+
 todo
 ----
 * comments

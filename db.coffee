@@ -60,6 +60,9 @@ class Post
                 for post in data
                     for tag in post.tags
                         if tag in tmp
+                            index = (tmp.indexOf tag) - o
+                            if not out[index]?
+                                out[index] = []
                             out[(tmp.indexOf tag) - o][1] += 1
                         else if tmp.length < o
                             tmp.push tag
