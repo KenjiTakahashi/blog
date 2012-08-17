@@ -61,9 +61,8 @@ class Post
                     for tag in post.tags
                         if tag in tmp
                             index = (tmp.indexOf tag) - o
-                            if not out[index]?
-                                out[index] = []
-                            out[(tmp.indexOf tag) - o][1] += 1
+                            if out[index]?
+                                out[index][1] += 1
                         else if tmp.length < o
                             tmp.push tag
                         else
@@ -73,7 +72,7 @@ class Post
                 if o == 0
                     has_prev = false
                 has_next = true
-                if tmp.length - o < 12
+                if tmp.length - o <= 12
                     has_next = false
                 callback err, out.slice(0, 12), has_prev, has_next
 
