@@ -2,14 +2,10 @@ mixin title
     div.title_main= latest.title
     div.tags
         !{latest.tags}
-    div
-        span.lright
 
 div#content
     div#ptitle
         mixin title
     !{latest.content}
 div#title
-    mixin title
-div#btitle
     mixin title

@@ -106,33 +106,26 @@ a:hover
     height 100%
     left 0px
     right 0px
-    #title, #btitle, #ptitle
+    #title, #ptitle
         position fixed
         left 289px
         right 258px
         text-align center
+        margin-right 5px
+        background-color $bcolor
         a
             text-decoration none
         .title_main
-            background-color $bcolor
             font-weight bold
             font-size 17px
-            padding-right 5px
         .tags
-            background-color: $bcolor
             font-size 12px
-            padding-right 5px
             padding-bottom 2px
-        .lright
-            display block
-            background-color $bcolor
-            width 5px
-            height 4px
-            float right
-    #btitle
-        background url("../images/bg.png")
+    #title
+        border-bottom 4px solid $amain
     #ptitle
         position relative
+        visibility hidden
     #content
         overflow hidden
         padding-left 31px
@@ -149,6 +142,28 @@ a:hover
             padding 6px
             margin-top 5px
             margin-bottom 5px
+    pre
+        margin-left -26px
+        overflow-x auto
+        code
+            background-color $bcolor
+            padding 0
+    code
+        font-size 11px
+    ol
+        margin 0
+        padding 0
+        list-style none
+        counter-reset item
+        li:before
+            font-weight bold
+            counter-increment item
+        .ten:before
+            content "00" counter(item) " "
+        .hun:before
+            content "0" counter(item) " "
+        .tou:before
+            content counter(item) " "
 #right
     position fixed
     right 7px
@@ -174,25 +189,3 @@ a:hover
         font-size 13px
         position fixed
         bottom 16px
-pre
-    margin-left -26px
-    overflow-x auto
-    code
-        background $bcolor
-        padding 0
-code
-    font-size 11px
-ol
-    margin 0
-    padding 0
-    list-style none
-    counter-reset item
-    li:before
-        font-weight bold
-        counter-increment item
-    .ten:before
-        content "00" counter(item) " "
-    .hun:before
-        content "0" counter(item) " "
-    .tou:before
-        content counter(item) " "
