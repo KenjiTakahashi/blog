@@ -41,7 +41,7 @@ class Post
         end.addDays 1
         end.setHours 0, 0, 0, 0
         query = @_model.find {date: {$gte: start, $lt: end}}, {date: 1}
-        query.sort('date', 1).exec (err, data) ->
+        query.sort(date: 1).exec (err, data) ->
             if err or not data
                 callback err, null
             else
@@ -50,7 +50,7 @@ class Post
     tags: (o, callback) ->
         if not o?
             o = 0
-        query = @_model.find({}, {tags: 1}).sort 'date', -1
+        query = @_model.find({}, {tags: 1}).sort date: -1
         query.exec (err, data) ->
             if err or not data
                 callback err, null
@@ -89,7 +89,7 @@ class Post
             query = @_model.find {tags: t}, {title: 1}
         else
             query = @_model.find {}, {title: 1}
-        query = query.sort('date', -1).skip(o).limit 10
+        query = query.sort(date: -1).skip(o).limit 10
         query.exec (err, data) ->
             query.count (err, count) ->
                 count -= o

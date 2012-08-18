@@ -28,9 +28,6 @@ pre .rules .value .number,
 pre .preprocessor,
 pre .ruby .symbol,
 pre .ruby .symbol .string,
-pre .ruby .symbol .keyword,
-pre .ruby .symbol .keymethods,
-pre .instancevar,
 pre .aggregate,
 pre .template_tag,
 pre .django .variable,
@@ -132,4 +129,17 @@ pre .xml .javascript,
 pre .xml .vbscript,
 pre .tex .formula {
   opacity: 0.5;
+}
+
+pre {
+  counter-reset: lines;
+}
+pre .line {
+  counter-increment: lines;
+}
+pre .line::before {
+  content: counter(lines); text-align: right;
+  display: inline-block; width: 2em;
+  padding-right: 0.5em; margin-right: 0.5em;
+  color: #BBB; border-right: solid 1px;
 }

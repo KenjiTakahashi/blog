@@ -20,6 +20,12 @@ changelog
 - fixed small bug in left template (unnoticable)
 - fixed large bug in db wrapper (crash-causer)
 
+0.3.0:
+- changed notice style
+- updated stylus to 0.29.x
+- updated highlight.js to 7.1.x
+- updated mongoose to 3.0.x
+
 todo
 ----
 * comments
