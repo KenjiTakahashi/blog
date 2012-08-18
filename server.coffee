@@ -1,6 +1,7 @@
 flatiron = require 'flatiron'
 director = require 'director'
 connect = require 'connect'
+assets = require('connect-assets')()
 
 hljs = require 'highlight.js'
 hljs.tabReplace = '    '
@@ -23,10 +24,8 @@ datepicker = new Datepicker posts
 
 app = flatiron.app
 app.use flatiron.plugins.http, before: [
-    require('stylus').middleware
-        src: "#{__dirname}/assets"
-        dest: "#{__dirname}/public"
-        compress: true
+    (req, res) ->
+        assets req, res, -> res.emit 'next'
     require './utils/dispatcher'
     connect.static "#{__dirname}/public"
 ]
