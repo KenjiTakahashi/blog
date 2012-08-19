@@ -81,10 +81,9 @@ class Post
             o = 0
         if d?
             start = new Date d
-            start.setMonth start.getMonth() - 1
             end = new Date d
             end.setMonth end.getMonth() + 1
-            query = @_model.find {date: {$gt: start, $lt: end}}, {title: 1}
+            query = @_model.find {date: {$gte: start, $lt: end}}, {title: 1}
         else if t?
             query = @_model.find {tags: t}, {title: 1}
         else
