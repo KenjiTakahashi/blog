@@ -41,7 +41,7 @@ div#tags_chooser
     if(prev_tag[0])
         a(href="#{urls[0]}?t=#{prev_tag[1]}#{urls[1]}").pn#tprev
     else
-        span.pin
+        span.pin#tprev
     ul.links
         - var index = 0;
         each tag in tags
@@ -65,12 +65,14 @@ div#tags_chooser
                 span.tagcount= NaN
     if(next_tag[0])
         a(href="#{urls[0]}?t=#{next_tag[1]}#{urls[1]}").pn#tnext
+    else
+        span.pin#tnext
 
 div#posts
     if(prev_title[0])
         a(href="#{urls[0]}?p=#{prev_title[1]}#{urls[2]}").pn#pprev
     else
-        span.pin
+        span.pin#pprev
     ul.links
         each title in titles
             li
@@ -80,3 +82,5 @@ div#posts
                         = '...'
     if(next_title[0])
         a(href="#{urls[0]}?p=#{next_title[1]}#{urls[2]}").pn#pnext
+    else
+        span.pin#pnext
