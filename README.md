@@ -27,6 +27,7 @@ changelog
 - updated mongoose to 3.0.x
 - dropped date-ext dependency
 - re-done calendar
+- removed unnecessary images
 
 todo
 ----
@@ -34,3 +35,4 @@ todo
 * stylesheet refactor
 * scroll lists with wheel
 * fix: horizontal code scroll schouldn't affect line numbers
+* showing images
