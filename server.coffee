@@ -1,7 +1,7 @@
 flatiron = require 'flatiron'
 director = require 'director'
 connect = require 'connect'
-assets = require('connect-assets')()
+assets = require('connect-assets')(buildDir: false)
 
 hljs = require 'highlight.js'
 hljs.tabReplace = '    '
