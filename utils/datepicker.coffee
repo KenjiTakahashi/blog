@@ -1,6 +1,10 @@
 class Datepicker
     constructor: (db) ->
         @_db = db
+        @_months = [
+            'jan', 'feb', 'mar', 'apr', 'may', 'jun',
+            'jul', 'aug', 'sep', 'oct', 'nov', 'dec'
+        ]
 
     get: (string, callback) ->
         if not string?
@@ -24,5 +28,8 @@ class Datepicker
                     year: year_data
                     data: current_data
                 }
+
+    get_month_name: (number) ->
+        return @_months[number]
 
 module.exports = Datepicker

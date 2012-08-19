@@ -18,6 +18,12 @@ mixin cell(part)
             td.tsep
                 span
 
+div#date
+    div#day
+        mixin append_zero(latest.date.getDate())
+    div#month= latest.month
+    div#year= latest.date.getFullYear()
+
 div#calendar
     a(href="#{urls[0]}?d=#{dp.year - 1}#{urls[4]}").pn#prev
     span.sep#sleft

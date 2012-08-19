@@ -30,12 +30,36 @@ a:hover
         background-color $amain
     .pn:hover
         background-color $ahover
+    #date
+        font-family serif
+        position relative
+        left 163px
+        background-color $bcolor
+        width 42px
+        height 60px
+        padding-left 19px
+        #day
+            position inherit
+            left -2px
+            height 31px
+            font-size 28px
+        #month
+            position inherit
+            left 1px
+            top -8px
+            height 19px
+            font-size 17px
+        #year
+            position inherit
+            top -8px
+            font-size 12px
     #calendar
         background-color $bcolor
         color #151515
         width 224px
         height 62px
         font-size 15px
+        margin-top 16px
         #selected
             font-weight bold
         .pn
@@ -74,7 +98,6 @@ a:hover
             td
                 padding 2px 0px 1px
                 width 28px
-                height 15px
                 text-align center
                 vertical-align middle
                 border-top 4px solid $amain

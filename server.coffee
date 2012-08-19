@@ -53,6 +53,7 @@ placeholder = (req, res, post) ->
         if n != 'date' and n != 'tag'
             urls[5] += "&#{n}=#{v}"
     post.content = marked post.content
+    post.month = datepicker.get_month_name post.date.getMonth()
     post.tags = ("<a href='#{urls[0]}?tag=#{t}#{urls[3]}'>#{t}</a>" for t in post.tags).join(', ')
     posts.tags tag, (err, tags, has_prev_tag, has_next_tag) ->
         prev_tag = [has_prev_tag, tag? and tag - 1]
