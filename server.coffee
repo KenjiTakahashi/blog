@@ -75,9 +75,6 @@ placeholder = (req, res, post) ->
                         datepicker.get query.d, (err, dp) ->
                             if query.date?
                                 dp.selected = query.date
-                            else
-                                d = post.date
-                                dp.selected = "#{d.getFullYear()}-#{d.getMonth() + 1}-#{d.getDate()}"
                             app.render 'index',
                                 urls: urls,
                                 dp: dp,

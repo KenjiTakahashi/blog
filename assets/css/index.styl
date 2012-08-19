@@ -12,30 +12,29 @@ a
     color $amain
 a:hover
     color $ahover
-.pin
-    position relative
-    display inline-block
-    height 4px
-.pn
-    position relative
-    display inline-block
-    height 4px
-    text-decoration none
-.pn:hover
-    background-color $ahover
+
 #left
     position fixed
     width 242px
-    margin-left 9px
+    margin-left 10px
     margin-top -8px
     float left
     font-family monospace
     a
         text-decoration none
+    .pn
+        position relative
+        display inline-block
+        height 4px
+        text-decoration none
+        background-color $amain
+    .pn:hover
+        background-color $ahover
     #calendar
-        background url("../images/cal.png") no-repeat
+        background-color $bcolor
         color #151515
-        height 138px
+        width 224px
+        height 62px
         font-size 15px
         #selected
             font-weight bold
@@ -45,26 +44,51 @@ a:hover
         #prev
             left 18px
         #next
-            left 82px
+            left 100px
         #my
             display inline-block
             position relative
-            left 50px
+            left 59px
             top 5px
-        #datepicker
+        .sep
+            display inline-block
             position relative
-            left 16px
-            top 6px
+            top 5px
+            background-color $amain
+            width 4px
+            height 10px
+        #sleft
+            left 31px
+        #sright
+            left 87px
+        #datepicker
+            border-spacing 0px
+            position relative
+            left 18px
+            top 5px
             font-size 11px
             .np
                 color $aprev
             .np:hover
                 color $ahover
             td
-                width 23px
-                height 17px
+                padding 2px 0px 1px
+                width 28px
+                height 15px
                 text-align center
                 vertical-align middle
+                border-top 4px solid $amain
+            .tsep
+                width 4px
+                span
+                    display inline-block
+                    width 4px
+                    height 7px
+                    background-color $amain
+    .pin
+        position relative
+        display inline-block
+        height 4px
     #tags_chooser
         background url("../images/tag.png") no-repeat
         height 230px
@@ -100,6 +124,7 @@ a:hover
         margin -3px 0px 0px
         li
             height 17px
+
 #center
     margin-top -8px
     position absolute
@@ -164,6 +189,7 @@ a:hover
             content "0" counter(item) " "
         .tou:before
             content counter(item) " "
+
 #right
     position fixed
     right 7px

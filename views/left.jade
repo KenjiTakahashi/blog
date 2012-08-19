@@ -1,54 +1,36 @@
-mixin append_zero(day)
-    if(day < 10)
+mixin append_zero(str)
+    if(str < 10)
         = '0'
-    = day
+    = str
 
-mixin current_cell(part)
-    each day in part
-        url = urls[0] + '?date=' + dp.year + '-' + dp.month + '-' + day + urls[5]
+mixin cell(part)
+    each month, i in part
+        url = urls[0] + '?date=' + dp.year + '-' + month + urls[5]
         td
-            if(dp.year + "-" + dp.month + "-" + day == dp.selected)
-                a(href="#{url}")#selected
-                    mixin append_zero(day)
-            else
-                a(href="#{url}")
-                    mixin append_zero(day)
-
-mixin other_cells(part, month, link)
-    each day in part
-        td
-            if(dp.year + "-" + month + "-" + day == dp.selected)
-                a(href="#{urls[0]}?date=#{link}-#{day}#{urls[5]}").np#selected
-                    mixin append_zero(day)
-            else
-                a(href="#{urls[0]}?date=#{link}-#{day}#{urls[5]}").np
-                    mixin append_zero(day)
+            if(month != undefined)
+                if(dp.year + "-" + month == dp.selected)
+                    a(href="#{url}")#selected
+                        mixin append_zero(month)
+                else
+                    a(href="#{url}")
+                        mixin append_zero(month)
+        if(i != 5)
+            td.tsep
+                span
 
 div#calendar
-    a(href="#{urls[0]}?d=#{dp.plink}#{urls[4]}").pn#prev
-    span#my
-        if(dp.month < 10)
-            = '0'
-        = dp.month
-        /
-        = dp.year
-    a(href="#{urls[0]}?d=#{dp.nlink}#{urls[4]}").pn#next
+    a(href="#{urls[0]}?d=#{dp.year - 1}#{urls[4]}").pn#prev
+    span.sep#sleft
+    span#my= dp.year
+    span.sep#sright
+    a(href="#{urls[0]}?d=#{dp.year + 1}#{urls[4]}").pn#next
     table#datepicker
+        - var part = dp.data.splice(0, 6);
         tr
-            mixin other_cells(dp.previous, dp.month - 1, dp.plink)
-            - var part = dp.current.splice(0, 7 - dp.previous.length);
-            mixin current_cell(part)
-            while dp.current.length > 0
-                - part = dp.current.splice(0, 7);
-                tr
-                    mixin current_cell(part)
-                    if(dp.current.length == 0)
-                        - part = dp.next.splice(0, 7 - part.length);
-                        mixin other_cells(part, dp.month + 1, dp.nlink)
-            while dp.next.length > 0
-                - part = dp.next.splice(0, 7);
-                tr
-                    mixin other_cells(part, dp.month + 1, dp.nlink)
+            mixin cell(part)
+        tr
+            mixin cell(dp.data)
+
 div#tags_chooser
     if(prev_tag[0])
         a(href="#{urls[0]}?t=#{prev_tag[1]}#{urls[1]}").pn#tprev
@@ -76,6 +58,7 @@ div#tags_chooser
                 span.tagcount= NaN
     if(next_tag[0])
         a(href="#{urls[0]}?t=#{next_tag[1]}#{urls[1]}").pn#tnext
+
 div#posts
     if(prev_title[0])
         a(href="#{urls[0]}?p=#{prev_title[1]}#{urls[2]}").pn#pprev

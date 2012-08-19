@@ -25,11 +25,12 @@ changelog
 - updated stylus to 0.29.x
 - updated highlight.js to 7.1.x
 - updated mongoose to 3.0.x
+- dropped date-ext dependency
+- re-done calendar
 
 todo
 ----
 * comments
 * stylesheet refactor
 * scroll lists with wheel
-* re-think calendar
 * fix: horizontal code scroll schouldn't affect line numbers

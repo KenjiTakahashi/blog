@@ -38,7 +38,7 @@ class Post
 
     dates: (start, end, callback) ->
         start.setHours 0, 0, 0, 0
-        end.addDays 1
+        end.setDate end.getDate() + 1
         end.setHours 0, 0, 0, 0
         query = @_model.find {date: {$gte: start, $lt: end}}, {date: 1}
         query.sort(date: 1).exec (err, data) ->
@@ -81,9 +81,9 @@ class Post
             o = 0
         if d?
             start = new Date d
-            start.addDays -1
+            start.setMonth start.getMonth() - 1
             end = new Date d
-            end.addDays 1
+            end.setMonth end.getMonth() + 1
             query = @_model.find {date: {$gt: start, $lt: end}}, {title: 1}
         else if t?
             query = @_model.find {tags: t}, {title: 1}
