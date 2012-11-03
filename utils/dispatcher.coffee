@@ -1,8 +1,8 @@
 helper = (res, number, content_type, data) ->
-    res.writeHead number, 'Content-Type': content_type
-    res.end data
+    res.set 'Content-Type', content_type
+    res.send number, data
 
-module.exports = (req, res) ->
+module.exports = (req, res, next) ->
     res._html =
         ok: (data) ->
             helper res, 200, 'text/html', data
@@ -18,4 +18,4 @@ module.exports = (req, res) ->
                 res._html.internal err.message
         else
             res._html.ok data
-    res.emit 'next'
+    next()

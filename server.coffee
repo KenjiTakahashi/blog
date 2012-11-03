@@ -1,4 +1,4 @@
-flatiron = require 'flatiron'
+express = require 'express'
 director = require 'director'
 connect = require 'connect'
 assets = require('connect-assets')(
@@ -25,14 +25,10 @@ projects = db.projects
 Datepicker = require './utils/datepicker'
 datepicker = new Datepicker posts
 
-app = flatiron.app
-app.use flatiron.plugins.http, before: [
-    (req, res) ->
-        assets req, res, -> res.emit 'next'
-    require './utils/dispatcher'
-    connect.static "#{__dirname}/public"
-]
-app.use require './utils/jade'
+app = express()
+app.use require './utils/dispatcher'
+app.use connect.static "#{__dirname}/public"
+app.use assets
 
 placeholder = (req, res, post) ->
     query = req.query
@@ -79,7 +75,7 @@ placeholder = (req, res, post) ->
                         datepicker.get query.d, (err, dp) ->
                             if query.date?
                                 dp.selected = query.date
-                            app.render 'index',
+                            app.render 'index.jade',
                                 urls: urls,
                                 dp: dp,
                                 latest: post,
@@ -104,7 +100,10 @@ routes =
             [req, res] = [@req, @res]
             posts.one id, (err, data) ->
                 placeholder req, res, data
+router = new director.http.Router(routes).configure async: true
+app.use (req, res, next) ->
+    router.dispatch req, res, (err) ->
+        if err == undefined || err
+            next()
 
-app.router = new director.http.Router(routes).configure async: true
-
-app.start process.env.app_port || 8080
+app.listen process.env.app_port || 8080

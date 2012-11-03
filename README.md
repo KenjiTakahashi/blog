@@ -34,7 +34,8 @@ changelog
 - updated highlight.js to 7.3.x
 - updated stylus to 0.30.x
 - updated coffee-script to 1.4.x
-- updated flatiron to 0.3.x
+- moved to express (tah-dah)
+- updated connect to 2.6.x
 
 todo
 ----
