@@ -29,6 +29,13 @@ changelog
 - re-done calendar
 - removed unnecessary images
 
+0.4.0:
+- updated mongoose to 3.3.x
+- updated highlight.js to 7.3.x
+- updated stylus to 0.30.x
+- updated coffee-script to 1.4.x
+- updated flatiron to 0.3.x
+
 todo
 ----
 * comments
@@ -36,3 +43,4 @@ todo
 * scroll lists with wheel
 * fix: horizontal code scroll schouldn't affect line numbers
 * showing images
+* fix: posts showdown should reset to top when changing date/tag
