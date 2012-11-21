@@ -1,6 +1,6 @@
 A new website, meant to supersede <http://kenjitakahashi.github.com>.
 
-In case you didn't notice, it's hosted @ <http://kenji.nodester.com>.
+In case you didn't notice, it's hosted @ <http://kenji.sx>.
 
 changelog
 ---------
@@ -42,6 +42,8 @@ todo
 * comments
 * stylesheet refactor
 * scroll lists with wheel
-* fix: horizontal code scroll schouldn't affect line numbers
+* fix: horizontal code scroll shouldn't affect line numbers
 * showing images
 * fix: posts showdown should reset to top when changing date/tag
+* websocketize
+* hiding side-menus

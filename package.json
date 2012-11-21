@@ -1,6 +1,6 @@
 {
     "name": "kenji",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "private": true,
     "node": "0.8.1",
     "dependencies": {
@@ -13,7 +13,9 @@
         "marked": "0.2.x",
         "highlight.js": "7.3.x",
         "connect-assets": "2.3.x",
-        "coffee-script": "1.4.x"
+        "coffee-script": "1.4.x",
+        "passport": "0.1.x",
+        "passport-github": "0.1.x"
     },
     "engine": {
         "node": ">=0.6"
