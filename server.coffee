@@ -1,10 +1,8 @@
 express = require 'express'
 director = require 'director'
 connect = require 'connect'
-assets = require('connect-assets')(
-    src: "#{__dirname}/assets"
-    buildDir: false
-)
+assets = require 'connect-assets'
+jsprimer = require 'connect-assets-jsprimer'
 
 hljs = require 'highlight.js'
 hljs.tabReplace = '    '
@@ -28,7 +26,8 @@ datepicker = new Datepicker posts
 app = express()
 app.use require './utils/dispatcher'
 app.use connect.static "#{__dirname}/public"
-app.use assets
+app.use assets src: "#{__dirname}/assets", buildDir: false
+jsprimer.loadFiles assets
 
 placeholder = (req, res, post) ->
     query = req.query
@@ -60,14 +59,14 @@ placeholder = (req, res, post) ->
         if err
             res.html err, null
         else if tags == null
-            res._html.internal null
+            res.html 'INTERNAL', null
         else
             posts.titles query.date, query.tag, page,
             (err, titles, has_prev_page, has_next_page) ->
                 if err
                     res.html err, null
                 else if titles == null
-                    res._html.internal null
+                    res.html 'INTERNAL', null
                 else
                     prev_title = [has_prev_page, page? and page - 1]
                     next_title = [has_next_page, page? and page + 1 or 1]
@@ -92,14 +91,12 @@ placeholder = (req, res, post) ->
 routes =
     '/':
         get: ->
-            [req, res] = [@req, @res]
-            posts.latest (err, data) ->
-                placeholder req, res, data
+            posts.latest (err, data) =>
+                placeholder @req, @res, data
     '/posts/:id':
         get: (id) ->
-            [req, res] = [@req, @res]
-            posts.one id, (err, data) ->
-                placeholder req, res, data
+            posts.one id, (err, data) =>
+                placeholder @req, @res, data
 router = new director.http.Router(routes).configure async: true
 app.use (req, res, next) ->
     router.dispatch req, res, (err) ->
