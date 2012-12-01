@@ -13,6 +13,9 @@ marked.setOptions gfm: true, highlight: (code, lang) ->
 
 module.exports = (data) ->
     data = marked data
+    data = data.replace /\[notice\#.*\]/g, (match, def) ->
+        e = match.split '#'
+        return " <div class='notice'>#{e[1][..-2]}</div>"
     data = data.replace /\[canvas\#[a-zA-Z0-9_]*\#\d*\]/g, (match, def) ->
         e = match[1..-2].split '#'
         return  """
