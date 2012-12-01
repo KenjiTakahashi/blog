@@ -36,6 +36,8 @@ changelog
 - updated coffee-script to 1.4.x
 - moved to express (tah-dah)
 - updated connect to 2.6.x
+- embedding canvas
+- raw display
 
 todo
 ----

@@ -17,6 +17,10 @@ ProjectSchema = new mongo.Schema
 HelperSchema = new mongo.Schema
     latest: type: mongo.Schema.ObjectId, ref: 'Post'
 
+RawSchema = new mongo.Schema
+    name: type: String, required: yes
+    content: type: String, default: ''
+
 class Post
     constructor: ->
         @_model = mongo.model 'Post', PostSchema
@@ -110,6 +114,15 @@ class Project
     all: (callback) ->
         @_model.find {}, callback
 
+class Raw
+    constructor: ->
+        @_model = mongo.model 'Raw', RawSchema
+
+    one: (id, callback) ->
+        @_model.findOne name: id, (err, data) ->
+            callback err, data.content
+
 module.exports =
     posts: new Post
     projects: new Project
+    raws: new Raw

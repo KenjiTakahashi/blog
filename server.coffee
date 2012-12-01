@@ -9,6 +9,7 @@ mdify = require './utils/markdownify'
 db = require './db'
 posts = db.posts
 projects = db.projects
+raws = db.raws
 
 Datepicker = require './utils/datepicker'
 datepicker = new Datepicker posts
@@ -87,6 +88,9 @@ routes =
         get: (id) ->
             posts.one id, (err, data) =>
                 placeholder @req, @res, data
+    '/raw/:id':
+        get: (id) ->
+            raws.one id, @res.html
 router = new director.http.Router(routes).configure async: true
 app.use (req, res, next) ->
     router.dispatch req, res, (err) ->
