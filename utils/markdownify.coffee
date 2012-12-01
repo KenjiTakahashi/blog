@@ -21,8 +21,8 @@ module.exports = (data) ->
                         no canvas, sorry
                     </canvas>
                     <div>
-                        <button id="#{e[1]}Start" onclick=window.#{e[1]}.init();>start</button>
-                        <button id="#{e[1]}Reset" onclick=window.#{e[1]}.reset();>reset</button>
+                        <a href="##{e[1]}#Start" onclick=window.#{e[1]}.init();>start</a>
+                        <a href="##{e[1]}#Reset" onclick=window.#{e[1]}.reset();>reset</a>
                         <span><a href="/raw/#{e[1]}" target="_blank">raw</a></span>
                     </div>
                 </div>
