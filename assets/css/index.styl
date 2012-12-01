@@ -4,6 +4,7 @@ $aprev = #666666
 $bcolor = #ffffe3
 $rhcolor = #b2b2b2
 $arcolor = #7f7f7f
+$noticecolor = #e4e498
 
 body
     background url("../images/bg.png")
@@ -196,16 +197,15 @@ a:hover
         left 258px
         right 258px
         min-height 100%
-        .notice, canvas
-            background: $rhcolor
+        .notice
             margin-top 5px
             margin-bottom 5px
-        .notice
-            padding: 6px
+            background $noticecolor
+            padding 5px
         canvas
-            width: 100%
-        .canvas
-            padding-bottom: 20px
+            background $rhcolor
+        .notice span
+            float right
     pre
         margin-left -26px
         overflow-x auto

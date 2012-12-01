@@ -4,17 +4,7 @@ connect = require 'connect'
 assets = require 'connect-assets'
 jsprimer = require 'connect-assets-jsprimer'
 
-hljs = require 'highlight.js'
-hljs.tabReplace = '    '
-marked = require 'marked'
-marked.setOptions gfm: true, highlight: (code, lang) ->
-    ol = ['<ol>']
-    get_class = (i) ->
-        return i < 9 and 'ten' or (i < 99 and 'hun' or 'tou')
-    for line, i in hljs.highlight(lang, code).value.split '\n'
-        ol.push "<li class='#{get_class i}'>#{line}</li>"
-    ol.push '</ol>'
-    return ol.join ''
+mdify = require './utils/markdownify'
 
 db = require './db'
 posts = db.posts
@@ -50,7 +40,7 @@ placeholder = (req, res, post) ->
             urls[4] += "&#{n}=#{v}"
         if n != 'date' and n != 'tag'
             urls[5] += "&#{n}=#{v}"
-    post.content = marked post.content
+    post.content = mdify post.content
     post.month = datepicker.get_month_name post.date.getMonth()
     post.tags = ("<a href='#{urls[0]}?tag=#{t}#{urls[3]}'>#{t}</a>" for t in post.tags).join(', ')
     posts.tags tag, (err, tags, has_prev_tag, has_next_tag) ->
