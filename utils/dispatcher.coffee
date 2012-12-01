@@ -2,7 +2,7 @@ helper = (res, number, content_type, data) ->
     res.set 'Content-Type', content_type
     res.send number, data
 
-ifer = (res, err, content_type) ->
+ifer = (res, err, data, content_type) ->
     if err
         if err == 'INTERNAL'
             res._return.internal err, content_type
@@ -22,9 +22,9 @@ module.exports = (req, res, next) ->
         internal: (data, content_type) ->
             helper res, 500, content_type, data
     res.html = (err, data) ->
-        ifer res, err, 'text/html'
+        ifer res, err, data, 'text/html'
     res.js = (err, data) ->
-        ifer res, err, 'text/javascript'
+        ifer res, err, data, 'text/javascript'
     res.coffee = (err, data) ->
-        ifer res, err, 'text/coffeescript'
+        ifer res, err, data, 'text/coffeescript'
     next()
