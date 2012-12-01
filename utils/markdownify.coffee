@@ -29,6 +29,6 @@ module.exports = (data) ->
                         <span><a href="/raw/#{e[1]}" target="_blank">raw</a></span>
                     </div>
                 </div>
-                <script type="text/javascript" src="/js/#{e[1]}.js"></script>
+                <script type="text/javascript" src="/js/#{e[1]}"></script>
                 """
     return data

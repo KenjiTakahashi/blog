@@ -25,6 +25,6 @@ module.exports = (req, res, next) ->
         ifer res, err, data, 'text/html'
     res.js = (err, data) ->
         ifer res, err, data, 'text/javascript'
-    res.coffee = (err, data) ->
-        ifer res, err, data, 'text/coffeescript'
+    res.css = (err, data) ->
+        ifer res, err, data, 'text/css'
     next()

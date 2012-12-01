@@ -1,8 +1,8 @@
 express = require 'express'
 director = require 'director'
 connect = require 'connect'
-assets = require 'connect-assets'
-jsprimer = require 'connect-assets-jsprimer'
+Assets = require './utils/assets'
+assets = new Assets "#{__dirname}/assets"
 
 mdify = require './utils/markdownify'
 
@@ -17,8 +17,7 @@ datepicker = new Datepicker posts
 app = express()
 app.use require './utils/dispatcher'
 app.use connect.static "#{__dirname}/public"
-app.use assets src: "#{__dirname}/assets", buildDir: false
-jsprimer.loadFiles assets
+app.use assets.middleware
 
 placeholder = (req, res, post) ->
     query = req.query

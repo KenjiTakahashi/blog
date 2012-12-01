@@ -12,7 +12,6 @@
         "connect": "2.6.x",
         "marked": "0.2.x",
         "highlight.js": "7.3.x",
-        "connect-assets": "2.3.x",
         "coffee-script": "1.4.x",
         "passport": "0.1.x",
         "passport-github": "0.1.x"
