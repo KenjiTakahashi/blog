@@ -38,6 +38,7 @@ changelog
 - updated connect to 2.6.x
 - embedding canvas
 - raw display
+- added Google Analytics
 
 todo
 ----
