@@ -14,7 +14,9 @@
         "highlight.js": "7.3.x",
         "coffee-script": "1.4.x",
         "passport": "0.1.x",
-        "passport-github": "0.1.x"
+        "passport-github": "0.1.x",
+        "uglify-js": "2.2.x",
+        "clean-css": "0.8.x"
     },
     "engine": {
         "node": ">=0.6"

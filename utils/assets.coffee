@@ -1,6 +1,8 @@
 fs = require 'fs'
 path = require 'path'
 coffee = require 'coffee-script'
+uglifyjs = require 'uglify-js'
+cleancss = require 'clean-css'
 stylus = require 'stylus'
 url = require 'url'
 sync = require './sync'
@@ -10,19 +12,22 @@ class Assets
         @assets =
             js: []
             css: []
-        @_get 'js', '.coffee', '.js', coffee.compile
-        @_get 'css', '.styl', '.css', sync stylus.render
+        @_get 'js', '.coffee', '.js', (str) ->
+            return uglifyjs.minify((coffee.compile str), fromString: yes).code
+        @_get 'css', '.styl', '.css', (str) ->
+            return cleancss.process (sync stylus.render) str
 
     _get: (asset, ext1, ext2, compiler) ->
         fpath = "#{@_path}/#{asset}"
         for file in fs.readdirSync fpath
             content = fs.readFileSync("#{fpath}/#{file}").toString()
             ext = path.extname file
+            base = path.basename file, ext
             switch ext
                 when ext1
-                    @assets[asset][path.basename file, ext] = compiler content
+                    @assets[asset][base] = compiler content
                 when ext2
-                    @assets[asset][path.basename file, ext] = content
+                    @assets[asset][base] = content
 
     middleware: (req, res, next) =>
         pathname = url.parse(req.originalUrl).pathname
