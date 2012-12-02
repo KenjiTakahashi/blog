@@ -18,6 +18,7 @@ app = express()
 app.use require './utils/dispatcher'
 app.use connect.static "#{__dirname}/public"
 app.use assets.middleware
+app.set 'views', "#{__dirname}/views"
 
 placeholder = (req, res, post) ->
     query = req.query
