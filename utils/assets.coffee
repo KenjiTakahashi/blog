@@ -19,15 +19,17 @@ class Assets
 
     _get: (asset, ext1, ext2, compiler) ->
         fpath = "#{@_path}/#{asset}"
-        for file in fs.readdirSync fpath
-            content = fs.readFileSync("#{fpath}/#{file}").toString()
-            ext = path.extname file
-            base = path.basename file, ext
-            switch ext
-                when ext1
-                    @assets[asset][base] = compiler content
-                when ext2
-                    @assets[asset][base] = content
+        try
+            for file in fs.readdirSync fpath
+                content = fs.readFileSync("#{fpath}/#{file}").toString()
+                ext = path.extname file
+                base = path.basename file, ext
+                switch ext
+                    when ext1
+                        @assets[asset][base] = compiler content
+                    when ext2
+                        @assets[asset][base] = content
+        catch ENOENT
 
     middleware: (req, res, next) =>
         pathname = url.parse(req.originalUrl).pathname
