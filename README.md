@@ -39,7 +39,8 @@ changelog
 - embedding canvas
 - raw display
 - added Google Analytics
-- fixed: posts shodown should reset to top when changing date/tag
+- fixed: posts showdown should reset to top when changing date/tag
+- removed connect-assets in favour of custom-baked static assets handler
 
 todo
 ----
