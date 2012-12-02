@@ -3,6 +3,7 @@ path = require 'path'
 coffee = require 'coffee-script'
 stylus = require 'stylus'
 url = require 'url'
+sync = require './sync'
 
 class Assets
     constructor: (@_path) ->
@@ -10,11 +11,7 @@ class Assets
             js: []
             css: []
         @_get 'js', '.coffee', '.js', coffee.compile
-        @_get 'css', '.styl', '.css', (str) ->
-            ret = undefined
-            stylus.render str, (err, css) =>
-                ret = css # FIXME: stylus seems to be sync, but it's bad idea
-            return ret
+        @_get 'css', '.styl', '.css', sync stylus.render
 
     _get: (asset, ext1, ext2, compiler) ->
         fpath = "#{@_path}/#{asset}"
@@ -32,7 +29,7 @@ class Assets
         elements = pathname.split(path.sep)[-2..]
         asset_type = elements[0]
         asset_name = elements[1]
-        assertion = asset_type != '' and asset_name != ''
+        assertion = asset_type in ['js', 'css'] and asset_name != ''
         if assertion and @assets[asset_type][asset_name]?
             res[asset_type] null, @assets[asset_type][asset_name]
         else
