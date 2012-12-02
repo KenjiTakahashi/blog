@@ -39,6 +39,7 @@ changelog
 - embedding canvas
 - raw display
 - added Google Analytics
+- fixed: posts shodown should reset to top when changing date/tag
 
 todo
 ----
@@ -47,6 +48,5 @@ todo
 * scroll lists with wheel
 * fix: horizontal code scroll shouldn't affect line numbers
 * showing images
-* fix: posts showdown should reset to top when changing date/tag
 * websocketize
 * hiding side-menus

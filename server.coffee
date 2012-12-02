@@ -34,11 +34,11 @@ placeholder = (req, res, post) ->
             urls[1] += "&#{n}=#{v}"
         if n != 'p'
             urls[2] += "&#{n}=#{v}"
-        if n != 'tag' and n != 'date'
+        if n != 'tag' and n != 'date' and n != 'p'
             urls[3] += "&#{n}=#{v}"
         if n != 'd'
             urls[4] += "&#{n}=#{v}"
-        if n != 'date' and n != 'tag'
+        if n != 'date' and n != 'tag' and n != 'p'
             urls[5] += "&#{n}=#{v}"
     post.content = mdify post.content
     post.month = datepicker.get_month_name post.date.getMonth()
