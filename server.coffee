@@ -84,17 +84,20 @@ placeholder = (req, res, post) ->
 routes =
     '/':
         get: ->
-            mixpanel.track "main page hit"
+            if '--local' not in process.argv
+                mixpanel.track "main page hit"
             posts.latest (err, data) =>
                 placeholder @req, @res, data
     '/posts/:id':
         get: (id) ->
-            mixpanel.track "#{id} post hit"
+            if '--local' not in process.argv
+                mixpanel.track "#{id} post hit"
             posts.one id, (err, data) =>
                 placeholder @req, @res, data
     '/raw/:id':
         get: (id) ->
-            mixpanel.track "#{id} raw hit"
+            if '--local' not in process.argv
+                mixpanel.track "#{id} raw hit"
             raws.one id, @res.html
 router = new director.http.Router(routes).configure async: true
 app.use (req, res, next) ->
