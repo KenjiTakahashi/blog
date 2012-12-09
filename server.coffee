@@ -2,7 +2,6 @@ express = require 'express'
 director = require 'director'
 connect = require 'connect'
 Assets = require './utils/assets'
-assets = new Assets "#{__dirname}/assets"
 Mixpanel = require 'mixpanel'
 mixpanel = Mixpanel.init "213db0f74e843fe533c2a173757c1d0a"
 
@@ -15,6 +14,11 @@ raws = db.raws
 
 Datepicker = require './utils/datepicker'
 datepicker = new Datepicker posts
+
+run = ->
+    app.listen process.env.app_port || 8080
+
+assets = new Assets "#{__dirname}/assets", db.assets, run
 
 app = express()
 app.use require './utils/dispatcher'
@@ -104,5 +108,3 @@ app.use (req, res, next) ->
     router.dispatch req, res, (err) ->
         if err == undefined || err
             next()
-
-app.listen process.env.app_port || 8080

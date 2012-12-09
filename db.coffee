@@ -21,6 +21,11 @@ RawSchema = new mongo.Schema
     name: type: String, required: yes
     content: type: String, default: ''
 
+AssetSchema = new mongo.Schema
+    name: type: String, required: yes
+    type: type: String, required: yes
+    content: type: String, default: ''
+
 class Post
     constructor: ->
         @_model = mongo.model 'Post', PostSchema
@@ -122,7 +127,15 @@ class Raw
         @_model.findOne name: id, (err, data) ->
             callback err, data.content
 
+class Asset
+    constructor: ->
+        @_model = mongo.model 'Asset', AssetSchema
+
+    all_of_type: (type, callback) =>
+        @_model.find {type: type}, callback
+
 module.exports =
     posts: new Post
     projects: new Project
     raws: new Raw
+    assets: new Asset

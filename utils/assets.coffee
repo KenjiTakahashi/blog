@@ -8,7 +8,7 @@ url = require 'url'
 sync = require './sync'
 
 class Assets
-    constructor: (@_path) ->
+    constructor: (@_path, @_db, callback) ->
         @assets =
             js: []
             css: []
@@ -16,6 +16,17 @@ class Assets
             return uglifyjs.minify((coffee.compile str), fromString: yes).code
         @_get 'css', '.styl', '.css', (str) ->
             return cleancss.process (sync stylus.render) str
+        @_db.all_of_type 'js', (err, data) =>
+            for d in data
+                @assets['js'][d.name] = uglifyjs.minify(
+                    (coffee.compile d.content), fromString: yes
+                ).code
+            @_db.all_of_type 'css', (err, data) =>
+                for d in data
+                    @assets['css'][d.name] = cleancss.process(
+                        (sync stylus.render) str
+                    )
+                callback()
 
     _get: (asset, ext1, ext2, compiler) ->
         fpath = "#{@_path}/#{asset}"

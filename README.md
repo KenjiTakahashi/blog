@@ -43,10 +43,13 @@ changelog
 - removed connect-assets in favour of custom-baked static assets handler
 
 0.4.1:
-- moved from Google Analytics to Mixpanel.
+- moved from Google Analytics to Mixpanel
 - updated mongoose to 3.4.x
 - updated stylus to 0.31.x
 - updated connect to 2.7.x
+
+0.4.2:
+- storing assets also in db
 
 todo
 ----
