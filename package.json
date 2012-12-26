@@ -6,7 +6,7 @@
     "dependencies": {
         "express": "3.0.x",
         "director": "1.1.x",
-        "mongoose": "3.4.x",
+        "mongoose": "3.5.x",
         "jade": "0.27.x",
         "stylus": "0.31.x",
         "connect": "2.7.x",
@@ -16,7 +16,7 @@
         "passport": "0.1.x",
         "passport-github": "0.1.x",
         "uglify-js": "2.2.x",
-        "clean-css": "0.8.x",
+        "clean-css": "0.9.x",
         "mixpanel": "0.0.x"
     },
     "engine": {

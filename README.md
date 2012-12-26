@@ -51,6 +51,11 @@ changelog
 0.4.2:
 - storing assets also in db
 
+0.4.3:
+- updated mongoose to 3.5.x
+- updated clean-css to 0.9.x
+- added mixpanel badge (25000 is not enough it seems)
+
 todo
 ----
 * comments
