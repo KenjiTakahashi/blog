@@ -93,13 +93,19 @@ routes =
             if '--local' not in process.argv
                 mixpanel.track "main page hit"
             posts.latest (err, data) =>
-                placeholder @req, @res, data
+                if err or not data
+                    @res.html err, null
+                else
+                    placeholder @req, @res, data
     '/posts/:id':
         get: (id) ->
             posts.one id, (err, data) =>
-                if not err and '--local' not in process.argv
-                    mixpanel.track "#{data.title} post hit"
-                placeholder @req, @res, data
+                if err or not data
+                    @res.html err, null
+                else
+                    if '--local' not in process.argv
+                        mixpanel.track "#{data.title} post hit"
+                    placeholder @req, @res, data
     '/raw/:id':
         get: (id) ->
             if '--local' not in process.argv

@@ -59,6 +59,7 @@ changelog
 0.5.0:
 - more descriptive mixpanel posts tracking
 - RSS feed
+- fixed some minor bugs
 
 todo
 ----
