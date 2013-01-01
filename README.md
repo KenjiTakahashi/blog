@@ -56,6 +56,10 @@ changelog
 - updated clean-css to 0.9.x
 - added mixpanel badge (25000 is not enough it seems)
 
+0.5.0:
+- more descriptive mixpanel posts tracking
+- RSS feed
+
 todo
 ----
 * comments

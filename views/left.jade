@@ -18,6 +18,9 @@ mixin cell(part)
             td.tsep
                 span
 
+a#rss(href="/feed")
+    img(src="/images/rss.png", alt="rss")
+
 div#date
     div#day
         mixin append_zero(latest.date.getDate())

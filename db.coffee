@@ -32,11 +32,7 @@ class Post
         @_helper = mongo.model 'Helper', HelperSchema
 
     one: (id, callback) ->
-        @_model.findOne _id: id, (err, data) ->
-            if err or not data
-                callback err, null
-            else
-                callback err, data
+        @_model.findOne _id: id, callback
 
     latest: (callback) ->
         @_helper.findOne({}, {latest: 1}).populate('latest').exec (err, data) ->
@@ -50,11 +46,7 @@ class Post
         end.setDate end.getDate() + 1
         end.setHours 0, 0, 0, 0
         query = @_model.find {date: {$gte: start, $lt: end}}, {date: 1}
-        query.sort(date: 1).exec (err, data) ->
-            if err or not data
-                callback err, null
-            else
-                callback err, data
+        query.sort(date: 1).exec callback
 
     tags: (o, callback) ->
         if not o?
@@ -111,6 +103,11 @@ class Post
                     if count <= 10
                         has_next = false
                     callback err, data, has_prev, has_next
+
+    last20: (callback) ->
+        query = @_model.find {}, {title: 1, date: 1}
+        query.sort(date: -1).limit 20
+        query.exec callback
 
 class Project
     constructor: ->

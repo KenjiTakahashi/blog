@@ -1,6 +1,6 @@
 {
     "name": "kenji",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "private": true,
     "node": "0.8.1",
     "dependencies": {
@@ -13,11 +13,10 @@
         "marked": "0.2.x",
         "highlight.js": "7.3.x",
         "coffee-script": "1.4.x",
-        "passport": "0.1.x",
-        "passport-github": "0.1.x",
         "uglify-js": "2.2.x",
         "clean-css": "0.9.x",
-        "mixpanel": "0.0.x"
+        "mixpanel": "0.0.x",
+        "juan-rss": "0.1.x"
     },
     "engine": {
         "node": ">=0.6"

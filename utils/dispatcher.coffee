@@ -23,6 +23,8 @@ module.exports = (req, res, next) ->
             helper res, 500, content_type, data
     res.html = (err, data) ->
         ifer res, err, data, 'text/html'
+    res.xml = (err, data) ->
+        ifer res, err, data, 'text/xml'
     res.js = (err, data) ->
         ifer res, err, data, 'text/javascript'
     res.css = (err, data) ->

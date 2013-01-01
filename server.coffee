@@ -11,6 +11,8 @@ db = require './db'
 posts = db.posts
 projects = db.projects
 raws = db.raws
+Rss = require './utils/rss'
+rss = new Rss posts
 
 Datepicker = require './utils/datepicker'
 datepicker = new Datepicker posts
@@ -94,15 +96,20 @@ routes =
                 placeholder @req, @res, data
     '/posts/:id':
         get: (id) ->
-            if '--local' not in process.argv
-                mixpanel.track "#{id} post hit"
             posts.one id, (err, data) =>
+                if not err and '--local' not in process.argv
+                    mixpanel.track "#{data.title} post hit"
                 placeholder @req, @res, data
     '/raw/:id':
         get: (id) ->
             if '--local' not in process.argv
                 mixpanel.track "#{id} raw hit"
             raws.one id, @res.html
+    '/feed':
+        get: ->
+            if '--local' not in process.argv
+                mixpanel.track "feed request"
+            rss.generate @res.xml
 router = new director.http.Router(routes).configure async: true
 app.use (req, res, next) ->
     router.dispatch req, res, (err) ->
