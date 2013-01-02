@@ -5,9 +5,10 @@ animateIn = ->
     $("#content").animate width: "#{width - 220}px", 1500
     $("#title").animate width: "#{width - 220}px", 1500
     $("canvas").animate width: "#{width - 230}px", 1500
-    container.animate width: "455px", 1500, ->
+    container.animate width: "462px", 1500, ->
         $(this).animate height: $(window).height(), 1500, ->
             $("#disqus_thread").show()
+            $("#dsq1").css height: $(window).height()
 
 $("#comments > a").toggle ->
     if container.length < 2

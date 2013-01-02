@@ -1,5 +1,7 @@
-div#comments(style="background-color:#ffffe3;position:absolute;top:-16px;right:-7px;width:100px;height:40px;z-index:2")
-    a(href="/comments", style="display:block;width:100px;height:40px") comments
+div#comments
+    a(href="/comments") comments
+div#atop.aheader Karol Woźniak
+span#aka aka 
 span.aheader Kenji Takahashi
 br
 span.atext
@@ -9,12 +11,16 @@ span.aheader Projects
 br
 span.atext
     each project in projects
-        if project.active == true
+        if project.active
             a(href="#{project.site}")= project.name
         else
             a(href="#{project.site}").pdname= project.name
         = ' ' + project.desc
         br
-span#copyright Kenji Takahashi © 2012
+    span
+        | and more @ 
+        a(href="http://github.com/KenjiTakahashi") github
+    br
+span#copyright Kenji Takahashi © 2012 - 2013
     a(href="https://mixpanel.com/f/partner")
         img(src="//cdn.mxpnl.com/site_media/images/partner/badge_blue.png", alt="Mobile Analytics")

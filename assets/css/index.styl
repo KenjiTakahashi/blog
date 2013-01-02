@@ -238,9 +238,29 @@ a:hover
     position fixed
     right 7px
     width 225px
-    margin-top 28px
+    margin-top 12px
     float right
     font-weight bold
+    #comments
+        position absolute
+        right -7px
+        background-color $bcolor
+        z-index 2
+        a
+            display block
+            width 100px
+            height 40px
+            text-decoration none
+            text-align center
+            line-height 40px
+            font-size 18px
+            font-weight normal
+    #atop
+        margin-top 51px
+    #aka
+        color $bcolor
+        margin-left -23px
+        font-size 13px
     .aheader
         color $rhcolor
         font-size 22px
@@ -254,8 +274,10 @@ a:hover
             color $ahover
         .pdname
             text-decoration line-through
+        span
+            float right
     #copyright
-        color $rhcolor
-        font-size 13px
         position fixed
         bottom 16px
+        color $rhcolor
+        font-size 13px
