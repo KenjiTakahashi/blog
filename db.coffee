@@ -39,7 +39,7 @@ class Post
             if err or not data
                 callback err, null
             else
-                callback err, data.latest
+                callback null, data.latest
 
     dates: (start, end, callback) ->
         start.setHours 0, 0, 0, 0
@@ -75,7 +75,7 @@ class Post
                 has_next = true
                 if tmp.length - o <= 12
                     has_next = false
-                callback err, out.slice(0, 12), has_prev, has_next
+                callback null, out.slice(0, 12), has_prev, has_next
 
     titles: (d, t, o, callback) ->
         if not o?
@@ -102,7 +102,7 @@ class Post
                     has_next = true
                     if count <= 10
                         has_next = false
-                    callback err, data, has_prev, has_next
+                    callback null, data, has_prev, has_next
 
     last20: (callback) ->
         query = @_model.find {}, {title: 1, date: 1}
@@ -128,8 +128,17 @@ class Asset
     constructor: ->
         @_model = mongo.model 'Asset', AssetSchema
 
-    all_of_type: (type, callback) =>
-        @_model.find {type: type}, callback
+    _type: (type) ->
+        if type == 'js' or type == 'coffee'
+            return ['js', 'coffee']
+        if type == 'css' or type == 'styl'
+            return ['css', 'styl']
+
+    all_of_type: (type, callback) ->
+        @_model.find {type: {$in: @_type type}}, callback
+
+    one: (type, name, callback) ->
+        @_model.findOne {type: {$in: @_type type}, name: name}, callback
 
 module.exports =
     posts: new Post

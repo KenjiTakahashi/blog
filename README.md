@@ -60,6 +60,7 @@ changelog
 - more descriptive mixpanel posts tracking
 - RSS feed
 - fixed some minor bugs
+- serving in-db assets dynamically if not cached on startup
 
 todo
 ----
