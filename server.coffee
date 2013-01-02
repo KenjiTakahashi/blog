@@ -4,6 +4,7 @@ connect = require 'connect'
 Assets = require './utils/assets'
 Mixpanel = require 'mixpanel'
 mixpanel = Mixpanel.init "213db0f74e843fe533c2a173757c1d0a"
+fs = require 'fs'
 
 mdify = require './utils/markdownify'
 
@@ -116,6 +117,15 @@ routes =
             if '--local' not in process.argv
                 mixpanel.track "feed request"
             rss.generate @res.xml
+    '/comments':
+        get: ->
+            if '--local' not in process.argv
+                mixpanel.track "comments opened"
+            fs.readFile "#{__dirname}/views/comments.html", (err, data) =>
+                if err or not data
+                    @res.html err, null
+                else
+                    @res.html null, data.toString()
 router = new director.http.Router(routes).configure async: true
 app.use (req, res, next) ->
     router.dispatch req, res, (err) ->
