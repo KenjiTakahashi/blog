@@ -8,7 +8,7 @@
         "director": "1.1.x",
         "mongoose": "3.5.x",
         "jade": "0.27.x",
-        "stylus": "0.31.x",
+        "stylus": "0.32.x",
         "connect": "2.7.x",
         "marked": "0.2.x",
         "highlight.js": "7.3.x",

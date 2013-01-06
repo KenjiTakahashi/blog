@@ -62,6 +62,7 @@ changelog
 - fixed some minor bugs
 - serving in-db assets dynamically if not cached on startup
 - updated right side a bit
+- updated stylus to 0.32.x
 
 todo
 ----
