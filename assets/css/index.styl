@@ -31,15 +31,34 @@ a:hover
         background-color $amain
     .pn:hover
         background-color $ahover
+    .rss
+        border-left 8px solid $rhcolor
+        border-bottom 8px solid $rhcolor
     #rss
-        position relative
-        left 123px
-        top -20px
+        position absolute
+        left 115px
+        display block
+        width 40px
+        height 40px
+        border-radius 0 0 0 45px
+        div
+            position relative
+            left 4px
+            width 28px
+            height 28px
+            border-radius 0 0 0 33px
+            div
+                position relative
+                left 9px
+                width 0px
+                height 0px
+                border-radius 100%
+                border 9px solid $rhcolor
     #date
         display inline-block
         font-family serif
         position relative
-        left 123px
+        left 163px
         background-color $bcolor
         width 42px
         height 60px
