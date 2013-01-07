@@ -84,8 +84,7 @@ placeholder = (req, res, post) ->
                                 tags: tags,
                                 prev_tag: prev_tag,
                                 next_tag: next_tag,
-                                (err, data) ->
-                                    res.html err, data
+                                res.html
 
 routes =
     '/':
@@ -116,12 +115,15 @@ routes =
             if '--local' not in process.argv
                 mixpanel.track "feed request"
             rss.generate @res.xml
-    '/comments':
-        get: ->
-            if '--local' not in process.argv
-                mixpanel.track "comments opened"
-            app.render "comments.jade", (err, data) =>
-                @res.html err, data
+    '/comments/:threadid':
+        get: (threadid) ->
+            posts.one threadid, (err, data) =>
+                if err or not data
+                    @res.html err, null
+                else
+                    if '--local' not in process.argv
+                        mixpanel.track "comments opened for #{data.title}"
+                    app.render "comments.jade", {id: data.title}, @res.html
 router = new director.http.Router(routes).configure async: true
 app.use (req, res, next) ->
     router.dispatch req, res, (err) ->

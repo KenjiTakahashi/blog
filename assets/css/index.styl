@@ -246,15 +246,36 @@ a:hover
         right -7px
         background-color $bcolor
         z-index 2
-        a
-            display block
-            width 100px
-            height 40px
-            text-decoration none
-            text-align center
-            line-height 40px
-            font-size 18px
-            font-weight normal
+    .commentsa
+        position relative
+        display block
+        width 100px
+        height 40px
+        text-decoration none
+        text-align center
+        line-height 40px
+        font-size 18px
+        font-weight normal
+    .commentsa:after
+        position absolute
+        content ""
+        width 0px
+        height 0px
+    #commentsa:after
+        right 100%
+        border-right 11px solid $noticecolor
+        border-top 20px solid transparent
+        border-bottom 20px solid transparent
+    #acommentsa
+        color $bcolor
+        background-color $amain
+    #acommentsa:hover
+        color $ahover
+    #acommentsa:after
+        left 100%
+        border-left 11px solid $amain
+        border-top 20px solid transparent
+        border-bottom 20px solid transparent
     #atop
         margin-top 51px
     #aka

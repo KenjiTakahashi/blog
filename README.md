@@ -63,13 +63,13 @@ changelog
 - serving in-db assets dynamically if not cached on startup
 - updated right side a bit
 - updated stylus to 0.32.x
+- comments (disqus based for now)
 
 todo
 ----
-* comments
+* custom made comments
 * stylesheet refactor
 * scroll lists with wheel
 * fix: horizontal code scroll shouldn't affect line numbers
 * showing images
-* websocketize
 * hiding side-menus
