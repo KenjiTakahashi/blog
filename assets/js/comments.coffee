@@ -20,26 +20,12 @@ $("#comments a").toggle ->
     if container.children().length < 2
         path = $(@).attr('href').split '/'
         path = path[path.length - 1]
-        $(document).ajaxSend ->
-            data = $(@).data()
-            if not data.spinner?
-                opts = {
-                    lines: 10
-                    length: 0
-                    corners: 0
-                    color: "#151515"
-                    speed: 0.5
-                    trail: 10
-                }
-                spinner = new Spinner(opts)
-                data.spinner = spinner.spin this.getElementById 'commentsa'
-        $(document).ajaxComplete ->
-            data = $(@).data()
-            if data.spinner?
-                data.spinner.stop()
-                delete data.spinner
-        $.get "/comments/#{path}", (data) ->
-            animateIn(data)
+        $.ajax "/comments/#{path}", {
+            beforeSend: ->
+                $.spin 'commentsa', @
+            success: animateIn
+            complete: $.unspin
+        }
     else
         animateIn()
 , ->
