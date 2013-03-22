@@ -25,12 +25,29 @@ a:hover
         text-decoration none
     .pn
         position relative
-        display inline-block
-        height 4px
         text-decoration none
-        background-color $amain
-    .pn:hover
-        background-color $ahover
+        font-size 0px
+    .pn:after
+        position absolute
+        content ""
+    .pntop:after
+        bottom 100%
+        border-left 112px inset transparent
+        border-right 112px inset transparent
+        border-bottom 11px solid $bcolor
+    a.pntop:after
+        border-bottom 11px solid $noticecolor
+    a.pntop:hover:after
+        border-bottom 11px solid $ahover
+    .pnbot:after
+        top 100%
+        border-left 112px inset transparent
+        border-right 112px inset transparent
+        border-top 11px solid $bcolor
+    a.pnbot:after
+        border-top 11px solid $noticecolor
+    a.pnbot:hover:after
+        border-top 11px solid $ahover
     .rss
         border-left 8px solid $rhcolor
         border-bottom 8px solid $rhcolor
@@ -54,6 +71,8 @@ a:hover
                 height 0px
                 border-radius 100%
                 border 9px solid $rhcolor
+    #rss:hover
+        border-color $ahover
     #date
         display inline-block
         font-family serif
@@ -82,105 +101,64 @@ a:hover
         background-color $bcolor
         color #151515
         width 224px
-        height 62px
+        height 49px
         font-size 15px
         margin-top 16px
+        padding-top 5px
+        text-align center
         #selected
             font-weight bold
         .pn
-            width 31px
-            top 2px
-        #prev
-            left 18px
-        #next
-            left 100px
-        #my
-            display inline-block
-            position relative
-            left 59px
-            top 5px
-        .sep
-            display inline-block
-            position relative
-            top 5px
-            background-color $amain
-            width 4px
-            height 10px
-        #sleft
-            left 31px
-        #sright
-            left 87px
+            top -5px
+            height 49px
+            width 0px
+        .pn:after
+            border-top 27px inset transparent
+            border-bottom 27px inset transparent
+        .pnleft
+            float left
+        .pnleft:after
+            right 100%
+            border-right 11px solid $noticecolor
+        .pnleft:hover:after
+            border-right 11px solid $ahover
+        .pnright
+            float right
+        .pnright:after
+            left 100%
+            border-left 11px solid $noticecolor
+        .pnright:hover:after
+            border-left 11px solid $ahover
         #datepicker
             border-spacing 0px
             position relative
-            left 18px
-            top 5px
+            left 28px
             font-size 11px
             td
                 padding 2px 0px 1px
                 width 28px
                 text-align center
                 vertical-align middle
-                border-top 4px solid $amain
-            .tsep
-                width 4px
-                span
-                    display inline-block
-                    width 4px
-                    height 7px
-                    background-color $amain
-    .pin
-        position relative
-        display inline-block
-        height 4px
-        width 189px
-        left 18px
-        text-decoration none
-        background-color $amain
     #tags_chooser
         background-color $bcolor
         width 224px
-        height 230px
-        margin-top 16px
+        height 214px
+        margin-top 27px
         font-size 14px
-        .pn
-            width 189px
-            left 18px
-        #tprev
-            top -1px
-        #tnext
-            bottom 6px
         .tagcount
             width 37px
             float right
             text-align right
-            span
-                position relative
-                top 2px
-                display inline-block
-                width 4px
-                height 13px
-                background-color $amain
-                float left
     #posts
         background-color $bcolor
         width 224px
-        height 196px
-        margin-top 16px
+        height 180px
+        margin-top 38px
         font-size 14px
-        .pn
-            width 189px
-            left 18px
-        #pprev
-            top -1px
-        #pnext
-            bottom 10px
-        .links
-            height 174px
     .links
         list-style none
-        padding 0px 25px 0px 25px
-        margin -3px 0px 0px
+        padding 5px 18px 5px 18px
+        margin 0px
         li
             height 17px
 
@@ -206,7 +184,7 @@ a:hover
             font-size 12px
             padding-bottom 2px
     #title
-        border-bottom 4px solid $amain
+        border-bottom 4px solid $noticecolor
     #ptitle
         position relative
         visibility hidden
