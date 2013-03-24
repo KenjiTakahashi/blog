@@ -40,6 +40,8 @@ class Assets
         fpath = "#{@_path}/#{asset}"
         try
             for file in fs.readdirSync fpath
+                if file[-1..] == '~'
+                    continue
                 content = fs.readFileSync("#{fpath}/#{file}").toString()
                 ext = path.extname file
                 base = path.basename file, ext
