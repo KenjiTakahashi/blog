@@ -122,7 +122,10 @@ class Raw
 
     one: (id, callback) ->
         @_model.findOne name: id, (err, data) ->
-            callback err, data.content
+            if err or not data
+                callback err, null
+            else
+                callback null, data.content
 
 class Asset
     constructor: ->
