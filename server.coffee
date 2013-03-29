@@ -18,7 +18,7 @@ Datepicker = require './utils/datepicker'
 datepicker = new Datepicker posts
 
 run = ->
-    app.listen process.env.app_port || 8080
+    app.listen process.env.app_port || 8080, process.env.app_ip || "127.0.0.1"
 
 assets = new Assets "#{__dirname}/assets", db.assets, run
 
