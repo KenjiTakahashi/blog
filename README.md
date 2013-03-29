@@ -65,13 +65,14 @@ changelog
 - updated stylus to 0.32.x
 - comments (disqus based for now)
 
-next:
+0.5.1:
 - updated jade to 0.28.x
 - updated express to 3.1.x
 - updated clean-css to 0.10.x
 - updated coffee-script to 1.6.x
 - updated mongoose to 3.6.x
 - reworked left side looks
+- fixed in-db coffee/styl assets compilation
 
 todo
 ----

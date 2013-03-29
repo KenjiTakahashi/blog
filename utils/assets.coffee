@@ -62,7 +62,7 @@ class Assets
                     if err or not data
                         next()
                     else
-                        content = @_compile asset_type, data.content
+                        content = @_compile data.type, data.content
                         if asset_type == 'coffee'
                             asset_type = 'js'
                         if asset_type == 'styl'
