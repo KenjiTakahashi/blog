@@ -72,12 +72,18 @@ div#posts
     else
         span.pn.pntop
     ul.links
+        - var index = 0
         each title in titles
+            - index += 1;
             li
                 a(href="/posts/#{title._id}#{urls[6]}").post
                     = title.title.slice(0, 20)
                     if(title.title.length > 20)
                         = '...'
+        while index < 10
+            - index += 1;
+            li
+                span
     if(next_title[0])
         a(href="#{urls[0]}?p=#{next_title[1]}#{urls[2]}").pn.pnbot
     else
