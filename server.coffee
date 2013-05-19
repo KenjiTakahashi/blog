@@ -1,6 +1,6 @@
 express = require 'express'
 coffeecup = require 'coffeecup'
-Assets = require './utils/assets'
+#Assets = require './utils/assets'
 Mixpanel = require 'mixpanel'
 mixpanel = Mixpanel.init "213db0f74e843fe533c2a173757c1d0a"
 dispatcher = require './dispatcher.coffee'
@@ -11,7 +11,7 @@ db = require './db'
 posts = db.posts
 projects = db.projects
 raws = db.raws
-Rss = require './utils/rss'
+Rss = require './rss'
 rss = new Rss posts
 
 datepicker = require './datepicker'
@@ -53,5 +53,8 @@ app.get '/projects', (req, res) ->
             res.html err, null
         else
             res.render 'index', items: data, res.html
+
+app.get '/feed', (req, res) ->
+    rss.generate res.xml
 
 app.listen process.env.app_port || 8080, process.env.app_ip || "127.0.0.1"

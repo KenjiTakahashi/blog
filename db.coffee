@@ -34,6 +34,11 @@ class Post
     titles: (callback) ->
         @_model.find {}, {title: 1, date: 1, short: 1}, {sort: {date: -1}}, callback
 
+    last20: (callback) ->
+        query = @_model.find {}, {title: 1, date: 1}
+        query.sort(date: -1).limit 20
+        query.exec callback
+
 class Project
     constructor: ->
         @_model = mongo.model 'Project', ProjectSchema

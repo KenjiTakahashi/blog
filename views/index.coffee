@@ -2,7 +2,7 @@ doctype 5
 html ->
     head ->
         meta charset: 'utf-8'
-        title 'Karol Woźniak aka Kenji Takahashi :: main'
+        title 'Karol Woźniak aka Kenji Takahashi'
         text "#{css 'code'}#{css 'index'}"
     body ->
         div id: "head", ->
@@ -13,6 +13,8 @@ html ->
             a href: "/", -> 'Karol Woźniak'
             text ' aka '
             a href: "/", -> 'Kenji Takahashi'
+            text ' :: '
+            a href:"/feed", -> 'rss'
         if @items? and @items.length > 0
             ul id: "items", ->
                 for item in @items
