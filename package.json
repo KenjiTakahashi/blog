@@ -1,0 +1,25 @@
+{
+    "name": "kenji.sx",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "express": "3.2.x",
+        "mongoose": "3.6.x",
+        "coffeecup": "0.3.x",
+        "connect-assets": "2.4.x",
+        "stylus": "0.32.x",
+        "marked": "0.2.x",
+        "highlight.js": "7.3.x",
+        "coffee-script": "1.6.x",
+        "uglify-js": "2.3.x",
+        "clean-css": "1.0.x",
+        "juan-rss": "0.1.x"
+    },
+    "engine": {
+        "node": ">=0.6"
+    },
+    "scripts": {
+        "prepublish": "coffee -c utils/*.coffee *.coffee"
+    },
+    "main": "server.js"
+}

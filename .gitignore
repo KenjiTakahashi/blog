@@ -1,0 +1,7 @@
+*~
+.*swp
+.*appconfig
+node_modules/
+tools/
+posts/
+.td
