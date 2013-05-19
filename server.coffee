@@ -1,6 +1,6 @@
 express = require 'express'
 coffeecup = require 'coffeecup'
-#Assets = require './utils/assets'
+DBAssets = require './assets'
 Mixpanel = require 'mixpanel'
 mixpanel = Mixpanel.init "213db0f74e843fe533c2a173757c1d0a"
 dispatcher = require './dispatcher.coffee'
@@ -16,7 +16,7 @@ rss = new Rss posts
 
 datepicker = require './datepicker'
 
-#assets = new Assets "#{__dirname}/assets", db.assets, run
+dbassets = new DBAssets db.assets
 
 app = express()
 app.engine 'coffee', coffeecup.__express
@@ -24,7 +24,7 @@ app.set 'view engine', 'coffee'
 app.set 'views', "#{__dirname}/views"
 app.use dispatcher
 app.use assets buildDir: no
-#app.use assets.middleware
+app.use dbassets.middleware
 
 app.get '/', (req, res) ->
     res.render 'index'

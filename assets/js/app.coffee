@@ -5,7 +5,6 @@ positionFoot = ->
         html.clientHeight, html.offsetHeight
     foot = document.getElementById "foot"
     height = foot.height || foot.offsetHeight
-    console.log wheight, height
     foot.style.top = "#{wheight - height - 10}px"
 
 addEvent = (elem, type, eventHandle) ->
