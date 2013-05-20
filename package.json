@@ -1,6 +1,6 @@
 {
     "name": "kenji.sx",
-    "version": "0.1.0",
+    "version": "1.0",
     "private": true,
     "dependencies": {
         "express": "3.2.x",
@@ -13,13 +13,15 @@
         "coffee-script": "1.6.x",
         "uglify-js": "2.3.x",
         "clean-css": "1.0.x",
-        "juan-rss": "0.1.x"
+        "juan-rss": "0.1.x",
+        "forever": "0.10.x"
     },
     "engine": {
         "node": ">=0.6"
     },
     "scripts": {
-        "prepublish": "coffee -c utils/*.coffee *.coffee"
+        "prepublish": "coffee -c *.coffee",
+        "start": "nohup forever server.js"
     },
     "main": "server.js"
 }
