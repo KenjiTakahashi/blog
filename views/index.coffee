@@ -33,4 +33,4 @@ html ->
                 p id: "title", -> "#{@post.title}"
                 text "#{@post.content}"
         div id: "foot", -> 'Kenji Takahashi © 2013'
-        text "#{js 'app'}"
+        text "#{js 'app'}#{js 'anal'}"
