@@ -3,17 +3,31 @@ $amain = #555555
 $ahover = #1c7272
 
 html, body
+    margin 0px
     height 100%
-    width 100%
-html
-    display table
-    margin auto
 body
-    display table-cell
-    vertical-align middle
     color $main
     font-family monospace
-    padding 20px 100px
+#o
+    height 100%
+    min-height 100%
+    display table
+    width 100%
+#i
+    display table-cell
+    vertical-align middle
+    padding 10px 0px 14px
+    width 70%
+.m
+    max-width 15%
+#foot
+    clear both
+    margin-top -14px
+    position relative
+    right 10px
+    bottom 10px
+    float right
+
 #head
     font-size 16px
 #items
@@ -35,19 +49,20 @@ a:hover
     text-align justify
     a, #title
         font-weight 700
-#foot
-    position absolute
-    right 10px
-pre code
-    background white
-    margin 0px
-    padding 0px
-code
-    font-size 11px
+    a
+        text-decoration underline
+pre
+    overflow-x auto
+    code
+        background white
+        margin 0px
+        padding 0px
+        font-size 11px
 canvas
     background white
 .notice
     background $main
     padding 5px
+    margin 5px 0px
     span
         float right

@@ -7,5 +7,5 @@ That's the second version, minimalistic this time.
 todo
 ----
 * custom made comments
-* fix: horizontal code scroll shouldn't affect line numbers
+* get back line numbers
 * showing images
