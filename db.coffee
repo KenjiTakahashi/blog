@@ -63,11 +63,7 @@ class Raw
         @_model = mongo.model 'Raw', RawSchema
 
     one: (id, callback) ->
-        @_model.findOne name: id, (err, data) ->
-            if err or not data
-                callback err, null
-            else
-                callback null, data.content
+        @_model.findOne name: id, callback
 
 class Asset
     constructor: ->

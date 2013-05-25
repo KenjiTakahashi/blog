@@ -52,9 +52,11 @@ app.get '/images/:id', (req, res) ->
             res.send 500, null
             res.end()
         else
-            console.log data
             res.set 'Content-Type', "image/#{data.type}"
             res.end data.content
+
+app.get '/raw/:id', (req, res) ->
+    raws.one req.params.id, res.html
 
 app.get '/projects', (req, res) ->
     projects.all (err, data) ->
