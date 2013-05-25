@@ -9,10 +9,15 @@ PostSchema = new mongo.Schema
     tags: type: Array, default: []
     date: type: Date, default: new Date
 
+ImageSchema = new mongo.Schema
+    name: type: String, index: true, required: yes
+    type: type: String, required: yes
+    content: type: Buffer, required: yes
+
 ProjectSchema = new mongo.Schema
     name: type: String, required: yes
     desc: type: String, default: ''
-    site: type: String, requored: yes
+    site: type: String, required: yes
     active: type: Boolean, default: true
 
 RawSchema = new mongo.Schema
@@ -32,12 +37,19 @@ class Post
         @_model.findOne short: short, callback
 
     titles: (callback) ->
-        @_model.find {}, {title: 1, date: 1, short: 1}, {sort: {date: -1}}, callback
+        query = @_model.find {}, {title: 1, date: 1, short: 1}
+        query.sort(date: -1).exec callback
 
     last20: (callback) ->
         query = @_model.find {}, {title: 1, date: 1}
-        query.sort(date: -1).limit 20
-        query.exec callback
+        query.sort(date: -1).limit(20).exec callback
+
+class Image
+    constructor: ->
+        @_model = mongo.model 'Image', ImageSchema
+
+    one: (name, callback) ->
+        @_model.findOne name: name, callback
 
 class Project
     constructor: ->
@@ -75,6 +87,7 @@ class Asset
 
 module.exports =
     posts: new Post
+    images: new Image
     projects: new Project
     raws: new Raw
     assets: new Asset

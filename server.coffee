@@ -7,6 +7,7 @@ mdify = require './markdownify'
 
 db = require './db'
 posts = db.posts
+images = db.images
 projects = db.projects
 raws = db.raws
 Rss = require './rss'
@@ -39,15 +40,25 @@ app.get '/posts', (req, res) ->
 
 app.get '/posts/:short', (req, res) ->
     posts.one req.params.short, (err, data) ->
-        if err
+        if err or not data?
             res.html err, null
         else
             data.content = mdify data.content
             res.render 'index', post: data, res.html
 
+app.get '/images/:id', (req, res) ->
+    images.one req.params.id, (err, data) ->
+        if err or not data?
+            res.send 500, null
+            res.end()
+        else
+            console.log data
+            res.set 'Content-Type', "image/#{data.type}"
+            res.end data.content
+
 app.get '/projects', (req, res) ->
     projects.all (err, data) ->
-        if err
+        if err or not data?
             res.html err, null
         else
             res.render 'index', items: data, res.html

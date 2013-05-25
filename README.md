@@ -7,5 +7,4 @@ That's the second version, minimalistic this time.
 todo
 ----
 * custom made comments
-* get back line numbers
-* showing images
+* bring back line numbers
