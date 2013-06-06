@@ -12,7 +12,6 @@
         "highlight.js": "7.3.x",
         "coffee-script": "1.6.x",
         "uglify-js": "2.3.x",
-        "clean-css": "1.0.x",
         "juan-rss": "0.1.x",
         "forever": "0.10.x"
     },

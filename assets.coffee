@@ -1,7 +1,6 @@
 path = require 'path'
 coffee = require 'coffee-script'
 uglifyjs = require 'uglify-js'
-cleancss = require 'clean-css'
 url = require 'url'
 crypto = require 'crypto'
 
