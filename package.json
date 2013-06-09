@@ -3,6 +3,7 @@
     "version": "0.5.1",
     "private": true,
     "dependencies": {
+        "nodefly": "0.1.x",
         "express": "3.1.x",
         "director": "1.1.x",
         "mongoose": "3.6.x",

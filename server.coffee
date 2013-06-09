@@ -1,3 +1,8 @@
+app_name = process.env.OPENSHIFT_APP_NAME || 'localdev'
+host_url = process.env.OPENSHIFT_APP_DNS  || 'localhost'
+gear_id = process.env.OPENSHIFT_GEAR_UUID || 1
+require('nodefly').profile process.env.nodefly, [app_name, host_url, gear_id]
+
 express = require 'express'
 director = require 'director'
 connect = require 'connect'
