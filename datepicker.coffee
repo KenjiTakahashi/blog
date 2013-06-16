@@ -9,7 +9,7 @@ class Datepicker
         return @_months[number]
 
     get_string: (date) =>
-        return "#{date.getDate()}
+        return "#{("0" + date.getDate())[-2..]}
                 #{@get_month_name(date.getMonth())}
                 #{date.getFullYear()}"
 
