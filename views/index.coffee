@@ -40,6 +40,8 @@ html ->
                         text "#{@post.content}"
             div class: "m"
         div id: "foot", ->
+            a target: "_blank", href: "http://flattr.com/thing/1490590/Karol-Woniak-aka-Kenji-Takahashi", -> 'flattr'
+            text ' :: '
             a target: "_blank", href: "https://github.com/KenjiTakahashi", -> 'github'
             text ' :: '
             a href:"/feed", -> 'rss'
