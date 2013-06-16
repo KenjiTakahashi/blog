@@ -56,7 +56,11 @@ app.get '/images/:id', (req, res) ->
             res.end data.content
 
 app.get '/raw/:id', (req, res) ->
-    raws.one req.params.id, res.html
+    raws.one req.params.id, (err, data) ->
+        if err or not data?
+            res.html err, null
+        else
+            res.html null, data.content
 
 app.get '/projects', (req, res) ->
     projects.all (err, data) ->
