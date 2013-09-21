@@ -29,45 +29,28 @@ app.get '/', (req, res) ->
     res.render 'index'
 
 app.get '/posts', (req, res) ->
-    posts.titles (err, data) ->
-        if err
-            res.html err, null
-        else
-            res.render 'index',
-                items: data,
-                date: datepicker.get_string,
-                res.html
+    posts.titles res.dis res.html, (res, data) ->
+        res.render 'index',
+            items: data,
+            date: datepicker.get_string,
+            res.html
 
 app.get '/posts/:short', (req, res) ->
-    posts.one req.params.short, (err, data) ->
-        if err or not data?
-            res.html err, null
-        else
-            data.content = mdify data.content
-            res.render 'index', post: data, res.html
+    posts.one req.params.short, res.dis res.html, (res, data) ->
+        data.content = mdify data.content
+        res.render 'index', post: data, res.html
 
 app.get '/images/:id', (req, res) ->
-    images.one req.params.id, (err, data) ->
-        if err or not data?
-            res.send 500, null
-            res.end()
-        else
-            res.set 'Content-Type', "image/#{data.type}"
-            res.end data.content
+    images.one req.params.id, res.dis res.img, (res, data) ->
+        res.img null, data.content, data.type
 
 app.get '/raw/:id', (req, res) ->
-    raws.one req.params.id, (err, data) ->
-        if err or not data?
-            res.html err, null
-        else
-            res.html null, data.content
+    raws.one req.params.id, res.dis res.html, (res, data) ->
+        res.html null, data.content
 
 app.get '/projects', (req, res) ->
-    projects.all (err, data) ->
-        if err or not data?
-            res.html err, null
-        else
-            res.render 'index', items: data, res.html
+    projects.all res.dis res.html, (res, data) ->
+        res.render 'index', items: data, res.html
 
 app.get '/feed', (req, res) ->
     rss.generate res.xml

@@ -29,4 +29,13 @@ module.exports = (req, res, next) ->
         ifer res, err, data, 'text/javascript'
     res.css = (err, data) ->
         ifer res, err, data, 'text/css'
+    res.img = (err, data, type) ->
+        ifer res, err, data, "image/#{type}"
+    res.dis = (fail, succ) ->
+        _go = (err, data) ->
+            if err or not data?
+                fail err, null
+            else
+                succ res, data
+        return _go
     next()
