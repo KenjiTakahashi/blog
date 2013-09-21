@@ -18,7 +18,7 @@ class RSS
                 for item in data
                     @generator.item {
                         title: item.title
-                        url: "http://kenji.sx/posts/#{item._id}"
+                        url: "http://kenji.sx/posts/#{item.short}"
                         date: item.date
                     }
                 callback null, @generator.xml()

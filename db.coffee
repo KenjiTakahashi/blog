@@ -41,7 +41,7 @@ class Post
         query.sort(date: -1).exec callback
 
     last20: (callback) ->
-        query = @_model.find {}, {title: 1, date: 1}
+        query = @_model.find {}, {title: 1, date: 1, short: 1}
         query.sort(date: -1).limit(20).exec callback
 
 class Image
