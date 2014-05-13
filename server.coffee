@@ -1,7 +1,7 @@
 express = require 'express'
 coffeecup = require 'coffeecup'
 DBAssets = require './assets'
-dispatcher = require './dispatcher.coffee'
+dispatcher = require './dispatcher'
 assets = require 'connect-assets'
 mdify = require './markdownify'
 
