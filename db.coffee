@@ -1,6 +1,6 @@
 mongo = require 'mongoose'
 
-mongo.connect process.env.MONGO_URI || "mongodb://localhost:27017/blog"
+mongo.connect process.env.MONGO_URL || "mongodb://localhost:27017/blog"
 
 PostSchema = new mongo.Schema
     title: type: String, required: yes
