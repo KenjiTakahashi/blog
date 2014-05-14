@@ -12,8 +12,7 @@
         "highlight.js": "8.0.x",
         "coffee-script": "1.7.x",
         "uglify-js": "2.4.x",
-        "juan-rss": "0.1.x",
-        "forever": "0.11.x"
+        "juan-rss": "0.1.x"
     },
     "devDependencies": {
         "commander": "1.3.x"
@@ -23,7 +22,7 @@
     },
     "scripts": {
         "postinstall": "coffee -c *.coffee",
-        "start": "nohup forever server.js"
+        "start": "node server.js"
     },
     "main": "server.js"
 }

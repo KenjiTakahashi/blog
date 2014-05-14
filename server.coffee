@@ -55,4 +55,4 @@ app.get '/projects', (req, res) ->
 app.get '/feed', (req, res) ->
     rss.generate res.xml
 
-app.listen process.env.app_port || 8080, process.env.app_ip || "127.0.0.1"
+app.listen process.env.app_port || 5000
