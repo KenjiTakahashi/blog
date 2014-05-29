@@ -1,6 +1,8 @@
 mongo = require 'mongoose'
 
-mongo.connect process.env.MONGO_URL || "mongodb://localhost:27017/blog"
+mongo_host = process.env.MONGODB_PORT_27017_TCP_ADDR || "localhost"
+mongo_port = process.env.MONGODB_PORT_27017_TCP_PORT || 27017
+mongo.connect "mongodb://#{mongo_host}:#{mongo_port}/blog"
 
 PostSchema = new mongo.Schema
     title: type: String, required: yes
