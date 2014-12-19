@@ -1,8 +1,4 @@
-*~
-.*swp
-.*appconfig
-node_modules/
 tools/
 posts/
 anal/
-.td
+blog
