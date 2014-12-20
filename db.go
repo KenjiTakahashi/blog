@@ -9,34 +9,34 @@ import (
 )
 
 type Project struct {
-	Id int64
-	Name string `sql:"not null;unique"`
+	Id          int64
+	Name        string `sql:"not null;unique"`
 	Description string `sql:"size:NULL"`
-	Site string
-	Active bool
+	Site        string
+	Active      bool
 }
 
 type Post struct {
-	Id int64
-	Short string `sql:"not null;unique"`
-	Title string `sql:"size:NULL"`
-	Content string `sql:"size:NULL"`
+	Id        int64
+	Short     string `sql:"not null;unique"`
+	Title     string `sql:"size:NULL"`
+	Content   string `sql:"size:NULL"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Tags []Tag `gorm:"many2many:posts_tags;"`
+	Tags      []Tag `gorm:"many2many:posts_tags;"`
 }
 
 type Tag struct {
-	Id int64
-	Name string `sql:"not null;unique"`
+	Id    int64
+	Name  string `sql:"not null;unique"`
 	Posts []Post `gorm:"many2many:posts_tags;"`
 }
 
 type Asset struct {
-	Id int64
-	Name string `sql:"not null"`
-	Type string `sql:"not null"`
-	Kind string `sql:"not null"`
+	Id      int64
+	Name    string `sql:"not null"`
+	Type    string `sql:"not null"`
+	Kind    string `sql:"not null"`
 	Content []byte
 }
 

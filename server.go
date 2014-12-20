@@ -80,7 +80,7 @@ func HProjects(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 func main() {
 	router := &httprouter.Router{
-		NotFound: H404,
+		NotFound:     H404,
 		PanicHandler: H500,
 	}
 	router.GET("/", HRoot)

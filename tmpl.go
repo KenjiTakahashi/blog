@@ -15,28 +15,28 @@ import (
 var sc = `
 .pln { color: #000 }
 @media screen {
-  .str { color: #080 }
-  .kwd { color: #008 }
-  .com { color: #800 }
-  .typ { color: #606 }
-  .lit { color: #066 }
-  .pun, .opn, .clo { color: #660 }
-  .tag { color: #008 }
-  .atn { color: #606 }
-  .atv { color: #080 }
-  .dec, .var { color: #606 }
-  .fun { color: red }
+	.str { color: #080 }
+	.kwd { color: #008 }
+	.com { color: #800 }
+	.typ { color: #606 }
+	.lit { color: #066 }
+	.pun, .opn, .clo { color: #660 }
+	.tag { color: #008 }
+	.atn { color: #606 }
+	.atv { color: #080 }
+	.dec, .var { color: #606 }
+	.fun { color: red }
 }
 @media print, projection {
-  .str { color: #060 }
-  .kwd { color: #006; font-weight: bold }
-  .com { color: #600; font-style: italic }
-  .typ { color: #404; font-weight: bold }
-  .lit { color: #044 }
-  .pun, .opn, .clo { color: #440 }
-  .tag { color: #006; font-weight: bold }
-  .atn { color: #404 }
-  .atv { color: #060 }
+	.str { color: #060 }
+	.kwd { color: #006; font-weight: bold }
+	.com { color: #600; font-style: italic }
+	.typ { color: #404; font-weight: bold }
+	.lit { color: #044 }
+	.pun, .opn, .clo { color: #440 }
+	.tag { color: #006; font-weight: bold }
+	.atn { color: #404 }
+	.atv { color: #060 }
 }
 pre.prettyprint { padding: 2px; border: 1px solid #888 }
 ol.linenums { margin-top: 0; margin-bottom: 0 }
@@ -239,12 +239,12 @@ var tmplFuncs = template.FuncMap{
 			return []byte(fmt.Sprintf(c, ms[0], ms[1]))
 		})
 		bf = ri.ReplaceAllFunc(bf, func(m []byte) []byte {
-			m = m[7:len(m)-1]
+			m = m[7 : len(m)-1]
 			return []byte(fmt.Sprintf(`<img src="/assets/image/%[1]s" alt="%[1]s">`, m))
 		})
 		bf = rs.ReplaceAllFunc(bf, func(m []byte) []byte {
 			ms := bytes.SplitN(m, []byte(">"), 2)
-			code := []byte(html.UnescapeString(string(ms[1][0:len(ms[1])-7])))
+			code := []byte(html.UnescapeString(string(ms[1][0 : len(ms[1])-7])))
 			hl, err := syntaxhighlight.AsHTML(code)
 			if err != nil {
 				return m
