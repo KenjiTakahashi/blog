@@ -9,19 +9,32 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func tmplExec(w http.ResponseWriter, subtmpl string, args interface{}) {
+func H404(w http.ResponseWriter, req *http.Request) {
+	log.Printf("code :: 404 :: %s :: %s", req.URL, req.RemoteAddr)
+	w.WriteHeader(http.StatusNotFound)
+	etmpl.Execute(w, 404)
+}
+
+func H500(w http.ResponseWriter, req *http.Request, rcv interface{}) {
+	log.Printf("code :: 500 :: %s :: %s", req.URL, req.RemoteAddr)
+	if rcv != nil {
+		log.Println(rcv)
+	}
+	w.WriteHeader(http.StatusInternalServerError)
+	etmpl.Execute(w, 500)
+}
+
+func tmplExec(w http.ResponseWriter, req *http.Request, subtmpl string, args interface{}) {
 	c, err := tmpl.Clone()
 	if err != nil {
-		log.Println(err)
-		http.Error(w, "500", 500)
+		H500(w, req, nil)
 		return
 	}
 
 	if subtmpl != "" {
 		_, err = c.New("i").Parse(subtmpl)
 		if err != nil {
-			log.Println(err)
-			http.Error(w, "500", 500)
+			H500(w, req, nil)
 			return
 		}
 	}
@@ -32,13 +45,13 @@ func tmplExec(w http.ResponseWriter, subtmpl string, args interface{}) {
 }
 
 func HRoot(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	tmplExec(w, "", nil)
+	tmplExec(w, req, "", nil)
 }
 
 func HAsset(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	var asset Asset
 	if db.Find(&asset, "name = ? and kind = ?", ps.ByName("id"), ps.ByName("kind")).RecordNotFound() {
-		http.Error(w, "404", 404)
+		H404(w, req)
 		return
 	}
 	http.ServeContent(w, req, "", time.Time{}, bytes.NewReader(asset.Content))
@@ -47,23 +60,29 @@ func HAsset(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 func HPosts(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var posts []Post
 	db.Select("title, short, created_at").Order("created_at desc").Find(&posts)
-	tmplExec(w, r, posts)
+	tmplExec(w, req, r, posts)
 }
 
 func HPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	var post Post
-	db.First(&post, "short = ?", ps.ByName("id"))
-	tmplExec(w, p, post)
+	if db.First(&post, "short = ?", ps.ByName("id")).RecordNotFound() {
+		H404(w, req)
+		return
+	}
+	tmplExec(w, req, p, post)
 }
 
 func HProjects(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	var projects []Project
 	db.Order("id desc").Find(&projects)
-	tmplExec(w, t, projects)
+	tmplExec(w, req, t, projects)
 }
 
 func main() {
-	router := httprouter.New()
+	router := &httprouter.Router{
+		NotFound: H404,
+		PanicHandler: H500,
+	}
 	router.GET("/", HRoot)
 	router.GET("/assets/:kind/:id", HAsset)
 	router.GET("/posts", HPosts)
