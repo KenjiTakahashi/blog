@@ -261,7 +261,7 @@ var tmpl = template.Must(
 		template.Must(
 			template.New("sc").Parse(sc),
 		).New("sm").Parse(sm),
-	).New("o").Parse(o),
+	).New("o").Funcs(tmplFuncs).Parse(o),
 )
 
 var e = `
