@@ -152,6 +152,8 @@ var o = `
 	<head>
 		<meta charset="utf-8" />
 		<title>Karol Woźniak aka Kenji Takahashi :: place</title>
+		<link rel="alternate" type="application/rss+xml" title="Karol Woźniak aka Kenji Takahashi :: rss" href="/feed/rss" />
+		<link rel="alternate" type="application/atom+xml" title="Karol Woźniak aka Kenji Takahashi :: atom" href="/feed/atom" />
 		<style>
 			{{template "sc"}}
 			{{template "sm"}}
@@ -172,8 +174,8 @@ var o = `
 			<div class="m"></div>
 		</div>
 		<div id="foot">
+			<a target="_blank" href="https://linkedin.com/in/wozniakkarol">linkedin</a> ::
 			<a target="_blank" href="https://github.com/KenjiTakahashi">github</a> ::
-			<a href="/feed">rss</a> ::
 			Kenji Takahashi © 2013-2014
 		</div>
 	</body>

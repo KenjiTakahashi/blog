@@ -82,6 +82,22 @@ func HProjects(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	tmplExec(w, req, t, projects)
 }
 
+func HFeedRss(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
+	feedFeed()
+	if err := feed.WriteRss(w); err != nil {
+		log.Println(err)
+	}
+}
+
+func HFeedAtom(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
+	feedFeed()
+	if err := feed.WriteAtom(w); err != nil {
+		log.Println(err)
+	}
+}
+
 func main() {
 	router := &httprouter.Router{
 		NotFound:     H404,
@@ -92,6 +108,8 @@ func main() {
 	router.GET("/posts", HPosts)
 	router.GET("/posts/:id", HPost)
 	router.GET("/projects", HProjects)
+	router.GET("/feed/rss", HFeedRss)
+	router.GET("/feed/atom", HFeedAtom)
 
 	log.Fatal(http.ListenAndServe(":9000", router))
 }
