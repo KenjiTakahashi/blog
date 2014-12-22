@@ -5,10 +5,10 @@ import (
 )
 
 var feed = &feeds.Feed{
-	Title: "kenji.sx",
-	Link: &feeds.Link{Href: "http://kenji.sx"},
+	Title:       "kenji.sx",
+	Link:        &feeds.Link{Href: "http://kenji.sx"},
 	Description: "Karol Woźniak aka Kenji Takahashi :: place",
-	Author: &feeds.Author{"Karol Woźniak", "wozniakk@gmail.com"},
+	Author:      &feeds.Author{"Karol Woźniak", "wozniakk@gmail.com"},
 }
 
 func feedFeed() {
@@ -18,8 +18,8 @@ func feedFeed() {
 	feed.Items = make([]*feeds.Item, len(posts))
 	for i, post := range posts {
 		feed.Items[i] = &feeds.Item{
-			Title: post.Title,
-			Link: &feeds.Link{Href: "http://kenji.sx/posts/"+post.Short},
+			Title:   post.Title,
+			Link:    &feeds.Link{Href: "http://kenji.sx/posts/" + post.Short},
 			Created: post.CreatedAt,
 		}
 	}
