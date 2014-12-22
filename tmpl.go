@@ -91,16 +91,19 @@ body {
 #head {
 	font-size: 16px;
 }
+#post #title,
 #items {
 	font-size: 13px;
 	list-style: none;
 	margin: 4px 0px 0px;
 	padding: 0px;
 }
+#post #title a,
 a {
 	color: #555;
 	text-decoration: none;
 }
+#post #title a:hover,
 a:hover {
 	color: #1c7272;
 }
@@ -113,12 +116,16 @@ a:hover {
 	color: #555;
 	text-align: justify;
 }
-#post a,
-#post #title {
-	font-weight: 700;
-}
 #post a {
+	font-weight: bold;
 	text-decoration: underline;
+}
+#post #title {
+	font-family: monospace;
+	color: #c8c8c8;
+}
+#post #title a {
+	font-weight: normal;
 }
 pre {
 	overflow-x: auto;
@@ -192,7 +199,7 @@ var r = `
 
 var p = `
 <div id="post">
-	<p id="title">{{.CreatedAt | d}} {{.Title}}</p>
+	<p id="title">{{.CreatedAt | d}} <a href="/posts/{{.Short}}">{{.Title}}</a></p>
 	{{.Content | m}}
 </div>
 `
