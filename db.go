@@ -40,7 +40,7 @@ type Asset struct {
 	Content []byte
 }
 
-var db gorm.DB
+var db *gorm.DB
 
 func init() {
 	var err error

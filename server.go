@@ -9,11 +9,15 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func H404(w http.ResponseWriter, req *http.Request) {
+type H404t struct{}
+
+func (h H404t) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 	etmpl.Execute(w, 404)
 	log.Printf("404 :: %s :: %s", req.RemoteAddr, req.URL)
 }
+
+var H404 = H404t{}
 
 func H500(w http.ResponseWriter, req *http.Request, rcv interface{}) {
 	w.WriteHeader(http.StatusInternalServerError)
@@ -51,7 +55,7 @@ func HAsset(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
 	var asset Asset
 	if db.Find(&asset, "name = ? and kind = ?", ps.ByName("id"), ps.ByName("kind")).RecordNotFound() {
-		H404(w, req)
+		H404.ServeHTTP(w, req)
 		return
 	}
 	http.ServeContent(w, req, "", time.Time{}, bytes.NewReader(asset.Content))
@@ -69,7 +73,7 @@ func HPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
 	var post Post
 	if db.First(&post, "short = ?", ps.ByName("id")).RecordNotFound() {
-		H404(w, req)
+		H404.ServeHTTP(w, req)
 		return
 	}
 	tmplExec(w, req, p, post)
