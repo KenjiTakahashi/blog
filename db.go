@@ -44,7 +44,7 @@ var db *gorm.DB
 
 func init() {
 	var err error
-	db, err = gorm.Open("postgres", "user=kenji dbname=blog sslmode=disable")
+	db, err = gorm.Open("postgres", "user=postgres host=/var/run/postgresql dbname=blog sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
