@@ -62,7 +62,7 @@ body {
 	height: 100%;
 }
 body {
-	color: #c8c8c8;
+	color: #b7b7b7;
 	font-family: monospace;
 }
 #o {
@@ -100,12 +100,12 @@ body {
 }
 #post #title a,
 a {
-	color: #555;
+	color: #454545;
 	text-decoration: none;
 }
 #post #title a:hover,
 a:hover {
-	color: #1c7272;
+	color: #1d7878;
 }
 .dead {
 	text-decoration: line-through;
@@ -113,7 +113,7 @@ a:hover {
 #post {
 	font-family: sans-serif;
 	font-size: 14px;
-	color: #555;
+	color: #454545;
 	text-align: justify;
 }
 #post a {
@@ -122,7 +122,7 @@ a:hover {
 }
 #post #title {
 	font-family: monospace;
-	color: #c8c8c8;
+	color: #b7b7b7;
 }
 #post #title a {
 	font-weight: normal;
@@ -140,7 +140,7 @@ canvas {
 	background: #fff;
 }
 .notice {
-	background: #c8c8c8;
+	background: #b7b7b7;
 	padding: 5px;
 	margin: 5px 0px;
 }
@@ -183,7 +183,7 @@ var o = `
 		<div id="foot">
 			<a target="_blank" href="https://linkedin.com/in/wozniakkarol">linkedin</a> ::
 			<a target="_blank" href="https://github.com/KenjiTakahashi">github</a> ::
-			Kenji Takahashi © 2013-2014
+			Kenji Takahashi © 2013-2014,2016
 		</div>
 	</body>
 </html>
@@ -284,19 +284,19 @@ var e = `
 		left: 36%;
 		font-family: monospace;
 		font-size: 43px;
-		color: #555;
+		color: #454545;
 	}
 	a {
-		color: #555;
+		color: #454545;
 		font-size: 10px;
 		text-decoration: none;
 		margin-left: 2px;
 	}
 	a:hover {
-		color: #1c7272;
+		color: #1d7878;
 	}
 	span {
-		color: #c8c8c8;
+		color: #b7b7b7;
 	}
 	</style>
 </head>
