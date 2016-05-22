@@ -115,5 +115,5 @@ func main() {
 	router.GET("/feed/rss", HFeedRss)
 	router.GET("/feed/atom", HFeedAtom)
 
-	log.Fatal(http.ListenAndServe(":9000", router))
+	log.Fatal(http.ListenAndServe("localhost:9000", router))
 }
