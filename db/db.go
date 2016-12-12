@@ -1,4 +1,4 @@
-package main
+package db
 
 import (
 	"log"
@@ -9,7 +9,7 @@ import (
 )
 
 type Project struct {
-	Id          int64
+	ID          int64
 	Name        string `sql:"not null;unique"`
 	Description string `sql:"size:NULL"`
 	Site        string
@@ -17,7 +17,7 @@ type Project struct {
 }
 
 type Post struct {
-	Id        int64
+	ID        int64
 	Short     string `sql:"not null;unique"`
 	Title     string `sql:"size:NULL"`
 	Content   string `sql:"size:NULL"`
@@ -27,27 +27,27 @@ type Post struct {
 }
 
 type Tag struct {
-	Id    int64
+	ID    int64
 	Name  string `sql:"not null;unique"`
 	Posts []Post `gorm:"many2many:posts_tags;"`
 }
 
 type Asset struct {
-	Id      int64
+	ID      int64
 	Name    string `sql:"not null"`
 	Type    string `sql:"not null"`
 	Kind    string `sql:"not null"`
 	Content []byte
 }
 
-var db *gorm.DB
+var DB *gorm.DB
 
 func init() {
 	var err error
-	db, err = gorm.Open("postgres", "user=postgres host=/var/run/postgresql dbname=blog sslmode=disable")
+	DB, err = gorm.Open("postgres", "host=database user=root port=26257 dbname=blog sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
-	db.AutoMigrate(&Project{}, &Post{}, &Tag{}, &Asset{})
-	db.Model(&Asset{}).AddUniqueIndex("idx_asset_name_type_kind", "name", "type", "kind")
+	DB.AutoMigrate(&Project{}, &Post{}, &Tag{}, &Asset{})
+	DB.Model(&Asset{}).AddUniqueIndex("idx_asset_name_type_kind", "name", "type", "kind")
 }

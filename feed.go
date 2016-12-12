@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/KenjiTakahashi/blog/db"
 	"github.com/gorilla/feeds"
 )
 
@@ -12,8 +13,8 @@ var feed = &feeds.Feed{
 }
 
 func feedFeed() {
-	var posts []Post
-	db.Order("created_at desc").Limit(10).Find(&posts)
+	var posts []db.Post
+	db.DB.Order("created_at desc").Limit(10).Find(&posts)
 
 	feed.Items = make([]*feeds.Item, len(posts))
 	for i, post := range posts {

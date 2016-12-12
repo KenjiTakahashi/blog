@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/KenjiTakahashi/blog/db"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -53,8 +54,8 @@ func HRoot(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 func HAsset(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
-	var asset Asset
-	if db.Find(&asset, "name = ? and kind = ?", ps.ByName("id"), ps.ByName("kind")).RecordNotFound() {
+	var asset db.Asset
+	if db.DB.Find(&asset, "name = ? and kind = ?", ps.ByName("id"), ps.ByName("kind")).RecordNotFound() {
 		H404.ServeHTTP(w, req)
 		return
 	}
@@ -64,15 +65,15 @@ func HAsset(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
 func HPosts(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
-	var posts []Post
-	db.Select("title, short, created_at").Order("created_at desc").Find(&posts)
+	var posts []db.Post
+	db.DB.Select("title, short, created_at").Order("created_at desc").Find(&posts)
 	tmplExec(w, req, r, posts)
 }
 
 func HPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
-	var post Post
-	if db.First(&post, "short = ?", ps.ByName("id")).RecordNotFound() {
+	var post db.Post
+	if db.DB.First(&post, "short = ?", ps.ByName("id")).RecordNotFound() {
 		H404.ServeHTTP(w, req)
 		return
 	}
@@ -81,8 +82,8 @@ func HPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
 func HProjects(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
-	var projects []Project
-	db.Order("id desc").Find(&projects)
+	var projects []db.Project
+	db.DB.Order("id desc").Find(&projects)
 	tmplExec(w, req, t, projects)
 }
 
@@ -115,5 +116,5 @@ func main() {
 	router.GET("/feed/rss", HFeedRss)
 	router.GET("/feed/atom", HFeedAtom)
 
-	log.Fatal(http.ListenAndServe("localhost:9000", router))
+	log.Fatal(http.ListenAndServe(":9100", router))
 }
