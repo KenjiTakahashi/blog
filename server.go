@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -10,12 +11,16 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+func getRA(req *http.Request) string {
+	return fmt.Sprintf("%-21s", req.Header.Get("X-Real-IP"))
+}
+
 type H404t struct{}
 
 func (h H404t) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 	etmpl.Execute(w, 404)
-	log.Printf("404 :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("404 :: %s :: %s", getRA(req), req.URL)
 }
 
 var H404 = H404t{}
@@ -23,7 +28,7 @@ var H404 = H404t{}
 func H500(w http.ResponseWriter, req *http.Request, rcv interface{}) {
 	w.WriteHeader(http.StatusInternalServerError)
 	etmpl.Execute(w, 500)
-	log.Printf("500 :: %s :: %s :: %s", req.RemoteAddr, req.URL, rcv)
+	log.Printf("500 :: %s :: %s :: %s", getRA(req), req.URL, rcv)
 }
 
 func tmplExec(w http.ResponseWriter, req *http.Request, subtmpl string, args interface{}) {
@@ -44,34 +49,34 @@ func tmplExec(w http.ResponseWriter, req *http.Request, subtmpl string, args int
 	if err != nil {
 		log.Println(err)
 	}
-	log.Printf("200 :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("200 :: %s :: %s", getRA(req), req.URL)
 }
 
 func HRoot(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("req :: %s :: %s", getRA(req), req.URL)
 	tmplExec(w, req, "", nil)
 }
 
 func HAsset(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("req :: %s :: %s", getRA(req), req.URL)
 	var asset db.Asset
 	if db.DB.Find(&asset, "name = ? and kind = ?", ps.ByName("id"), ps.ByName("kind")).RecordNotFound() {
 		H404.ServeHTTP(w, req)
 		return
 	}
 	http.ServeContent(w, req, "", time.Time{}, bytes.NewReader(asset.Content))
-	log.Printf("200 :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("200 :: %s :: %s", getRA(req), req.URL)
 }
 
 func HPosts(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("req :: %s :: %s", getRA(req), req.URL)
 	var posts []db.Post
 	db.DB.Select("title, short, created_at").Order("created_at desc").Find(&posts)
 	tmplExec(w, req, r, posts)
 }
 
 func HPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("req :: %s :: %s", getRA(req), req.URL)
 	var post db.Post
 	if db.DB.First(&post, "short = ?", ps.ByName("id")).RecordNotFound() {
 		H404.ServeHTTP(w, req)
@@ -81,14 +86,14 @@ func HPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 }
 
 func HProjects(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("req :: %s :: %s", getRA(req), req.URL)
 	var projects []db.Project
 	db.DB.Order("id desc").Find(&projects)
 	tmplExec(w, req, t, projects)
 }
 
 func HFeedRss(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("req :: %s :: %s", getRA(req), req.URL)
 	feedFeed()
 	if err := feed.WriteRss(w); err != nil {
 		log.Println(err)
@@ -96,7 +101,7 @@ func HFeedRss(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 }
 
 func HFeedAtom(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	log.Printf("req :: %s :: %s", req.RemoteAddr, req.URL)
+	log.Printf("req :: %s :: %s", getRA(req), req.URL)
 	feedFeed()
 	if err := feed.WriteAtom(w); err != nil {
 		log.Println(err)
