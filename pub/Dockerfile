@@ -11,7 +11,7 @@ RUN go-wrapper download
 RUN go build -ldflags="-s -w"
 
 
-FROM scratch
+FROM alpine:3.6
 LABEL maintainer="KenjiTakahashi <kenji.sx>"
 
 COPY --from=0 /go/go /pub
