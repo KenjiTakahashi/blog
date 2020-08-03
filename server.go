@@ -1,18 +1,24 @@
 package main
 
 import (
-	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
-	"github.com/KenjiTakahashi/blog/db"
 	"github.com/julienschmidt/httprouter"
+
+	"github.com/KenjiTakahashi/blog/db"
 )
 
 func getRA(req *http.Request) string {
-	return fmt.Sprintf("%-21s", req.Header.Get("X-Real-IP"))
+	ip := req.Header.Get("X-Real-IP")
+	if ip == "" {
+		ip = req.RemoteAddr
+	}
+	return fmt.Sprintf("%-21s", ip)
 }
 
 type H404t struct{}
@@ -59,36 +65,47 @@ func HRoot(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 func HAsset(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	var asset db.Asset
-	if db.DB.Find(&asset, "name = ? and kind = ?", ps.ByName("id"), ps.ByName("kind")).RecordNotFound() {
-		H404.ServeHTTP(w, req)
-		return
+	asset, err := db.Get("asset:%s:%s", ps.ByName("id"), ps.ByName("kind"))
+	if err != nil {
+		log.Println(err, ps)
 	}
-	http.ServeContent(w, req, "", time.Time{}, bytes.NewReader(asset.Content))
+	http.ServeContent(w, req, "", time.Time{}, strings.NewReader(asset))
 	log.Printf("200 :: %s :: %s", getRA(req), req.URL)
 }
 
 func HPosts(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	var posts []db.Post
-	db.DB.Select("title, short, created_at").Order("created_at desc").Find(&posts)
+	posts, err := db.GetPosts(0)
+	if err != nil {
+		log.Println(err)
+	}
 	tmplExec(w, req, r, posts)
 }
 
 func HPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	var post db.Post
-	if db.DB.First(&post, "short = ?", ps.ByName("id")).RecordNotFound() {
+	postStr, err := db.Get("post:science/%s", ps.ByName("id"))
+	if err == db.ErrNotFound {
 		H404.ServeHTTP(w, req)
 		return
+	}
+	if err != nil {
+		log.Println(err)
+	}
+	var post db.Post
+	err = json.Unmarshal([]byte(postStr), &post)
+	if err != nil {
+		log.Println(err)
 	}
 	tmplExec(w, req, p, post)
 }
 
 func HProjects(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	var projects []db.Project
-	db.DB.Order("id desc").Find(&projects)
+	projects, err := db.GetProjects()
+	if err != nil {
+		log.Println(err)
+	}
 	tmplExec(w, req, t, projects)
 }
 

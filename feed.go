@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/KenjiTakahashi/blog/db"
 	"github.com/gorilla/feeds"
+
+	"github.com/KenjiTakahashi/blog/db"
 )
 
 var feed = &feeds.Feed{
@@ -12,16 +13,20 @@ var feed = &feeds.Feed{
 	Author:      &feeds.Author{"Karol Woźniak", "wozniakk@gmail.com"},
 }
 
-func feedFeed() {
-	var posts []db.Post
-	db.DB.Order("created_at desc").Limit(10).Find(&posts)
+func feedFeed() error {
+	posts, err := db.GetPosts(10)
+	if err != nil {
+		return err
+	}
 
 	feed.Items = make([]*feeds.Item, len(posts))
 	for i, post := range posts {
+		post := post.(*db.Post)
 		feed.Items[i] = &feeds.Item{
 			Title:   post.Title,
 			Link:    &feeds.Link{Href: "http://kenji.sx/posts/" + post.Short},
 			Created: post.CreatedAt,
 		}
 	}
+	return nil
 }

@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	"encoding/csv"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -10,14 +12,38 @@ import (
 	"strings"
 	"time"
 
-	"github.com/KenjiTakahashi/blog/db"
-	"github.com/jinzhu/gorm"
 	"github.com/mitchellh/cli"
+	"github.com/tidwall/buntdb"
+
+	"github.com/KenjiTakahashi/blog/db"
 )
 
-func bail(err error) {
-	if err != nil {
-		panic(err)
+type E struct {
+	N int
+	M error
+}
+
+func (e E) Error() string {
+	return fmt.Sprintf("ERR %03d: %s", e.N, e.M)
+}
+
+func e(err error) int {
+	e, ok := err.(E)
+	if ok {
+		if e.M != nil {
+			log.Print(err)
+			return e.N
+		}
+	} else if err != nil {
+		log.Print(err)
+		return 1000
+	}
+	return 0
+}
+
+func bail(err E) {
+	if err.M != nil {
+		os.Exit(e(err))
 	}
 }
 
@@ -25,64 +51,51 @@ func getbool(txt string) bool {
 	return txt == "true" || txt == "yes" || txt == "1"
 }
 
-func dbe(db *gorm.DB) int {
-	if db.Error != nil {
-		log.Println("Error creating/updating/deleting record: ", db.Error)
-		return 1
-	}
-	return 0
-}
-
-func dbc(obj interface{}) int {
-	return dbe(db.DB.Create(obj))
-}
-
-func dbu(obj interface{}) int {
-	return dbe(db.DB.Save(obj))
-}
-
-func dbr(obj interface{}) int {
-	return dbe(db.DB.Delete(obj))
-}
-
 type pC struct{}
 
 func (c *pC) Run(args []string) int {
 	if len(args) != 1 {
 		log.Println("Invalid number of arguments")
-		return 1
+		return 9999
 	}
 
 	post, err := ioutil.ReadFile(args[0])
-	bail(err)
+	bail(E{7, err})
 	lines := bytes.SplitN(post, []byte{'\n'}, 4)
 
 	short := filepath.Base(args[0])
+	short = short[:len(short)-3]
 
 	time, err := time.Parse("2 Jan 2006", string(lines[0]))
-	bail(err)
+	bail(E{8, err})
 
 	tagsB := [][]byte{}
 	if len(lines[2]) > 0 {
 		tagsB = bytes.Split(lines[2], []byte{','})
 	}
-	tags := make([]db.Tag, len(tagsB))
-	for i, tag := range tagsB {
-		tags[i] = db.Tag{Name: string(tag)}
+
+	typ := "science"
+	if len(tagsB) == 1 {
+		typ = string(tagsB[0])
 	}
 
-	dbpost := &db.Post{
-		Short:     short[:len(short)-3],
-		Title:     string(lines[1]),
-		Content:   string(lines[3]),
-		Tags:      tags,
-		CreatedAt: time,
-	}
-	if errno := dbc(dbpost); errno != 0 {
-		return errno
-	}
-
-	return dbe(db.DB.Model(dbpost).Update("CreatedAt", time))
+	err = db.BDB.Update(func(tx *buntdb.Tx) error {
+		p := db.Post{
+			Title:     string(lines[1]),
+			Content:   string(lines[3]),
+			CreatedAt: time,
+		}
+		value, err := json.Marshal(&p)
+		if err != nil {
+			return E{3, err}
+		}
+		_, _, err = tx.Set(fmt.Sprintf("post:%s/%s", typ, short), string(value), nil)
+		if err != nil {
+			return E{4, err}
+		}
+		return nil
+	})
+	return e(err)
 }
 func (c *pC) Help() string {
 	return c.Synopsis()
@@ -96,38 +109,33 @@ type tC struct{}
 func (c *tC) Run(args []string) int {
 	if len(args) != 1 {
 		log.Println("Invalid number of arguments")
-		return 1
+		return 9999
 	}
 
 	fi, err := os.Open(args[0])
-	bail(err)
+	bail(E{9, err})
 	defer fi.Close()
 	cr := csv.NewReader(fi)
 	cr.Comma = ' '
 	projects, err := cr.ReadAll()
-	bail(err)
+	bail(E{10, err})
 
-	tx := db.DB.Begin()
-
-	if errno := dbr(&db.Project{}); errno != 0 {
-		tx.Rollback()
-		return errno
-	}
-
-	for _, project := range projects {
-		errno := dbc(&db.Project{
-			Name:        project[0],
-			Description: project[1],
-			Site:        project[2],
-			Active:      getbool(project[3]),
-		})
-		if errno != 0 {
-			tx.Rollback()
-			return errno
+	err = db.BDB.Update(func(tx *buntdb.Tx) error {
+		for i, project := range projects {
+			p := db.Project{
+				Name:        project[0],
+				Description: project[1],
+				Site:        project[2],
+				Active:      getbool(project[3]),
+			}
+			value, err := json.Marshal(&p)
+			e(E{1, err})
+			_, _, err = tx.Set(fmt.Sprintf("project:%03d", i), string(value), nil)
+			e(E{2, err})
 		}
-	}
-
-	return dbe(tx.Commit())
+		return nil
+	})
+	return e(E{5, err})
 }
 func (c *tC) Help() string {
 	return c.Synopsis()
@@ -141,20 +149,22 @@ type aC struct{}
 func (c *aC) Run(args []string) int {
 	if len(args) != 2 {
 		log.Println("Invalid number of arguments")
-		return 1
+		return 9999
 	}
 
 	asset, err := ioutil.ReadFile(args[1])
-	bail(err)
-	typ := filepath.Ext(args[1])
-	name := strings.TrimSuffix(filepath.Base(args[1]), typ)
+	bail(E{11, err})
+	ext := filepath.Ext(args[1])
+	name := strings.TrimSuffix(filepath.Base(args[1]), ext)
 
-	return dbc(&db.Asset{
-		Name:    name,
-		Type:    typ[1:],
-		Kind:    args[0],
-		Content: asset,
+	err = db.BDB.Update(func(tx *buntdb.Tx) error {
+		_, _, err = tx.Set(fmt.Sprintf("asset:%s:%s", name, args[0]), string(asset), nil)
+		if err != nil {
+			return E{6, err}
+		}
+		return nil
 	})
+	return e(err)
 }
 func (c *aC) Help() string {
 	return c.Synopsis()
@@ -164,8 +174,8 @@ func (c *aC) Synopsis() string {
 }
 
 func main() {
-	ui := cli.NewCLI("pub", "0.2")
-	ui.Args = os.Args[1:]
+	ui := cli.NewCLI("pub", "0.3")
+	ui.Args = os.Args[2:]
 	ui.Commands = map[string]cli.CommandFactory{
 		"p": func() (cli.Command, error) {
 			return &pC{}, nil
@@ -179,7 +189,9 @@ func main() {
 	}
 
 	code, err := ui.Run()
-	bail(err)
+	bail(E{12, err})
+
+	bail(E{13, db.BDB.Shrink()})
 
 	os.Exit(code)
 }
