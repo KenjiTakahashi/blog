@@ -6,5 +6,4 @@ That's the third version, minimalistic as the second, slightly revised while rew
 
 todo
 ----
-* custom made comments
-* bring back line numbers
+* comments

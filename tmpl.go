@@ -3,57 +3,16 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"html"
 	"html/template"
 	"regexp"
 	"time"
 
-	"github.com/russross/blackfriday"
-	"github.com/sourcegraph/syntaxhighlight"
+	"github.com/alecthomas/chroma/formatters/html"
+	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting"
+	gmhtml "github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/util"
 )
-
-var sc = `
-.pln { color: #000 }
-@media screen {
-	.str { color: #080 }
-	.kwd { color: #008 }
-	.com { color: #800 }
-	.typ { color: #606 }
-	.lit { color: #066 }
-	.pun, .opn, .clo { color: #660 }
-	.tag { color: #008 }
-	.atn { color: #606 }
-	.atv { color: #080 }
-	.dec, .var { color: #606 }
-	.fun { color: red }
-}
-@media print, projection {
-	.str { color: #060 }
-	.kwd { color: #006; font-weight: bold }
-	.com { color: #600; font-style: italic }
-	.typ { color: #404; font-weight: bold }
-	.lit { color: #044 }
-	.pun, .opn, .clo { color: #440 }
-	.tag { color: #006; font-weight: bold }
-	.atn { color: #404 }
-	.atv { color: #060 }
-}
-pre.prettyprint { padding: 2px; border: 1px solid #888 }
-ol.linenums { margin-top: 0; margin-bottom: 0 }
-li.L0,
-li.L1,
-li.L2,
-li.L3,
-li.L5,
-li.L6,
-li.L7,
-li.L8 { list-style-type: none }
-li.L1,
-li.L3,
-li.L5,
-li.L7,
-li.L9 { background: #eee }
-`
 
 var sm = `
 html,
@@ -127,15 +86,6 @@ a:hover {
 #post #title a {
 	font-weight: normal;
 }
-pre {
-	overflow-x: auto;
-}
-pre code {
-	background: #fff;
-	margin: 0px;
-	padding: 0px;
-	font-size: 11px;
-}
 canvas {
 	background: #fff;
 }
@@ -150,6 +100,21 @@ canvas {
 img {
 	width: 100%;
 }
+pre {
+	overflow-x: auto;
+	background: #fff;
+	margin: 0px;
+	padding: 0px;
+	font-size: 11px;
+}
+.code {
+	margin-left: -1.9rem;
+}
+.code td:first-of-type span {
+	display: block;
+	width: 1.24rem;
+	text-align: right;
+}
 `
 
 var o = `
@@ -162,7 +127,6 @@ var o = `
 		<link rel="alternate" type="application/rss+xml" title="Karol Woźniak aka Kenji Takahashi :: rss" href="/feed/rss" />
 		<link rel="alternate" type="application/atom+xml" title="Karol Woźniak aka Kenji Takahashi :: atom" href="/feed/atom" />
 		<style>
-			{{template "sc"}}
 			{{template "sm"}}
 		</style>
 	</head>
@@ -183,7 +147,7 @@ var o = `
 		<div id="foot">
 			<a target="_blank" href="https://linkedin.com/in/wozniakkarol">linkedin</a> ::
 			<a target="_blank" href="https://github.com/KenjiTakahashi">github</a> ::
-			Kenji Takahashi © 2013-2014,2016
+			Kenji Takahashi © 2013-2014,2016,2020
 		</div>
 	</body>
 </html>
@@ -232,14 +196,37 @@ var c = `
 var rn = regexp.MustCompile(`\[notice\#.*\]`)
 var rc = regexp.MustCompile(`\[canvas\#[a-zA-Z0-9_]*\#\d*\]`)
 var ri = regexp.MustCompile(`\[image\#[a-zA-Z0-9_]*\]`)
-var rs = regexp.MustCompile(`<code class="language-[a-z]*">(?s).*?<\/code>`)
+
+var md = goldmark.New(
+	goldmark.WithExtensions(
+		highlighting.NewHighlighting(
+			highlighting.WithStyle("lovelace"),
+			highlighting.WithFormatOptions(
+				html.WithLineNumbers(true),
+				html.LineNumbersInTable(true),
+			),
+			highlighting.WithWrapperRenderer(func(w util.BufWriter, context highlighting.CodeBlockContext, entering bool) {
+				if entering {
+					w.Write([]byte(`<div class="code">`))
+				} else {
+					w.Write([]byte(`</div>`))
+				}
+			}),
+		),
+	),
+	goldmark.WithRendererOptions(
+		gmhtml.WithUnsafe(),
+	),
+)
 
 var tmplFuncs = template.FuncMap{
 	"d": func(arg interface{}) string {
 		return arg.(time.Time).Format("02 Jan 2006")
 	},
 	"m": func(arg interface{}) template.HTML {
-		bf := blackfriday.MarkdownCommon([]byte(arg.(string)))
+		var bfb bytes.Buffer
+		md.Convert([]byte(arg.(string)), &bfb)
+		bf := bfb.Bytes()
 		bf = rn.ReplaceAllFunc(bf, func(m []byte) []byte {
 			return []byte(fmt.Sprintf(`<div class="notice">%s</div>`, m[8:len(m)-1]))
 		})
@@ -251,15 +238,6 @@ var tmplFuncs = template.FuncMap{
 			m = m[7 : len(m)-1]
 			return []byte(fmt.Sprintf(`<img src="/assets/image/%[1]s" alt="%[1]s">`, m))
 		})
-		bf = rs.ReplaceAllFunc(bf, func(m []byte) []byte {
-			ms := bytes.SplitN(m, []byte(">"), 2)
-			code := []byte(html.UnescapeString(string(ms[1][0 : len(ms[1])-7])))
-			hl, err := syntaxhighlight.AsHTML(code)
-			if err != nil {
-				return m
-			}
-			return []byte(fmt.Sprintf("%s>%s</code>", ms[0], hl))
-		})
 
 		return template.HTML(bf)
 	},
@@ -267,9 +245,7 @@ var tmplFuncs = template.FuncMap{
 
 var tmpl = template.Must(
 	template.Must(
-		template.Must(
-			template.New("sc").Parse(sc),
-		).New("sm").Parse(sm),
+		template.New("sm").Parse(sm),
 	).New("o").Funcs(tmplFuncs).Parse(o),
 )
 
