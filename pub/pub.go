@@ -158,7 +158,7 @@ func (c *aC) Run(args []string) int {
 	name := strings.TrimSuffix(filepath.Base(args[1]), ext)
 
 	err = db.BDB.Update(func(tx *buntdb.Tx) error {
-		_, _, err = tx.Set(fmt.Sprintf("asset:%s:%s", name, args[0]), string(asset), nil)
+		_, _, err = tx.Set(fmt.Sprintf("asset:%s:%s", args[0], name), string(asset), nil)
 		if err != nil {
 			return E{6, err}
 		}

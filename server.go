@@ -5,13 +5,24 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"path"
 	"strings"
 	"time"
 
-	"github.com/julienschmidt/httprouter"
-
 	"github.com/KenjiTakahashi/blog/db"
 )
+
+// ShiftPath splits off the first component of p, which will be cleaned of
+// relative components before processing. head will never contain a slash and
+// tail will always be a rooted path without trailing slash.
+func ShiftPath(p string) (string, string) {
+	p = path.Clean("/" + p)
+	i := strings.Index(p[1:], "/") + 1
+	if i <= 0 {
+		return p[1:], "/"
+	}
+	return p[1:i], p[i:]
+}
 
 func getRA(req *http.Request) string {
 	ip := req.Header.Get("X-Real-IP")
@@ -21,15 +32,12 @@ func getRA(req *http.Request) string {
 	return fmt.Sprintf("%-21s", ip)
 }
 
-type H404t struct{}
-
-func (h H404t) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+var H404 = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 	etmpl.Execute(w, 404)
+	// FIXME: This URL might be "truncated" already
 	log.Printf("404 :: %s :: %s", getRA(req), req.URL)
-}
-
-var H404 = H404t{}
+})
 
 func H500(w http.ResponseWriter, req *http.Request, rcv interface{}) {
 	w.WriteHeader(http.StatusInternalServerError)
@@ -58,85 +66,128 @@ func tmplExec(w http.ResponseWriter, req *http.Request, subtmpl string, args int
 	log.Printf("200 :: %s :: %s", getRA(req), req.URL)
 }
 
-func HRoot(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	tmplExec(w, req, "", nil)
-}
-
-func HAsset(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	asset, err := db.Get("asset:%s:%s", ps.ByName("id"), ps.ByName("kind"))
+var HProjects = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	projects, err := db.GetProjects()
 	if err != nil {
-		log.Println(err, ps)
+		H500(rw, req, err)
+		return
 	}
-	http.ServeContent(w, req, "", time.Time{}, strings.NewReader(asset))
-	log.Printf("200 :: %s :: %s", getRA(req), req.URL)
-}
+	tmplExec(rw, req, t, projects)
+})
 
-func HPosts(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	posts, err := db.GetPosts(0)
-	if err != nil {
-		log.Println(err)
-	}
-	tmplExec(w, req, r, posts)
-}
+var HPost = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	var id string
+	// FIXME: Check that there is no more URL
+	id, req.URL.Path = ShiftPath(req.URL.Path)
 
-func HPost(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	postStr, err := db.Get("post:science/%s", ps.ByName("id"))
+	postStr, err := db.Get("post:science/%s", id)
 	if err == db.ErrNotFound {
-		H404.ServeHTTP(w, req)
+		H404.ServeHTTP(rw, req)
 		return
 	}
 	if err != nil {
-		log.Println(err)
+		H500(rw, req, err)
+		return
 	}
 	var post db.Post
 	err = json.Unmarshal([]byte(postStr), &post)
 	if err != nil {
+		H500(rw, req, err)
+		return
+	}
+	tmplExec(rw, req, p, post)
+})
+
+var HPosts = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	head, _ := ShiftPath(req.URL.Path)
+
+	if head == "" {
+		posts, err := db.GetPosts(0)
+		if err != nil {
+			H500(rw, req, err)
+			return
+		}
+		tmplExec(rw, req, r, posts)
+		return
+	}
+
+	HPost.ServeHTTP(rw, req)
+})
+
+var HFeedRss = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	feedFeed()
+	if err := feed.WriteRss(rw); err != nil {
 		log.Println(err)
 	}
-	tmplExec(w, req, p, post)
-}
+})
 
-func HProjects(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	projects, err := db.GetProjects()
+var HFeedAtom = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	feedFeed()
+	if err := feed.WriteAtom(rw); err != nil {
+		log.Println(err)
+	}
+})
+
+var HFeed = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	var head string
+	head, req.URL.Path = ShiftPath(req.URL.Path)
+
+	switch head {
+	case "atom":
+		HFeedAtom.ServeHTTP(rw, req)
+	case "rss":
+		HFeedRss.ServeHTTP(rw, req)
+	default:
+		H404.ServeHTTP(rw, req)
+	}
+})
+
+var HAssets = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	var kind string
+	kind, req.URL.Path = ShiftPath(req.URL.Path)
+	var id string
+	id, req.URL.Path = ShiftPath(req.URL.Path)
+
+	asset, err := db.Get("asset:%s:%s", kind, id)
+	if err == db.ErrNotFound {
+		H404.ServeHTTP(rw, req)
+		return
+	}
 	if err != nil {
-		log.Println(err)
+		H500(rw, req, err)
+		return
 	}
-	tmplExec(w, req, t, projects)
-}
+	http.ServeContent(rw, req, "", time.Time{}, strings.NewReader(asset))
 
-func HFeedRss(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	feedFeed()
-	if err := feed.WriteRss(w); err != nil {
-		log.Println(err)
-	}
-}
+	log.Printf("200 :: %s :: %s", getRA(req), req.URL)
+})
 
-func HFeedAtom(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+var HRoot = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	log.Printf("req :: %s :: %s", getRA(req), req.URL)
-	feedFeed()
-	if err := feed.WriteAtom(w); err != nil {
-		log.Println(err)
+
+	var head string
+	head, req.URL.Path = ShiftPath(req.URL.Path)
+	log.Println("!!!!!", head)
+	log.Println("!!!!!", req.URL.Path)
+
+	if head == "" {
+		tmplExec(rw, req, "", nil)
+		return
 	}
-}
+	switch head {
+	case "assets":
+		HAssets.ServeHTTP(rw, req)
+	case "feed":
+		HFeed.ServeHTTP(rw, req)
+	case "posts":
+		HPosts.ServeHTTP(rw, req)
+	case "projects":
+		HProjects.ServeHTTP(rw, req)
+	default:
+		H404.ServeHTTP(rw, req)
+	}
+})
 
 func main() {
-	router := &httprouter.Router{
-		NotFound:     H404,
-		PanicHandler: H500,
-	}
-	router.GET("/", HRoot)
-	router.GET("/assets/:kind/:id", HAsset)
-	router.GET("/posts", HPosts)
-	router.GET("/posts/:id", HPost)
-	router.GET("/projects", HProjects)
-	router.GET("/feed/rss", HFeedRss)
-	router.GET("/feed/atom", HFeedAtom)
-
-	log.Fatal(http.ListenAndServe(":9100", router))
+	log.Fatal(http.ListenAndServe(":9100", HRoot))
 }
