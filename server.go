@@ -125,16 +125,18 @@ var HPosts = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 })
 
 var HFeedRss = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-	feedFeed()
-	if err := feed.WriteRss(rw); err != nil {
-		log.Println(err)
+	if feed, err := getFeed(); err != nil {
+		SetStatusError(rw, req, err)
+	} else {
+		_ = feed.WriteRss(rw)
 	}
 })
 
 var HFeedAtom = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-	feedFeed()
-	if err := feed.WriteAtom(rw); err != nil {
-		log.Println(err)
+	if feed, err := getFeed(); err != nil {
+		SetStatusError(rw, req, err)
+	} else {
+		_ = feed.WriteAtom(rw)
 	}
 })
 
