@@ -1,42 +1,24 @@
 package db
 
 import (
-	"encoding/json"
+	"bytes"
+	"encoding/csv"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
+	"path"
+	"sort"
 	"strings"
 	"time"
 
-	"github.com/tidwall/buntdb"
+	"github.com/karrick/godirwalk"
+	"golang.org/x/sys/unix"
 )
 
-var BDB *buntdb.DB
-var ErrNotFound = buntdb.ErrNotFound
+var db = ""
 
-func bail(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func Get(format string, args ...interface{}) (string, error) {
-	var result string
-	err := BDB.View(func(tx *buntdb.Tx) error {
-		var err error
-		result, err = tx.Get(fmt.Sprintf(format, args...))
-		return err
-	})
-	return result, err
-}
-
-type cloner interface {
-	clone() cloner
-}
-
-type augmenter interface {
-	augment(string)
-}
+var ErrNotFound = fmt.Errorf("NF")
 
 type Project struct {
 	Name        string
@@ -45,71 +27,200 @@ type Project struct {
 	Active      bool
 }
 
-func (p *Project) clone() cloner {
-	np := *p
-	return &np
+func GetProjects() ([]Project, error) {
+	defcLock.RLock()
+	defer defcLock.RUnlock()
+
+	return defc.Projects, nil
 }
 
-func GetProjects() ([]interface{}, error) {
-	return getJSONList((*buntdb.Tx).DescendKeys, "project:*", &Project{}, 0)
+func GetAsset(kind, id string) ([]byte, error) {
+	defcLock.RLock()
+	defer defcLock.RUnlock()
+
+	assets, exist := defc.Assets[kind]
+	if !exist {
+		return nil, ErrNotFound
+	}
+	asset, exists := assets[id]
+	if !exists {
+		return nil, ErrNotFound
+	}
+	return asset, nil
 }
 
 type Post struct {
-	Short     string `json:"omitempty"`
-	Title     string
-	Content   string
+	Short     string
 	CreatedAt time.Time
+	Title     string
+	Kind      string
+	Content   []byte
 }
 
-func (p *Post) clone() cloner {
-	np := *p
-	return &np
+func GetPost(kind, id string) (*Post, error) {
+	defcLock.RLock()
+	defer defcLock.RUnlock()
+
+	return defc.Posts.GetOne(id)
 }
 
-func (p *Post) augment(key string) {
-	p.Short = strings.Split(key, "/")[1]
+func GetPosts(limit int) ([]*Post, error) {
+	defcLock.RLock()
+	defer defcLock.RUnlock()
+
+	return defc.Posts.GetMany(limit), nil
 }
 
-func GetPosts(limit int) ([]interface{}, error) {
-	return getJSONList((*buntdb.Tx).Ascend, "post:CreatedAt", &Post{}, limit)
-}
-
-type bIterFunc func(*buntdb.Tx, string, func(string, string) bool) error
-
-func getJSONList(f bIterFunc, key string, out cloner, limit int) ([]interface{}, error) {
-	var outs []interface{}
-	var err error
-	i := 0
-	berr := BDB.View(func(tx *buntdb.Tx) error {
-		return f(tx, key, func(key, value string) bool {
-			if limit > 0 && i >= limit {
-				return false
-			}
-			if err = json.Unmarshal([]byte(value), out); err != nil {
-				return false
-			}
-			if a, ok := out.(augmenter); ok {
-				a.augment(key)
-			}
-			outs = append(outs, out)
-			out = out.clone()
-			i++
-			return true
-		})
-	})
+func readProjects(filepath string) ([]Project, error) {
+	fi, err := os.Open(filepath)
 	if err != nil {
 		return nil, err
 	}
-	return outs, berr
+	defer fi.Close()
+	cr := csv.NewReader(fi)
+	cr.Comma = ' '
+	projects, err := cr.ReadAll()
+	if err != nil {
+		return nil, err
+	}
+
+	projectsOut := make([]Project, len(projects))
+	for i, project := range projects {
+		projectsOut[len(projects)-i-1] = Project{
+			Name:        project[0],
+			Description: project[1],
+			Site:        project[2],
+			Active:      project[3] == "yes",
+		}
+	}
+	return projectsOut, nil
+}
+
+func readPost(filepath string) (*Post, error) {
+	post, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+
+	lines := bytes.SplitN(post, []byte{'\n'}, 4)
+
+	time, err := time.Parse("2 Jan 2006", string(lines[0]))
+	if err != nil {
+		return nil, err
+	}
+
+	var tagsB [][]byte
+	if len(lines[2]) > 0 {
+		tagsB = bytes.Split(lines[2], []byte{','})
+	}
+	kind := "science"
+	if len(tagsB) == 1 {
+		kind = string(tagsB[0])
+	}
+	return &Post{
+		CreatedAt: time,
+		Title:     string(lines[1]),
+		Kind:      kind,
+		Content:   lines[3],
+	}, nil
+}
+
+var assetKinds = map[string]string{
+	".png":  "image",
+	".html": "raw",
+	".js":   "script",
+}
+
+var inotfd int
+
+func fillCache() error {
+	cache := newCache()
+	err := godirwalk.Walk(db, &godirwalk.Options{
+		Callback: func(relpath string, de *godirwalk.Dirent) error {
+			name := de.Name()
+			if de.IsDir() {
+				_, err := unix.InotifyAddWatch(
+					inotfd, relpath,
+					unix.IN_MODIFY|unix.IN_CREATE|unix.IN_DELETE|unix.IN_MOVED_TO,
+				)
+				if err != nil {
+					log.Printf("E006 : %s", err)
+				}
+				return nil
+			}
+			if name == "projects" {
+				projects, err := readProjects(relpath)
+				if err != nil {
+					log.Printf("E001 : %s", err)
+					return nil
+				}
+				cache.Projects = projects
+				return nil
+			}
+			ext := path.Ext(name)
+			base := strings.TrimSuffix(name, ext)
+			if ext == ".md" {
+				post, err := readPost(relpath)
+				if err != nil {
+					log.Printf("E002 : %s", err)
+					return nil
+				}
+				cache.Posts.Set(base, post)
+				return nil
+			}
+			kind, exists := assetKinds[ext]
+			if !exists {
+				return nil
+			}
+			asset, err := ioutil.ReadFile(relpath)
+			if err != nil {
+				log.Printf("E003 : %s", err)
+				return nil
+			}
+			cache.Assets[kind][base] = asset
+			return nil
+		},
+		ErrorCallback: func(_ string, _ error) godirwalk.ErrorAction {
+			return godirwalk.SkipNode
+		},
+		Unsorted: true,
+	})
+	if err != nil {
+		return err
+	}
+	sort.Slice(cache.Posts.List, func(i, j int) bool {
+		return cache.Posts.List[i].CreatedAt.After(cache.Posts.List[j].CreatedAt)
+	})
+
+	defcLock.Lock()
+	defc = cache
+	defcLock.Unlock()
+	return nil
 }
 
 func init() {
-	if len(os.Args) < 2 {
-		bail(fmt.Errorf("needs DB path argument"))
-	}
-	var err error
-	BDB, err = buntdb.Open(os.Args[1])
-	bail(BDB.SetConfig(buntdb.Config{SyncPolicy: buntdb.Always}))
-	bail(BDB.CreateIndex("post:CreatedAt", "post:*", buntdb.Desc(buntdb.IndexJSON("CreatedAt"))))
-	bail(err)
+	db = os.Args[1]
+
+	go func() {
+		for {
+			fd, err := unix.InotifyInit()
+			if err != nil {
+				log.Printf("E005 : %s", err)
+				continue
+			}
+			inotfd = fd
+
+			if err = fillCache(); err != nil {
+				log.Fatalf("E004 : %s", err)
+			}
+
+			var buffer [64 * (unix.SizeofInotifyEvent + unix.PathMax + 1)]byte
+			if _, err = unix.Read(inotfd, buffer[:]); err != nil {
+				log.Fatalf("E007 : %s", err)
+			}
+			if err = unix.Close(inotfd); err != nil {
+				log.Fatalf("E008 : %s", err)
+			}
+		}
+	}()
 }

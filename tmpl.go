@@ -225,7 +225,8 @@ var tmplFuncs = template.FuncMap{
 	},
 	"m": func(arg interface{}) template.HTML {
 		var bfb bytes.Buffer
-		md.Convert([]byte(arg.(string)), &bfb)
+		// XXX: Changing this to string leads to weird error rendered
+		md.Convert(arg.([]byte), &bfb)
 		bf := bfb.Bytes()
 		bf = rn.ReplaceAllFunc(bf, func(m []byte) []byte {
 			return []byte(fmt.Sprintf(`<div class="notice">%s</div>`, m[8:len(m)-1]))

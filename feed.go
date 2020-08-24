@@ -21,7 +21,6 @@ func feedFeed() error {
 
 	feed.Items = make([]*feeds.Item, len(posts))
 	for i, post := range posts {
-		post := post.(*db.Post)
 		feed.Items[i] = &feeds.Item{
 			Title:   post.Title,
 			Link:    &feeds.Link{Href: "http://kenji.sx/posts/" + post.Short},

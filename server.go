@@ -1,8 +1,8 @@
 package main
 
 import (
+	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"log"
 	"net/http"
@@ -96,17 +96,11 @@ var HPost = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	postStr, err := db.Get("post:science/%s", id)
+	post, err := db.GetPost("science", id)
 	if err == db.ErrNotFound {
 		SetStatusCode(rw, req, http.StatusNotFound)
 		return
 	}
-	if err != nil {
-		SetStatusError(rw, req, err)
-		return
-	}
-	var post db.Post
-	err = json.Unmarshal([]byte(postStr), &post)
 	if err != nil {
 		SetStatusError(rw, req, err)
 		return
@@ -160,14 +154,14 @@ var HFeed = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	}
 })
 
-var HAssets = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+var HAsset = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	kind := PathShift(req)
 	id, err := PathShiftChecked(req)
 	if err != nil {
 		return
 	}
 
-	asset, err := db.Get("asset:%s:%s", kind, id)
+	asset, err := db.GetAsset(kind, id)
 	if err == db.ErrNotFound {
 		SetStatusCode(rw, req, http.StatusNotFound)
 		return
@@ -176,7 +170,7 @@ var HAssets = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		SetStatusError(rw, req, err)
 		return
 	}
-	http.ServeContent(rw, req, "", time.Time{}, strings.NewReader(asset))
+	http.ServeContent(rw, req, "", time.Time{}, bytes.NewReader(asset))
 })
 
 var HRoot = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
@@ -188,7 +182,7 @@ var HRoot = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	}
 	switch head {
 	case "assets":
-		HAssets.ServeHTTP(rw, req)
+		HAsset.ServeHTTP(rw, req)
 	case "feed":
 		HFeed.ServeHTTP(rw, req)
 	case "posts":
