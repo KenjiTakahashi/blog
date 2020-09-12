@@ -11,11 +11,9 @@ import (
 	"time"
 
 	"github.com/KenjiTakahashi/blog/db"
+	"github.com/rs/xid"
 )
 
-// ShiftPath splits off the first component of p, which will be cleaned of
-// relative components before processing. head will never contain a slash and
-// tail will always be a rooted path without trailing slash.
 func PathSplit1String(p string) (string, string) {
 	p = path.Clean("/" + p)
 	i := strings.Index(p[1:], "/") + 1
@@ -38,7 +36,7 @@ func PathShift(req *http.Request) string {
 func PathShiftChecked(req *http.Request) (string, error) {
 	head, tail := PathSplit1(req)
 	if tail != "/" {
-		return "", errors.New("AAAA")
+		return "", errors.New("Unexpected Path Ending")
 	}
 	req.URL.Path = tail
 	return head, nil
@@ -62,6 +60,29 @@ var H500 = func(rw http.ResponseWriter) error {
 	return etmpl.Execute(rw, http.StatusInternalServerError)
 }
 
+func Log(req *http.Request, msg string, args ...interface{}) {
+	reqID := req.Context().Value("ReqID")
+	if reqID == nil {
+		reqID = "--------------------"
+	}
+	statusCode := req.Context().Value("StatusCode")
+	if statusCode == nil {
+		statusCode = http.StatusOK
+	}
+
+	format := ":: %s :: %03d"
+	if msg != "" {
+		format += " :: " + msg
+	}
+	log.Printf(format, append([]interface{}{reqID, statusCode}, args...)...)
+}
+
+func LogIfErr(req *http.Request, err error) {
+	if err != nil {
+		Log(req, "POST SEND ERROR : %s", err)
+	}
+}
+
 func tmplExec(rw http.ResponseWriter, req *http.Request, subtmpl string, args interface{}) {
 	c, err := tmpl.Clone()
 	if err != nil {
@@ -76,9 +97,13 @@ func tmplExec(rw http.ResponseWriter, req *http.Request, subtmpl string, args in
 			return
 		}
 	}
-	if err = c.Execute(rw, args); err != nil {
+	var buf bytes.Buffer
+	if err = c.Execute(&buf, args); err != nil {
 		SetStatusError(rw, req, err)
+		return
 	}
+	_, err = buf.WriteTo(rw)
+	LogIfErr(req, err)
 }
 
 var HProjects = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
@@ -128,7 +153,7 @@ var HFeedRss = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) 
 	if feed, err := getFeed(); err != nil {
 		SetStatusError(rw, req, err)
 	} else {
-		_ = feed.WriteRss(rw)
+		LogIfErr(req, feed.WriteRss(rw))
 	}
 })
 
@@ -136,13 +161,14 @@ var HFeedAtom = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request)
 	if feed, err := getFeed(); err != nil {
 		SetStatusError(rw, req, err)
 	} else {
-		_ = feed.WriteAtom(rw)
+		LogIfErr(req, feed.WriteAtom(rw))
 	}
 })
 
 var HFeed = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	head, err := PathShiftChecked(req)
 	if err != nil {
+		SetStatusCode(rw, req, http.StatusNotFound)
 		return
 	}
 
@@ -160,6 +186,7 @@ var HAsset = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 	kind := PathShift(req)
 	id, err := PathShiftChecked(req)
 	if err != nil {
+		SetStatusCode(rw, req, http.StatusNotFound)
 		return
 	}
 
@@ -198,13 +225,12 @@ var HRoot = http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 
 func NewMLog(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		ip := req.Header.Get("X-Real-IP")
-		if ip == "" {
-			ip = req.RemoteAddr
-		}
+		reqID := xid.New().String()
 		fullURL := req.URL.Path
 
-		log.Printf("req :: %-21s :: %s", ip, fullURL)
+		*req = *req.WithContext(context.WithValue(req.Context(), "ReqID", reqID))
+
+		log.Printf(":: %s :: req :: %s", reqID, fullURL)
 
 		next.ServeHTTP(rw, req)
 
@@ -213,14 +239,12 @@ func NewMLog(next http.Handler) http.Handler {
 			statusCode = http.StatusOK
 		}
 
-		format := "%03d :: %-21s :: %s"
-		args := []interface{}{statusCode, ip, fullURL}
 		err := req.Context().Value("Error")
 		if err != nil {
-			format += " :: ERROR : %s"
-			args = append(args, err)
+			Log(req, "ERROR : %s", err)
+		} else {
+			Log(req, "")
 		}
-		log.Printf(format, args...)
 	})
 }
 
